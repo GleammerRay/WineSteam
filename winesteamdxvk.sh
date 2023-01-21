@@ -1,9 +1,10 @@
 #! /bin/bash
 export WINEARCH=win64
-export WINEPREFIX=$PWD/prefix
+export WINEPREFIX=$HOME/.winesteamdxvk/prefix
 export WINE_LARGE_ADDRESS_AWARE=1
-if [ -d ./prefix ]; then
-  wine "prefix/drive_c/Program Files (x86)/Steam/steam.exe"
+cd $HOME
+if [ -d ./.winesteamdxvk/prefix ]; then
+  wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
   exit
 fi
 echo " ______________________________________________"
@@ -28,6 +29,8 @@ echo
 echo "-------> [ Wine Steam DXVK installer ] <-------"
 echo '[0/5] Performing first time setup. [!]'
 echo '[1/5] Creating a wine prefix... [⌂]'
+if [ ! -d ./.winesteamdxvk ]; then mkdir ./.winesteamdxvk; fi
+cd ./.winesteamdxvk
 mkdir ./prefix;
 winecfg
 echo '[2/5] Installing allfonts... [Æ]'
