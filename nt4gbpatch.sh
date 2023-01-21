@@ -3,9 +3,6 @@ export WINEARCH=win64
 export WINE_LARGE_ADDRESS_AWARE=1
 export WINEPREFIX=$HOME/.winesteamdxvk/prefix
 export NEOTOKYO_EXE="prefix/drive_c/Program Files (x86)/Steam/steamapps/common/NEOTOKYO/hl2.exe"
-cd $HOME
-if [ ! -d ./.winesteamdxvk ]; then mkdir ./.winesteamdxvk; fi
-cd ./.winesteamdxvk
 if [ ! -d prefix ]; then
   echo 'F:Wineprefix not found.'
   echo 'Run "bash winesteamdxvk.sh" to set up your prefix first.'
