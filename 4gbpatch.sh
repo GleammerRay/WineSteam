@@ -1,4 +1,7 @@
 #! /bin/bash
+cd $HOME
+if [ ! -d ./.winesteamdxvk ]; then mkdir ./.winesteamdxvk; fi
+cd ./.winesteamdxvk
 if [ -z "$1" ]; then
   echo 'F:No executable specified.'
   echo 'Please provide a path to the executable that you want to patch.'
