@@ -15,7 +15,7 @@ Install Wine Steam on Linux without pain and hassle.
 
 ## Usage
 
-Simply run `bash winesteamdxvk.sh`!
+Simply run `bash winesteam.sh`!
 
 The utility starts Steam if the installation is complete or runs the setup if otherwise.
 
@@ -25,7 +25,7 @@ If you're unable to log into Steam via QR code, try restarting and using manual 
 
 It is recommended to use `View` -> `Small Mode` in Steam to minimize crashes and bugs.
 
-If you wish to launch Wine Steam from your Linux Steam installation, simply add `winesteamdxvk.sh` as a Non-Steam Game.
+If you wish to launch Wine Steam from your Linux Steam installation, simply add `winesteam.sh` as a Non-Steam Game.
 
 ## Install Location
 
