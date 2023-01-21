@@ -5,6 +5,7 @@ Install Wine Steam on Linux without pain and hassle.
 ## Contents
 1. [Prerequisites](#prerequisites)
 2. [Usage](#usage)
+3. [Install Location](#install-location)
 
 ## Prerequisites
 
@@ -25,5 +26,9 @@ If you're unable to log into Steam via QR code, try restarting and using manual 
 It is recommended to use `View` -> `Small Mode` in Steam to minimize crashes and bugs.
 
 If you wish to launch Wine Steam from your Linux Steam installation, simply add `winesteamdxvk.sh` as a Non-Steam Game.
+
+## Install Location
+
+After the setup, the prefix is located at `.winesteam/prefix` in your home directory.
 
 #### Made with 💜 by Gleammer.
