@@ -1,3 +1,5 @@
+WARNING: This script saves all data into its own directory. Please await until a patch is issued, this notice will then be removed
+
 # Wine Steam DXVK
 
 Install Wine Steam with DXVK on Linux without pain and hassle.
