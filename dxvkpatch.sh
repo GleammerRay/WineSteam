@@ -1,6 +1,6 @@
 #! /bin/bash
 export WINEARCH=win64
-export WINEPREFIX=$HOME/.winesteamdxvk/prefix
+export WINEPREFIX=$PWD/prefix
 export WINE_LARGE_ADDRESS_AWARE=1
 if [ ! -d prefix ]; then
   echo 'F:Wineprefix not found.'
