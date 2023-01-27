@@ -6,6 +6,7 @@ Install Wine Steam on Linux without pain and hassle.
 1. [Prerequisites](#prerequisites)
 2. [Usage](#usage)
 3. [Install Location](#install-location)
+4. [Adding as an App](#adding-as-an-app)
 
 ## Prerequisites
 
@@ -30,5 +31,9 @@ If you wish to launch Wine Steam from your Linux Steam installation, simply add 
 ## Install Location
 
 After the setup, the prefix is located at `.winesteam/prefix` in your home directory.
+
+## Adding as an App
+
+If you wish to install Wine Steam into your app launcher, run `bash install_desktop.sh`. This will add the Wine Steam desktop launcher into your applications menu. You might need to restart your computer for the Wine Steam icon to cache.
 
 #### Made with 💜 by Gleammer.

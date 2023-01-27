@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=winesteam.sh
+Name=Wine Steam
+Icon=winesteam
+Terminal=false
