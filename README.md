@@ -23,7 +23,7 @@ Simply run `bash winesteam.sh`!
 
 The utility starts Steam if the installation is complete or runs the setup if otherwise.
 
-During setup a Wine configuration menu may appear. It is recommended that you enable `Graphics` -> `Emulate a virtual desktop` for better image quality in games and to always have an equivalent of windowed fullscreen mode regardless of game settings (Recommended setting for NEOTOKYO°). If you're unsure of what to change, just click `OK`.
+During setup a Wine configuration menu may appear. It is recommended that you enable `Graphics` -> `Emulate a virtual desktop` for better image quality in games and to always have an equivalent of windowed fullscreen mode regardless of game settings (recommended setting for NEOTOKYO°). If you're unsure of what to change, just click `OK`.
 
 If you're unable to log into Steam via QR code, try restarting and using manual log in instead. Sometimes it may take several tries to log in.
 
