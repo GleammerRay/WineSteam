@@ -8,7 +8,7 @@ Install Wine Steam on Linux without pain and hassle.
 3. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
    - [4GB Patcher](#4gb-patcher)
-   - [NEOTOKYO° 4GB patcher](#neotokyo°-4gb-patcher)
+   - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
 3. [Install Location](#install-location)
 
 ## Prerequisites
