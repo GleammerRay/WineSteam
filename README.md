@@ -39,7 +39,7 @@ If you wish to install Wine Steam into your app launcher, run `bash install_desk
 
 ### Winetricks
 
-To get access to the various winetricks tools and utilities for your WineSteam prefix, run `bash winetricks.sh`.
+To get access to the various winetricks tools and utilities for your WineSteam prefix, run `bash winetricks.sh` and choose `Select the default wineprefix`.
 
 ### Prefix Configuration
 
