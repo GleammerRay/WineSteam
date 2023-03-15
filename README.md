@@ -37,6 +37,10 @@ Read [Adding as an App](#adding-as-an-app) for adding Wine Steam to your applica
 
 If you wish to install Wine Steam into your app launcher, run `bash install_desktop.sh`. This will add the Wine Steam desktop launcher into your applications menu. You might need to restart your computer for the Wine Steam icon to cache.
 
+### Winetricks
+
+To get access to the various winetricks tools and utilities for your WineSteam prefix, run `bash winetricks.sh`.
+
 ### Prefix Configuration
 
 Run `bash winesteamcfg.sh` to access the Wine configuration menu for your Wine Steam prefix.
