@@ -20,5 +20,5 @@ if [ ! -d ./dxvk-2.0 ]; then
   rm dxvk-2.0.tar.gz
 fi
 echo '[2/2] Running DXVK patch... [◌𝨙]'
-bash ./dxvk-2.0/setup_dxvk.sh
+bash ./dxvk-2.0/setup_dxvk.sh install
 echo 'Done.'
