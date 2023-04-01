@@ -6,7 +6,6 @@ export WINESTEAM_DATA="$HOME/.winesteam"
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
 export WINEPREFIX="$WINESTEAM_DATA/prefix"
 export WINE_LARGE_ADDRESS_AWARE=1
-export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
 if [ ! -d "$WINESTEM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
@@ -34,20 +33,28 @@ echo "|                                 Steamy Fish  |"
 echo "|______________________________________________|"
 echo
 echo "----------> [ Wine Steam installer ] <----------"
-echo '[0/4] Performing first time setup. [!]'
-echo '[1/4] Creating a wine prefix... [⌂]'
-mkdir -p "$WINEPREFIX";
-winecfg
-echo '[2/4] Installing allfonts... [Æ]'
-winetricks allfonts
-echo 'Almost there! 【=˶◕‿↼˶✿=】'
-echo '[3/4] [0/1] Downloading packages. [⟱]'
-if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
-cd "$WINESTEAM_PKGS"
-if [ ! -f ./SteamSetup.exe ]; then
-  echo '[3/4] [1/1] Downloading Steam setup... [⟱]'
-  wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
+
+read -p "Are you sure you want to install steam using wine? [N/Y] " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+ echo '[0/4] Performing first time setup. [!]'
+ echo '[1/4] Creating a wine prefix... [⌂]'
+ mkdir -p "$WINEPREFIX";
+ winecfg
+ echo '[2/4] Installing allfonts... [Æ]'
+ winetricks allfonts
+ echo 'Almost there! 【=˶◕‿↼˶✿=】'
+ echo '[3/4] [0/1] Downloading packages. [⟱]'
+ if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
+ cd "$WINESTEAM_PKGS"
+ if [ ! -f ./SteamSetup.exe ]; then
+   echo '[3/4] [1/1] Downloading Steam setup... [⟱]'
+   wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
+ fi
+ echo 'Almost there! 【=˶◕‿↼˶✿=】'
+ echo '[4/4] Running Steam setup... [🮲🮳]'
+ wine "$WINESTEAM_PKGS/SteamSetup.exe"
+else exit
 fi
-echo 'Almost there! 【=˶◕‿↼˶✿=】'
-echo '[4/4] Running Steam setup... [🮲🮳]'
-wine "$WINESTEAM_PKGS/SteamSetup.exe"
+
