@@ -9,7 +9,7 @@ if [ ! -d "$WINEPREFIX" ]; then
   exit
 fi
 
-echo '[1/1] Downloading and installing C++ runtime patch. You might be prompted to go through several installations, just click through them. [⟱]'
+echo '[1/1] Downloading and installing Visual C++ Runtimes. You might be prompted to go through several installations, just click through them. [⟱]'
 winetricks -q vcrun2003
 winetricks -q vcrun2005
 winetricks -q vcrun2008
