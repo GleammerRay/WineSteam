@@ -1,18 +1,17 @@
 # Wine Steam
 
-Install Wine Steam on Linux without pain and hassle.
+Install Wine Steam on Linux without pain and hassle. Works great with NEOTOKYO.
 
 ## Contents
 1. [Prerequisites](#prerequisites)
 2. [Usage](#usage)
 3. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
-   - [DXVK Patch](#dxvk-patch)
-   - [Winetricks](#winetricks)
-   - [Prefix Configuration](#prefix-configuration)
    - [4GB Patcher](#4gb-patcher)
    - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
+   - [DXVK  patch](#dxvk-patch)
 3. [Install Location](#install-location)
+4. [Known issues](#known-issues)
 
 ## Prerequisites
 
@@ -40,10 +39,6 @@ Read [Adding as an App](#adding-as-an-app) for adding Wine Steam to your applica
 
 If you wish to install Wine Steam into your app launcher, run `bash install_desktop.sh`. This will add the Wine Steam desktop launcher into your applications menu. You might need to restart your computer for the Wine Steam icon to cache.
 
-### DXVK Patch
-
-DXVK patch gives extra performance if applied, but some hardware and games are incompatible with it and may not work properly. To apply the DXVK patch to WineSteam, run `bash dxvkpatch.sh`.
-
 ### Winetricks
 
 To get access to the various winetricks tools and utilities for your WineSteam prefix, run `bash winetricks.sh` and choose `Select the default wineprefix`.
@@ -58,14 +53,34 @@ Run `bash winesteamcfg.sh` to access the Wine configuration menu for your Wine S
 
 The script is using the patch from https://ntcore.com/?page_id=371.
 
+## DXVK patch
+Direct3D is part of directx APIs that allows 3d graphics on windows, this patch applies transition layer from Direct3D to Vulkan (That is DXVK)
+!!SOME PEOPLE DON'T NEED THE PATCH, IF THE GAME WORKS WITHOUT IT DON'T APPLY IT!!
+
+Script is of course using DXVK: https://github.com/doitsujin/dxvk
+
 ### NEOTOKYO° 4GB patcher
 
 You can use `bash nt4gbpatch.sh` to apply 4GB patch to an existing [NEOTOKYO°](https://store.steampowered.com/app/244630/NEOTOKYO/) installation inside Wine Steam. You need to have Wine Steam set up and NEOTOKYO° installed in it for the patch to do its magic.
+NOTE: patch is not actually 4GB in size
 
 The script is using [`4gbpatch.sh`](#4gb-patcher).
 
 ## Install Location
 
 After the setup, the prefix is located at `.winesteam/prefix` in your home directory.
+
+## Known issues
+Steam client is laggy - Known fix: Use steam small mode ( click on "view" button on top and select "small mode" client will be more basic but works better)
+
+While running command "!motd" on BonAHNSa server (NEOTOKYO) game crashes with C++ runtime error - fix unknown, possibly installing visual studio c++ runtimes can help
+
+Wine program error (NEOTOKYO) "The program hl2.exe has encuntered a serious problem and needs to close" - Known fixes: Apllying the 4gb patch using '`4gbpatch.sh` or lowering texture quality
+
+While sending client info (NEOTOKYO) "Microsoft Visual C++ Runtime error" appears - Known fix: Apply DXVK patch
+
+Log in using QR code is buggy - Known fix: Use manual sign in
+
+Broken font (NEOTOKYO) - Are you sure you didn't skip font installation by aciddent?
 
 #### Made with 💜 by Gleammer.
