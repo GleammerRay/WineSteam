@@ -1,7 +1,6 @@
  #! /bin/bash
 export WINEARCH=win64
 export WINESTEAM_DATA="$HOME/.winesteam"
-export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
 export WINEPREFIX="$WINESTEAM_DATA/prefix"
 export WINE_LARGE_ADDRESS_AWARE=1
 if [ ! -d "$WINEPREFIX" ]; then
@@ -10,7 +9,7 @@ if [ ! -d "$WINEPREFIX" ]; then
   exit
 fi
 
-echo '[0/1] Downloading and installing c++ runtime patch, you mightl be prompted to go through installation, just click through it. [⟱]'
+echo '[1/1] Downloading and installing C++ runtime patch. You might be prompted to go through several installations, just click through them. [⟱]'
 winetricks -q vcrun2003
 winetricks -q vcrun2005
 winetricks -q vcrun2008
@@ -19,5 +18,4 @@ winetricks -q vcrun2012
 #installing 2015 and 2013 version just in case
 winetricks -q vcrun2013
 winetricks -q vcrun2015
-echo '[1/1] eveyrthing should be up and running! [◌𝨙]'
-echo 'done!'
+echo 'Done.'
