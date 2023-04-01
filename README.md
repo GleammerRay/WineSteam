@@ -64,9 +64,9 @@ The script is using the patch from https://ntcore.com/?page_id=371.
 
 Direct3D is part of directx APIs that allows 3d graphics on windows, this patch applies transition layer from Direct3D to Vulkan.
 
-!!SOME PEOPLE DON'T NEED THE PATCH, IF YOUR GAMES WORK WITHOUT IT DON'T APPLY IT!!
+Some people don't need this patch, if your games work without it, **DON'T APPLY IT**.
 
-It is strongly recommended that, if you need DXVK for some games, you try using Proton in native Steam for these games first.
+It is strongly recommended that, if you need DXVK for some games, you **try using Proton** in native Steam for these games first.
 
 To apply the DXVK patch, run `bash dxvkpatch.sh`.
 
@@ -82,7 +82,7 @@ If you started using Wine Steam before this notice appeared, it is highly recomm
 
 You can use `bash nt4gbpatch.sh` to apply 4GB patch to an existing [NEOTOKYO°](https://store.steampowered.com/app/244630/NEOTOKYO/) installation inside Wine Steam. You need to have Wine Steam set up and NEOTOKYO° installed in it for the patch to do its magic.
 
-NOTE: the patch is not actually 4GB in size.
+*NOTE: the patch is not actually 4GB in size.*
 
 The script is using [`4gbpatch.sh`](#4gb-patcher).
 
