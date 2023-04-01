@@ -6,9 +6,9 @@ Install Wine Steam on Linux without pain and hassle.
 1. [Prerequisites](#prerequisites)
 2. [Usage](#usage)
 3. [Tools](#tools)
-   - [DXVK Patch](#dxvk-patch)
    - [Adding as an App](#adding-as-an-app)
-   - [WineTrick](#winetricks)
+   - [DXVK Patch](#dxvk-patch)
+   - [Winetricks](#winetricks)
    - [Prefix Configuration](#prefix-configuration)
    - [4GB Patcher](#4gb-patcher)
    - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
@@ -36,13 +36,13 @@ Read [Adding as an App](#adding-as-an-app) for adding Wine Steam to your applica
 
 ## Tools
 
-### DXVK Patch
-
-DXVK patch gives extra performance if applied, but some hardware and games are incompatible with it and may not work properly. To apply the DXVK patch to WineSteam, run `bash dxvkpatch.sh`.
-
 ### Adding as an App
 
 If you wish to install Wine Steam into your app launcher, run `bash install_desktop.sh`. This will add the Wine Steam desktop launcher into your applications menu. You might need to restart your computer for the Wine Steam icon to cache.
+
+### DXVK Patch
+
+DXVK patch gives extra performance if applied, but some hardware and games are incompatible with it and may not work properly. To apply the DXVK patch to WineSteam, run `bash dxvkpatch.sh`.
 
 ### Winetricks
 
