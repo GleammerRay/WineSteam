@@ -10,10 +10,12 @@ Install Wine Steam on Linux without pain and hassle.
 2. [Usage](#usage)
 3. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
+   - [Winetricks](#winetricks)
+   - [Prefix Configuration](#prefix-configuration)
    - [4GB Patcher](#4gb-patcher)
-   - [DXVK  patch](#dxvk-patch)
+   - [DXVK Patch](#dxvk-patch)
+   - [Visual C++ Runtimes Installer](#visual-c-runtimes-installer)
    - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
-   - [Visual runtimes](#visual-runtimes)
 3. [Install Location](#install-location)
 4. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
@@ -52,17 +54,13 @@ To get access to the various winetricks tools and utilities for your Wine Steam 
 
 Run `bash winesteamcfg.sh` to access the Wine configuration menu for your Wine Steam prefix.
 
-### Visual runtimes
-NEOTOKYO sometimes diplays an error about c++ Visual Runtime error [known issues](#known-issues)this script should fix that.
-	!!USERS ARE RECOMMENDED TO INSTALL THIS SCRIPT IF CRASHES LIKE THAT HAPPENED!!
-
 ### 4GB Patcher
 
 32bit games and software often require more memory for better performance, but are limited to 2GB of RAM by default. To aid that, run `bash 4gbpatch.sh <executable path>` (without angle brackets) to patch the program.
 
 The script is using the patch from https://ntcore.com/?page_id=371.
 
-### DXVK patch
+### DXVK Patch
 
 Direct3D is part of directx APIs that allows 3d graphics on windows, this patch applies transition layer from Direct3D to Vulkan.
 
@@ -70,7 +68,15 @@ Direct3D is part of directx APIs that allows 3d graphics on windows, this patch 
 
 It is strongly recommended that, if you need DXVK for some games, you try using Proton in native Steam for these games first.
 
+To apply the DXVK patch, run `bash dxvkpatch.sh`.
+
 Package source: https://github.com/doitsujin/dxvk/releases/tag/v2.0.
+
+### Visual C++ Runtimes Installer
+
+Visual C++ runtimes are installed by default if you were using the latest current Wine Steam during your first time setup.
+
+If you started using Wine Steam before this notice appeared, it is highly recommended that you run `bash vcruntimes.sh` to install the runtimes into your prefix. This may fix bugs and crashes in your Wine Steam games and applications.
 
 ### NEOTOKYO° 4GB patcher
 
@@ -93,12 +99,12 @@ After the setup, the prefix is located at `.winesteam/prefix` in your home direc
 
 ### NEOTOKYO° issues
 - Wine program error `The program hl2.exe has encuntered a serious problem and needs to close`.
-   - Can be fixed by using the [4GB Patcher](#4gb-patcher) or lowering texture quality.
+   - Fixed by using the [4GB Patcher](#4gb-patcher) or lowering texture quality.
 - While sending client info, `Microsoft Visual C++ Runtime error` appears.
-   - Can be fixed by applying the [DXVK patch](#dxvk-patch).
+   - Fixed by applying the [DXVK patch](#dxvk-patch).
 - Broken font.
    - Are you sure you didn't skip font installation by aciddent?
 - While running command `!motd` on BonAHNSa server, game crashes with C++ runtime error.
-   - Can be fixed by installing VC runtimes [Visual runtimes](#visual-runtimes).
+   - Fixed by running the [Visual C++ Runtimes Installer](#visual-c-runtimes-installer).
 
 #### Made with 💜 by Gleammer.
