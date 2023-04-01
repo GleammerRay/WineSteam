@@ -93,7 +93,7 @@ After the setup, the prefix is located at `.winesteam/prefix` in your home direc
 ## Known issues
 
 - Steam client is laggy.
-   - Use Steam small mode (click on "view" button on top and select "small mode" client will be more basic but works better).
+   - Use Steam small mode (click on `View` -> `Small Mode` in the Steam client for a more basic, yet more stable UI).
 - Log in using QR code is buggy and doesn't always work.
    - Using manual sign in often works better.
 
