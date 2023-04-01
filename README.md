@@ -13,6 +13,7 @@ Install Wine Steam on Linux without pain and hassle.
    - [4GB Patcher](#4gb-patcher)
    - [DXVK  patch](#dxvk-patch)
    - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
+   - [Visual runtimes](#visual-runtimes)
 3. [Install Location](#install-location)
 4. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
@@ -50,6 +51,10 @@ To get access to the various winetricks tools and utilities for your Wine Steam 
 ### Prefix Configuration
 
 Run `bash winesteamcfg.sh` to access the Wine configuration menu for your Wine Steam prefix.
+
+### Visual runtimes
+NEOTOKYO sometimes diplays an error about c++ Visual Runtime error [known issues](#known-issues)this script should fix that.
+	!!USERS ARE RECOMMENDED TO INSTALL THIS SCRIPT IF CRASHES LIKE THAT HAPPENED!!
 
 ### 4GB Patcher
 
@@ -94,6 +99,6 @@ After the setup, the prefix is located at `.winesteam/prefix` in your home direc
 - Broken font.
    - Are you sure you didn't skip font installation by aciddent?
 - While running command `!motd` on BonAHNSa server, game crashes with C++ runtime error.
-   - Fix unknown, possibly installing Visual Studio C++ runtimes can help.
+   - Can be fixed by installing VC runtimes [Visual runtimes](#visual-runtimes).
 
 #### Made with 💜 by Gleammer.
