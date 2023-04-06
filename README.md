@@ -74,9 +74,9 @@ Package source: https://github.com/doitsujin/dxvk/releases/tag/v2.0.
 
 ### Visual C++ Runtimes Installer
 
-Visual C++ runtimes are installed by default if you were using the latest current Wine Steam during your first time setup.
+Visual C++ runtimes are no longer installed by default as they tend to break Wine Steam installations. If you have tried using Wine Steam before this notice appeared and it did not work, do try again.
 
-If you started using Wine Steam before this notice appeared, it is highly recommended that you run `bash vcruntimes.sh` to install the runtimes into your prefix. This may fix bugs and crashes in your Wine Steam games and applications.
+Only run `bash vcruntimes.sh` if your desired game doesn't work. This may fix or create bugs and crashes in your Wine Steam games and applications.
 
 ### NEOTOKYO° 4GB patcher
 
@@ -103,8 +103,8 @@ After the setup, the prefix is located at `.winesteam/prefix` in your home direc
 - While sending client info, `Microsoft Visual C++ Runtime error` appears.
    - Fixed by applying the [DXVK patch](#dxvk-patch).
 - Broken font.
-   - Are you sure you didn't skip font installation by aciddent?
+   - Are you sure you didn't skip font installation by accident?
 - While running command `!motd` on BonAHNSa server, game crashes with C++ runtime error.
-   - Fixed by running the [Visual C++ Runtimes Installer](#visual-c-runtimes-installer).
+   - Fixed by running the [Visual C++ Runtimes Installer](#visual-c-runtimes-installer). **This installer is known to break NEOTOKYO° online games entirely on some systems, make sure to back up your prefix before using it**.
 
 #### Made with 💜 by Gleammer.

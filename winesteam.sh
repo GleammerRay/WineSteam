@@ -34,22 +34,20 @@ echo "|                                 Steamy Fish  |"
 echo "|______________________________________________|"
 echo
 echo "----------> [ Wine Steam installer ] <----------"
-echo '[0/5] Performing first time setup. [!]'
-echo '[1/5] Creating a wine prefix... [⌂]'
+echo '[0/4] Performing first time setup. [!]'
+echo '[1/4] Creating a wine prefix... [⌂]'
 mkdir -p "$WINEPREFIX";
 winecfg
-echo '[2/5] Installing Visual C++ runtimes... [⚙]'
-bash vcruntimes.sh
-echo '[3/5] Installing allfonts... [Æ]'
+echo '[2/4] Installing allfonts... [Æ]'
 winetricks allfonts
 echo 'Almost there! 【=˶◕‿↼˶✿=】'
-echo '[4/5] [0/1] Downloading packages. [⟱]'
+echo '[3/4] [0/1] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 cd "$WINESTEAM_PKGS"
 if [ ! -f ./SteamSetup.exe ]; then
-  echo '[4/5] [1/1] Downloading Steam setup... [⟱]'
+  echo '[3/4] [1/1] Downloading Steam setup... [⟱]'
   wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
 fi
 echo 'Almost there! 【=˶◕‿↼˶✿=】'
-echo '[5/5] Running Steam setup... [🮲🮳]'
+echo '[4/4] Running Steam setup... [🮲🮳]'
 wine "$WINESTEAM_PKGS/SteamSetup.exe"
