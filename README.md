@@ -1,5 +1,5 @@
 # Wine Steam
-
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND**
 Install Wine Steam on Linux without pain and hassle.
 
 > Works great with NEOTOKYO.
@@ -8,7 +8,8 @@ Install Wine Steam on Linux without pain and hassle.
 ## Contents
 1. [Prerequisites](#prerequisites)
 2. [Usage](#usage)
-3. [Tools](#tools)
+3. [To apply patches or not? ](to-apply-patches-or-not)
+4. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
    - [Winetricks](#winetricks)
    - [Prefix Configuration](#prefix-configuration)
@@ -16,8 +17,8 @@ Install Wine Steam on Linux without pain and hassle.
    - [DXVK Patch](#dxvk-patch)
    - [Visual C++ Runtimes Installer](#visual-c-runtimes-installer)
    - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
-3. [Install Location](#install-location)
-4. [Known issues](#known-issues)
+5. [Install Location](#install-location)
+6. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
 
 ## Prerequisites
@@ -28,7 +29,7 @@ Install Wine Steam on Linux without pain and hassle.
 
 ## Usage
 
-Simply run `bash winesteam.sh`!
+Simply run `bash winesteam.sh` or  `bash altwinesteam.sh` (to know wich one to run read  [To apply patches or not? ](to-apply-patches-or-not))
 
 The utility starts Steam if the installation is complete or runs the setup if otherwise.
 
@@ -36,9 +37,18 @@ During setup a Wine configuration menu may appear. It is recommended that you en
 
 If you're unable to log into Steam via QR code, try restarting and using manual log in instead. Sometimes it may take several tries to log in.
 
-It is recommended to use `View` -> `Small Mode` in Steam to minimize crashes and bugs.
+It is recommended to use `View` -> `Small Mode` in Steam to minimize crashes and bugs.  [Known issues](#known-issues)
 
 Read [Adding as an App](#adding-as-an-app) for adding Wine Steam to your applications launcher.
+
+## To apply patches or not?
+This script includes two patches ([1](#dxvk-patch) [2](#visual-c-runtimes-installer) ) that are either required to even launch steam or might break your entire wine prefix!
+
+What seems to cuase (or not) issues is driver in use, proprietary nvida drivers for newer cards (10 series and up) seem to not need the patches, it will probably break your prefix. (use `winesteam.sh` and continue as normal)
+
+Nouveau open source driver as well as proprietary nvida driver for older cards (tested on GTX 750 ti) and possibly amd drivers? (not tested) seem to not even launch steam without the patches (use `altwinesteam.sh` or run normal setup and apply patches manually)
+
+Great way to check if you need patches or not is to run NEOTOKYO with proton using native steam (if you can play local maps then run the patches)
 
 ## Tools
 
@@ -90,6 +100,10 @@ The script is using [`4gbpatch.sh`](#4gb-patcher).
 
 After the setup, the prefix is located at `.winesteam/prefix` in your home directory.
 
+## Uninstall
+To uninstall winesteam simply run `rm -dir .winesteam/` in your home directory.
+*NOTE: this will remove everything from prefix and will be impossible to recover*
+
 ## Known issues
 
 - Steam client is laggy.
@@ -104,7 +118,9 @@ After the setup, the prefix is located at `.winesteam/prefix` in your home direc
    - Fixed by applying the [DXVK patch](#dxvk-patch).
 - Broken font.
    - Are you sure you didn't skip font installation by accident?
-- While running command `!motd` on BonAHNSa server, game crashes with C++ runtime error.
-   - Fixed by running the [Visual C++ Runtimes Installer](#visual-c-runtimes-installer). **This installer is known to break NEOTOKYO° online games entirely on some systems, make sure to back up your prefix before using it**.
+- While running command `!motd` on BonAHNSa server, game crashes with C++ runtime error (will fix the crash but window will not display anything, you can read it on BonAHNSa's website)
+   - Fixed by running the [Visual C++ Runtimes Installer](#visual-c-runtimes-installer). **This installer is known to break NEOTOKYO° online games entirely on some systems, make sure to back up your prefix before using it** ([To apply patches or not? ](to-apply-patches-or-not)).
+- While changing maps error "Couldn't CRC map `map name.bsp` disconnecting." This error appears on windows as well as on linux in some source games. To fix it download the map manually and put it inside`NEOTOKTO` -> `NeotokyoSource` -> `maps` (for quick acces to game file click on game properties and on "browse local files"), if asked to replace file say yes.
+if playing on BonAHNSa template for map file download would look like this:`https://bonahnsa.site.nfoservers.com/neotokyo/maps/nt_map_name_ctg.bsp`.
 
 #### Made with 💜 by Gleammer.
