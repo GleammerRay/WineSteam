@@ -40,7 +40,6 @@ mkdir -p "$WINEPREFIX";
 winecfg
 echo '[2/4] Installing allfonts... [Æ]'
 winetricks allfonts
-echo 'Almost there! 【=˶◕‿↼˶✿=】'
 echo '[3/4] [0/1] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 cd "$WINESTEAM_PKGS"
