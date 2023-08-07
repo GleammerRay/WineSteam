@@ -38,6 +38,7 @@ echo '[0/4] Performing first time setup. [!]'
 echo '[1/4] Creating a wine prefix... [⌂]'
 mkdir -p "$WINEPREFIX";
 winecfg
+winetricks win10
 echo '[2/4] Installing allfonts... [Æ]'
 winetricks allfonts
 echo '[3/4] [0/1] Downloading packages. [⟱]'
