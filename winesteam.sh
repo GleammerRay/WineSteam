@@ -47,6 +47,18 @@ echo
 echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
+  echo "If you intend to use DXVK or play NEOTOKYO°, please make sure that your Wine version is 8.0.2 or higher. Lower Wine versions have poor support for DXVK. If you're on ubuntu the \`winehq-stable\` (not \`wine-stable\`) package is recommended."
+  echo "I: Wine version: $(wine --version)"
+  read -p "?:[0/3]: Are you satisfied with your current Wine version? [Y/n]: " WINESTEAM_WINE_VER_Q
+  WINESTEAM_WINE_VER_Q=$(echo ${WINESTEAM_WINE_VER_Q:-'y'} | tr '[:upper:]' '[:lower:]')
+  if [ $WINESTEAM_WINE_VER_Q != 'n' ]; then
+    export WINESTEAM_WINE_VER_Q='y'
+    echo '?:[0/3]: Satisfaction confirmed. 【=◕∇◕✿=】'
+  else
+    export WINESTEAM_WINE_VER_Q='n'
+    echo '?:[0/3]: WineSteam setup cancelled 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁'
+    exit
+  fi
 
   read -p "?:[1/3]: DXVK greatly improves performance in all wine applications. Some hardware/applications don't work well with DXVK. Not recommended for NEOTOKYO° players (for now). Install DXVK? [y/N]: " WINESTEAM_INSTALL_DXVK
 WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'n'} | tr '[:upper:]' '[:lower:]')
