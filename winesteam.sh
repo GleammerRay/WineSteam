@@ -6,6 +6,7 @@ export WINESTEAM_DATA="$HOME/.winesteam"
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
 export WINEPREFIX="$WINESTEAM_DATA/prefix"
 export WINE_LARGE_ADDRESS_AWARE=1
+export WINEDLLOVERRIDES="dxgi,d3d11=b"
 export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
 if [ ! -d "$WINESTEM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
