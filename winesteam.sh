@@ -60,14 +60,14 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
     exit
   fi
 
-  read -p "?:[1/3]: DXVK greatly improves performance in all wine applications. Some hardware/applications don't work well with DXVK. Not recommended for NEOTOKYO° players (for now). Install DXVK? [y/N]: " WINESTEAM_INSTALL_DXVK
-WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'n'} | tr '[:upper:]' '[:lower:]')
-  if [ $WINESTEAM_INSTALL_DXVK != 'y' ]; then
-    export WINESTEAM_INSTALL_DXVK='n'
-    echo '?:[1/3]: Skipping DXVK installation.'
-  else
+  read -p "?:[1/3]: DXVK greatly improves performance in all wine applications. Some hardware/wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
+WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
+  if [ $WINESTEAM_INSTALL_DXVK != 'n' ]; then
     export WINESTEAM_INSTALL_DXVK='y'
     echo '?:[1/3]: DXVK will be installed.'
+  else
+    export WINESTEAM_INSTALL_DXVK='n'
+    echo '?:[1/3]: Skipping DXVK installation.'
   fi
   
   read -p '?:[2/3]: Do you wish to install WineSteam into your applications launcher? [Y/n]:' WINESTEAM_INSTALL_DESKTOP
