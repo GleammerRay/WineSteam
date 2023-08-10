@@ -13,11 +13,11 @@ echo '[0/2] Applying DXVK patch.'
 echo '[1/2] [0/1] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 cd "$WINESTEAM_PKGS"
-if [ ! -d ./dxvk-2.0 ]; then
+if [ ! -d ./proton-7.0-6e ]; then
   echo '[1/2] [1/1] Downloading DXVK... [⟱]'
-  wget https://github.com/doitsujin/dxvk/releases/download/v2.0/dxvk-2.0.tar.gz
-  tar -xvzf dxvk-2.0.tar.gz
-  rm dxvk-2.0.tar.gz
+  wget https://github.com/ValveSoftware/Proton/archive/refs/tags/proton-7.0-6e.tar.gz
+  tar -xvzf proton-7.0-6e.tar.gz
+  rm proton-7.0-6e.tar.gz
 fi
 echo '[2/2] Running DXVK patch... [◌𝨙]'
 bash ./dxvk-2.0/setup_dxvk.sh install
