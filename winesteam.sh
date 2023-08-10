@@ -47,7 +47,7 @@ echo
 echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
-  echo "If you intend to use DXVK or play NEOTOKYO°, please make sure that your Wine version is 8.0.2 or higher. Lower Wine versions have poor support for DXVK. If you're on ubuntu the \`winehq-stable\` (not \`wine-stable\`) package is recommended."
+  echo "If you intend to use DXVK or play NEOTOKYO°, please make sure that your Wine version is 8.0.2 or higher. Lower Wine versions have poor support for DXVK. If you're on Ubuntu the \`winehq-stable\` (not \`wine-stable\`) package is recommended."
   echo "I: Wine version: $(wine --version)"
   read -p "?:[0/3]: Are you satisfied with your current Wine version? [Y/n]: " WINESTEAM_WINE_VER_Q
   WINESTEAM_WINE_VER_Q=$(echo ${WINESTEAM_WINE_VER_Q:-'y'} | tr '[:upper:]' '[:lower:]')
