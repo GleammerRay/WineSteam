@@ -30,20 +30,20 @@ trap on_exit SIGINT
 trap on_exit SIGTSTP
 
 SUDOERS_CONTENT=$(cat << EOF
-$USER ALL=(ALL) NOPASSWD: /usr/bin/bash -c /usr/bin/echo nameserver 8.8.8.8 > /etc/netns/$WINESTEAM_NETNS/resolv.conf
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip link del $WINESTEAM_VFACE
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip link add link *
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip link set $WINESTEAM_VFACE netns $WINESTEAM_NETNS
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip addr *
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip route *
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns del $WINESTEAM_NETNS
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns add $WINESTEAM_NETNS
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip link del $WINESTEAM_VFACE
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip link set dev lo up
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip link set dev $WINESTEAM_VFACE up
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip addr *
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip route *
-$USER ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/bin/sudo -u $USER *
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/bin/bash -c /usr/bin/echo nameserver 8.8.8.8 > /etc/netns/$WINESTEAM_NETNS/resolv.conf
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip link del $WINESTEAM_VFACE
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip link add link *
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip link set $WINESTEAM_VFACE netns $WINESTEAM_NETNS
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip addr *
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip route *
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns del $WINESTEAM_NETNS
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns add $WINESTEAM_NETNS
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip link del $WINESTEAM_VFACE
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip link set dev lo up
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip link set dev $WINESTEAM_VFACE up
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip addr *
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/sbin/ip route *
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip netns exec $WINESTEAM_NETNS /usr/bin/sudo -u $USER *
 EOF
 )
 
@@ -52,6 +52,8 @@ if [ "$CUR_SUDOERS_CONTENT" != "x$SUDOERS_CONTENT" ]; then
   echo "I:WineSteam network namespace is not set up properly."
   echo "I:Performing first time setup..."
   /usr/bin/echo -e "$SUDOERS_CONTENT" | /usr/bin/sudo /usr/bin/tee /etc/sudoers.d/winesteam_netspace
+  sudo groupadd winesteam-netspace
+  sudo usermod -a -G winesteam-netspace $USER
 fi
 
 sudo /usr/bin/bash -c "/usr/bin/echo nameserver 8.8.8.8 > /etc/netns/$WINESTEAM_NETNS/resolv.conf"
@@ -66,6 +68,6 @@ sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip link set dev "$WINE
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip addr add "$WINESTEAM_IP"/24 dev "$WINESTEAM_VFACE"
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip route del default
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip route add default via "$WINESTEAM_GW" dev "$WINESTEAM_VFACE" src "$WINESTEAM_IP" metric 1
-sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/bin/sudo -u "$USER" bash "$PWD"/winesteam.sh
+sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/bin/sudo -u "$USER" WINESTEAM_INSTALL_DXVK="$WINESTEAM_INSTALL_DXVK" bash "$PWD"/winesteam.sh
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip link del "$WINESTEAM_VFACE"
 sudo /usr/sbin/ip netns del "$WINESTEAM_NETNS"
