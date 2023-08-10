@@ -80,7 +80,7 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'n'} | tr '[:upper:]' '[
   else
     export WINESTEAM_INSTALL_NETSPACE='y'
     echo '?:[3/3]: Setting up WineSteam network namespace, you will be queried for your system user password in a moment.'
-    echo 'WINESTEAM_USE_NETSPACE=true' >> "$WINESTEAM_DATA/winesteam.cfg"
+    echo 'WINESTEAM_USE_NETSPACE=true' > "$WINESTEAM_DATA/winesteam.cfg"
     bash winesteam_netspace.sh
     exit
   fi
