@@ -68,6 +68,6 @@ sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip link set dev "$WINE
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip addr add "$WINESTEAM_IP"/24 dev "$WINESTEAM_VFACE"
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip route del default
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip route add default via "$WINESTEAM_GW" dev "$WINESTEAM_VFACE" src "$WINESTEAM_IP" metric 1
-sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/bin/sudo -u "$USER" WINESTEAM_INSTALL_DXVK="$WINESTEAM_INSTALL_DXVK" bash "$PWD"/winesteam.sh
+sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/bin/sudo -u "$USER" WINESTEAM_USE_NETSPACE="false" WINESTEAM_INSTALL_DXVK="$WINESTEAM_INSTALL_DXVK" bash "$PWD"/winesteam.sh
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip link del "$WINESTEAM_VFACE"
 sudo /usr/sbin/ip netns del "$WINESTEAM_NETNS"
