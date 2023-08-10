@@ -2,6 +2,13 @@
 cd `dirname $0`
 chmod +x winesteam.sh
 
+SCRIPT_PATH="x$1"
+if [ "$SCRIPT_PATH" = "x" ]; then
+  SCRIPT_PATH="$PWD/winesteam.sh"
+else
+  SCRIPT_PATH="$1"
+fi
+
 function installToHome {
   SHARE_DIR="$HOME/.local/share"
   APP_DIR="$SHARE_DIR/applications"
@@ -15,7 +22,7 @@ function installToHome {
   if [ -f "$APP_PATH" ]; then rm "$APP_PATH"; fi
   cp winesteam.desktop "$APP_PATH"
   sed -i "s/Icon=winesteam/Icon=gleam-winesteam/" "$APP_PATH"
-  sed -i "s|Exec=winesteam.sh|Exec=$PWD/winesteam.sh|" "$APP_PATH"
+  sed -i "s|Exec=winesteam.sh|Exec=$SCRIPT_PATH|" "$APP_PATH"
   chmod +x "$APP_PATH"
 }
 
