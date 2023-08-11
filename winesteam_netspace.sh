@@ -30,6 +30,7 @@ trap on_exit SIGINT
 trap on_exit SIGTSTP
 
 SUDOERS_CONTENT=$(cat << EOF
+%winesteam-netspace ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /etc/netns/$WINESTEAM_NETNS
 %winesteam-netspace ALL=(ALL) NOPASSWD: /usr/bin/bash -c /usr/bin/echo nameserver 8.8.8.8 > /etc/netns/$WINESTEAM_NETNS/resolv.conf
 %winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip link del $WINESTEAM_VFACE
 %winesteam-netspace ALL=(ALL) NOPASSWD: /usr/sbin/ip link add link *
@@ -56,7 +57,7 @@ if [ "$CUR_SUDOERS_CONTENT" != "x$SUDOERS_CONTENT" ]; then
   sudo usermod -a -G winesteam-netspace $USER
 fi
 
-sudo mkdir -p "/etc/netns/$WINESTEAM_NETNS"
+sudo /usr/bin/mkdir -p "/etc/netns/$WINESTEAM_NETNS"
 sudo /usr/bin/bash -c "/usr/bin/echo nameserver 8.8.8.8 > /etc/netns/$WINESTEAM_NETNS/resolv.conf"
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip link del "$WINESTEAM_VFACE"
 sudo /usr/sbin/ip netns del "$WINESTEAM_NETNS"
