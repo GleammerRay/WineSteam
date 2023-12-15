@@ -73,3 +73,5 @@ sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip route add default v
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/bin/sudo -u "$USER" WINESTEAM_USE_NETSPACE="false" WINESTEAM_INSTALL_DXVK="$WINESTEAM_INSTALL_DXVK" bash "$PWD"/winesteam.sh
 sudo /usr/sbin/ip netns exec "$WINESTEAM_NETNS" /usr/sbin/ip link del "$WINESTEAM_VFACE"
 sudo /usr/sbin/ip netns del "$WINESTEAM_NETNS"
+
+echo 'WINESTEAM_USE_NETSPACE=true' > "$WINESTEAM_DATA/winesteam.cfg"
