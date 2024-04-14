@@ -59,7 +59,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
 
   read -p "?:[1/3]: DXVK greatly improves performance in all wine applications. Some hardware/wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
 WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
-  if [ $WINESTEAM_INSTALL_DXVK != 'n' ]; then
+  if [ "$WINESTEAM_INSTALL_DXVK" != 'n' ]; then
     export WINESTEAM_INSTALL_DXVK='y'
     echo '?:[1/3]: DXVK will be installed.'
   else
@@ -70,7 +70,7 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
   read -p '?:[2/3]: Do you wish to install WineSteam into your applications launcher? [Y/n]:' WINESTEAM_INSTALL_DESKTOP
 
   WINESTEAM_INSTALL_DESKTOP=$(echo ${WINESTEAM_INSTALL_DESKTOP:-'y'} | tr '[:upper:]' '[:lower:]')
-  if [ $WINESTEAM_INSTALL_DESKTOP != 'n' ]; then
+  if [ "$WINESTEAM_INSTALL_DESKTOP" != 'n' ]; then
     export WINESTEAM_INSTALL_DESKTOP='y'
     echo '?:[2/3]: Installing launcher icon.'
     bash "$PWD/install_desktop.sh"
@@ -83,7 +83,7 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
   read -p '?:[3/3]: By default, FastDL may not work properly in some games when ran via Wine. Installing official `wininet.dll` may fix FastDL, but downloading the archive in which it resides can take a long time. It is recommended to skip this step for now and run `bash wininet.sh` in the WineSteam directory later if you need it, after checking how well your game works. Install Wininet now? [y/N]:' WINESTEAM_WININET
 
   WINESTEAM_WININET=$(echo ${WINESTEAM_WININET:-'n'} | tr '[:upper:]' '[:lower:]')
-  if [ $WINESTEAM_WININET != 'y' ]; then
+  if [ "$WINESTEAM_WININET" != 'y' ]; then
     export WINESTEAM_WININET='n'
     echo '?:[3/3]: Skipping Wininet installation.'
   else
