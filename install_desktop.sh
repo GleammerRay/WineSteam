@@ -1,5 +1,5 @@
 #! /bin/bash
-cd `dirname $0`
+cd `dirname "$0"`
 chmod +x winesteam.sh
 
 SCRIPT_PATH="x$1"
