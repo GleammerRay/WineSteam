@@ -11,5 +11,12 @@ else
   export CONFIRM_UNINSTALL='y'
   echo '?: Uninstalling WineSteam. 【=╥﹏╥✿=】'
   rm -rf "$WINESTEAM_DATA"
+  SHARE_DIR="$HOME/.local/share"
+  APP_DIR="$SHARE_DIR/applications"
+  ICONS_DIR="$SHARE_DIR/icons/hicolor/64x64/apps"
+  APP_PATH="$APP_DIR/gleam-winesteam.desktop"
+  ICON_PATH="$ICONS_DIR/gleam-winesteam.png"
+  rm "$ICON_PATH"
+  rm "$APP_PATH"
   echo 'Done.'
 fi
