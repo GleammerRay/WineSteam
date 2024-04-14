@@ -8,15 +8,16 @@ Install Wine Steam on Linux without pain and hassle.
 ## Contents
 1. [Prerequisites](#prerequisites)
 2. [Usage](#usage)
-3. [Tools](#tools)
+3. [Uninstalling](#uninstalling)
+4. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
    - [Winetricks](#winetricks)
    - [Prefix Configuration](#prefix-configuration)
    - [4GB Patcher](#4gb-patcher)
    - [DXVK Patch](#dxvk-patch)
    - [Visual C++ Runtimes Installer](#visual-c-runtimes-installer)
-3. [Install Location](#install-location)
-4. [Known issues](#known-issues)
+5. [Install Location](#install-location)
+6. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
 
 ## Prerequisites
@@ -40,6 +41,11 @@ If you're unable to log into Steam via QR code, try restarting and using manual 
 It is recommended to use `View` -> `Small Mode` in Steam to minimize crashes and bugs.
 
 Read [Adding as an App](#adding-as-an-app) for adding Wine Steam to your applications launcher.
+
+## Uninstalling
+
+To uninstall WineSteam, run `bash uninstall.sh` and enter "y" to confirm.  
+You will be able to install it again by running `bash winesteam.sh`.
 
 ## Tools
 
