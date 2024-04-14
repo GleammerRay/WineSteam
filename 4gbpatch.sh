@@ -21,6 +21,10 @@ if [ ! -f 4gb_patch.exe ]; then
   echo '[1/2] [1/1] Downloading 4GB patch... [⟱]'
   wget https://ntcore.com/files/4gb_patch.zip
   unzip 4gb_patch.zip
+  if [ ! -f 4gb_patch.exe ]; then
+    echo 'F: Download failed.'
+    exit 1
+  fi
   rm 4gb_patch.zip
 fi
 echo '[2/2] Running 4GB patch... [🮲🮳]'
