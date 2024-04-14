@@ -33,7 +33,7 @@ The utility starts Steam if the installation is complete or runs the setup if ot
 
 You will be asked a few questions at the start of the setup via your terminal.
 
-During setup a Wine configuration menu may appear. It is recommended that you enable `Graphics` -> `Emulate a virtual desktop` for better image quality in games and to always have an equivalent of windowed fullscreen mode regardless of game settings (recommended setting for NEOTOKYO°). If you're unsure of what to change, just set Windows version to `Windows 10` and click `OK`.
+During setup a Wine configuration menu may appear. It is recommended that you enable `Graphics` -> `Emulate a virtual desktop` for better image quality in games and to always have an equivalent of windowed fullscreen mode regardless of game settings (recommended setting for NEOTOKYO°). If you're unsure of what to change, just click `OK`.
 
 If you're unable to log into Steam via QR code, try restarting and using manual log in instead. Sometimes it may take several tries to log in.
 

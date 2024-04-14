@@ -16,6 +16,7 @@ export WINEPREFIX="$WINESTEAM_DATA/prefix"
 export WINE_LARGE_ADDRESS_AWARE=1
 export WINEDLLOVERRIDES="dxgi,d3d11=b"
 export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
+export PATH="$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin:$PATH"
 if [ ! -d "$WINESTEM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
@@ -30,7 +31,7 @@ if [ -d "$WINEPREFIX" ]; then
       exit
     fi
   fi
-  unshare "$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin/wine" "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
+  unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
   exit
 fi
 echo " ______________________________________________"
@@ -117,7 +118,7 @@ fi
 echo '[2/4] Creating a wine prefix... [⌂]'
 echo "Note: a window will open, please press \`Ok\` if you don't know what to change."
 mkdir -p "$WINEPREFIX";
-"$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin/winecfg"
+winecfg
 winetricks win10
 if [ "$WINESTEAM_INSTALL_DXVK" = "y" ]; then
   echo '[3/4] Installing DXVK... [⌂]'
@@ -131,4 +132,4 @@ winetricks allfonts
 echo '=========================================================='
 echo 'Almost there! 【=˶◕‿↼˶✿=】'
 echo '[4/4] Running Steam setup... [🮲🮳]'
-unshare "$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin/wine" "$WINESTEAM_PKGS/SteamSetup.exe"
+unshare wine "$WINESTEAM_PKGS/SteamSetup.exe"

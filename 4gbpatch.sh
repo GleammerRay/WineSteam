@@ -2,6 +2,7 @@
 export PWD_BAK="$PWD"
 export WINESTEAM_DATA="$HOME/.winesteam"
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
+export PATH="$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin:$PATH"
 if [ -z "$1" ]; then
   echo 'F:No executable specified.'
   echo 'Please provide a path to the executable that you want to patch.'
