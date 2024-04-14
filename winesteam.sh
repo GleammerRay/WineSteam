@@ -30,7 +30,7 @@ if [ -d "$WINEPREFIX" ]; then
       exit
     fi
   fi
-  unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
+  unshare "$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin/wine" "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
   exit
 fi
 echo " ______________________________________________"
@@ -55,18 +55,6 @@ echo
 echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
-  echo "If you intend to use DXVK or play NEOTOKYO°, please make sure that your Wine version is 8.0.2 or higher. Lower Wine versions have poor support for DXVK. If you're on Ubuntu the \`winehq-stable\` (not \`wine-stable\`) package is recommended."
-  echo "I: Wine version: $(wine --version)"
-  read -p "?:[0/3]: Are you satisfied with your current Wine version? [Y/n]: " WINESTEAM_WINE_VER_Q
-  WINESTEAM_WINE_VER_Q=$(echo ${WINESTEAM_WINE_VER_Q:-'y'} | tr '[:upper:]' '[:lower:]')
-  if [ $WINESTEAM_WINE_VER_Q != 'n' ]; then
-    export WINESTEAM_WINE_VER_Q='y'
-    echo '?:[0/3]: Satisfaction confirmed. 【=◕∇◕✿=】'
-  else
-    export WINESTEAM_WINE_VER_Q='n'
-    echo '?:[0/3]: WineSteam setup cancelled 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁'
-    exit
-  fi
 
   read -p "?:[1/3]: DXVK greatly improves performance in all wine applications. Some hardware/wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
 WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
@@ -109,30 +97,38 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
 fi
 
 echo '[0/4] Performing first time setup. [!]'
-echo '[1/4] Creating a wine prefix... [⌂]'
-echo "Note: a window will open, please press \`Ok\` if you don't know what to change."
-mkdir -p "$WINEPREFIX";
-winecfg
-winetricks win10
-if [ "$WINESTEAM_INSTALL_DXVK" = "y" ]; then
-  echo '[1/4] Installing DXVK... [⌂]'
-  echo '=========================================================='
-  bash dxvkpatch.sh
-  echo '=========================================================='
-fi
-echo '[2/4] Installing allfonts... [Æ]'
-echo '=========================================================='
-winetricks allfonts
-echo '=========================================================='
-echo '[3/4] [0/1] Downloading packages. [⟱]'
+echo '[1/4] [0/2] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 cd "$WINESTEAM_PKGS"
+if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
+  echo '[1/4] [1/2] Downloading Wine GE... [⟱]]'
+  echo '=========================================================='
+  wget https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
+  tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
+  rm wine-lutris-GE-Proton8-26-x86_64.tar.xz
+  echo '=========================================================='
+fi
 if [ ! -f ./SteamSetup.exe ]; then
-  echo '[3/4] [1/1] Downloading Steam setup... [⟱]'
+  echo '[1/4] [2/2] Downloading Steam setup... [⟱]]'
   echo '=========================================================='
   wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
   echo '=========================================================='
 fi
+echo '[2/4] Creating a wine prefix... [⌂]'
+echo "Note: a window will open, please press \`Ok\` if you don't know what to change."
+mkdir -p "$WINEPREFIX";
+"$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin/winecfg"
+winetricks win10
+if [ "$WINESTEAM_INSTALL_DXVK" = "y" ]; then
+  echo '[3/4] Installing DXVK... [⌂]'
+  echo '=========================================================='
+  bash dxvkpatch.sh
+  echo '=========================================================='
+fi
+echo '[3/4] Installing allfonts... [Æ]'
+echo '=========================================================='
+winetricks allfonts
+echo '=========================================================='
 echo 'Almost there! 【=˶◕‿↼˶✿=】'
 echo '[4/4] Running Steam setup... [🮲🮳]'
-unshare wine "$WINESTEAM_PKGS/SteamSetup.exe"
+unshare "$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin/wine" "$WINESTEAM_PKGS/SteamSetup.exe"

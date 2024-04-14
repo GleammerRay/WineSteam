@@ -22,7 +22,6 @@ Install Wine Steam on Linux without pain and hassle.
 
 ## Prerequisites
 
-- `wine` - used to Steam. 💨
 - `winetricks` - needed to create and set up the Steam wineprefix. 🪄
 - `unzip` - used to unzip some Windows packages. 📦
 - `util-linux` - used for network namespaces. 🌐
