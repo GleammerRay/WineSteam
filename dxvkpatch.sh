@@ -14,12 +14,18 @@ echo '[0/2] Applying DXVK patch.'
 echo '[1/2] [0/1] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 cd "$WINESTEAM_PKGS"
-if [ ! -d ./dxvk-2.0 ]; then
+if [ ! -d ./dxvk-2.3.1 ]; then
   echo '[1/2] [1/1] Downloading DXVK... [⟱]'
-  wget https://github.com/doitsujin/dxvk/releases/download/v2.0/dxvk-2.0.tar.gz
-  tar -xvzf dxvk-2.0.tar.gz
-  rm dxvk-2.0.tar.gz
+  wget https://github.com/doitsujin/dxvk/releases/download/v2.3.1/dxvk-2.3.1.tar.gz
+  tar -xvzf dxvk-2.3.1.tar.gz
+  if [ ! -d ./dxvk-2.3.1 ]; then
+    echo 'F: Download failed.'
+    exit 1
+  fi
+  rm dxvk-2.3.1.tar.gz
 fi
-echo '[2/2] Running DXVK patch... [◌𝨙]'
-bash ./dxvk-2.0/setup_dxvk.sh install
+echo '[2/2] Installing DXVK patch... [◌𝨙]'
+cp ./dxvk-2.3.1/x64/*.dll "$WINEPREFIX/drive_c/windows/system32"
+cp ./dxvk-2.3.1/x32/*.dll "$WINEPREFIX/drive_c/windows/syswow64"
+winecfg
 echo 'Done.'
