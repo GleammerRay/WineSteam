@@ -21,16 +21,6 @@ if [ ! -d "$WINESTEM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
-  if [ "x$WINESTEAM_USE_NETSPACE" = "x" ]; then
-    WINESTEAM_USE_NETSPACE=$(cat "$WINESTEAM_DATA/winesteam.cfg" | grep 'WINESTEAM_USE_NETSPACE=' | sed 's/WINESTEAM_USE_NETSPACE=//g')
-    IN="$WINESTEAM_USE_NETSPACE"
-    arrIN=(${IN//\n/ })
-    export WINESTEAM_USE_NETSPACE=${arrIN[0]}
-    if [ "x$WINESTEAM_USE_NETSPACE" = "xtrue" ]; then
-      bash "$PWD/winesteam_netspace.sh"
-      exit
-    fi
-  fi
   unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
   exit
 fi
