@@ -15,7 +15,6 @@ Install Wine Steam on Linux without pain and hassle.
    - [4GB Patcher](#4gb-patcher)
    - [DXVK Patch](#dxvk-patch)
    - [Visual C++ Runtimes Installer](#visual-c-runtimes-installer)
-   - [NEOTOKYO° 4GB patcher](#neotokyo-4gb-patcher)
 3. [Install Location](#install-location)
 4. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
@@ -58,6 +57,8 @@ Run `bash winesteamcfg.sh` to access the Wine configuration menu for your Wine S
 
 ### 4GB Patcher
 
+WineSteam is now using `WINE_LARGE_ADDRESS_AWARE=1` with Wine GE, so **the 4GB Patcher is no longer required**. It is kept here for archiving purposes.
+
 32bit games and software often require more memory for better performance, but are limited to 2GB of RAM by default. To aid that, run `bash 4gbpatch.sh <executable path>` (without angle brackets) to patch the program.
 
 The script is using the patch from https://ntcore.com/?page_id=371.
@@ -79,14 +80,6 @@ Package source: https://github.com/doitsujin/dxvk/releases/tag/v2.0.
 Visual C++ runtimes are no longer installed by default as they tend to break Wine Steam installations. If you have tried using Wine Steam before this notice appeared and it did not work, do try again.
 
 Only run `bash vcruntimes.sh` if your desired game doesn't work. This may fix or create bugs and crashes in your Wine Steam games and applications.
-
-### NEOTOKYO° 4GB patcher
-
-You can use `bash nt4gbpatch.sh` to apply 4GB patch to an existing [NEOTOKYO°](https://store.steampowered.com/app/244630/NEOTOKYO/) installation inside Wine Steam. You need to have Wine Steam set up and NEOTOKYO° installed in it for the patch to do its magic.
-
-*NOTE: the patch is not actually 4GB in size.*
-
-The script is using [`4gbpatch.sh`](#4gb-patcher).
 
 ## Install Location
 
