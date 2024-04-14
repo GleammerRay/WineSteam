@@ -1,4 +1,12 @@
 #! /bin/bash
+
+user_interrupt() {
+  exit
+}
+
+trap user_interrupt SIGINT
+trap user_interrupt SIGTSTP
+
 cd `dirname $0`
 export WINEARCH=win64
 export WINESTEAM_BIN="$PWD"
