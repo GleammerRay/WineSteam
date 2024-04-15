@@ -34,6 +34,22 @@ wsInputYN() {
   fi
 }
 
+wsInputDir() {
+  if [ "$INPUT_BACKEND" = "zenity" ]; then
+    ANS=`zenity --file-selection --directory --title "WineSteam"`
+    echo "$ANS"
+  else
+    read -p "Enter directory path:" ANS
+    echo `readlink -f "$ANS"`
+  fi
+}
+
+wsInfo() {
+  if [ "$INPUT_BACKEND" = "zenity" ]; then
+    zenity --info --title "WineSteam" --text "$@"
+  fi
+}
+
 if command -v "zenity" &> /dev/null
 then
   export NOTIFY_BACKEND="zenity"
@@ -94,6 +110,28 @@ echo
 echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
+
+  WINESTEAM_INSTALL_YN=`wsInputYN "?:[0/2]: Do you wish to modify default WineSteam install path? (~/.winesteam) [y/N]: "`
+  WINESTEAM_INSTALL_YN=$(echo ${WINESTEAM_INSTALL_YN:-'n'} | tr '[:upper:]' '[:lower:]')
+  if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
+    WINESTEAM_INSTALL_PATH=`wsInputDir`
+    if [ -n "$WINESTEAM_INSTALL_PATH" ]; then
+      if [ `ls -A "$WINESTEAM_INSTALL_PATH"` ]; then
+        wsNotify "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
+        exit 1
+      fi
+      mkdir -p "$WINESTEAM_INSTALL_PATH"
+      if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
+        wsNotify "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
+        exit 1
+      fi
+      rm -rf "$WINESTEAM_DATA"
+      ln -s "$WINESTEAM_INSTALL_PATH" "$WINESTEAM_DATA"
+    fi
+    wsNotify "?:[0/2]: Installing to \`$WINESTEAM_INSTALL_PATH\`"
+  else
+    wsNotify "?:[0/2]: Installing to \`$WINESTEAM_DATA\`"
+  fi
 
   WINESTEAM_INSTALL_DXVK=`wsInputYN "?:[1/2]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: "`
   WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
