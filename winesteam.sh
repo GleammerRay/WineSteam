@@ -251,3 +251,4 @@ wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
 unshare "$WINESTEAM_BIN/winesteam_runner.sh" "$WINESTEAM_PKGS/SteamSetup.exe" &
 wsControls &
+wsCleanup
