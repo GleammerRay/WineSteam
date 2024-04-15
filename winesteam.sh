@@ -1,7 +1,9 @@
 #! /bin/bash
 
+export WS_CONTROLS_PID=""
+
 user_interrupt() {
-  pkill "steam.exe"
+  kill 0
   exit
 }
 
@@ -17,9 +19,9 @@ wsCleanup() {
       exit
     fi
   fi
-  wait $(jobs -p | head -n 1)
-  jobs -p &> /dev/null
-  kill -9 $(jobs -p | head -n 1)
+  wait -n $WS_CONTROLS_PID
+  kill 0
+  exit
 }
 
 wsNotify() {
@@ -37,15 +39,35 @@ wsNotify() {
 
 wsControls() {
   WS_CONTROLS_MSG="Here you can control your running WineSteam instance. Close this window to exit WineSteam."
-  if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS="`zenity --info --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --ok-label "Exit WineSteam"`"
-    wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-    pkill "steam.exe"
-  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam controls" --msgbox "$WS_CONTROLS_MSG" --ok-label "Exit WineSteam"
-    wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-    pkill "steam.exe"
-  fi
+  while true; do
+    if [ "$INPUT_BACKEND" = "zenity" ]; then
+      ANS="`zenity --list --radiolist --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
+      if [ "$ANS" = "Open WineSteam" ]; then
+        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
+        wsNotify "Opening WineSteam..."
+      elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
+        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" -applaunch 244630
+        wsNotify "Launching NEOTOKYO°..."
+      elif [ "$ANS" = "Exit WineSteam" ]; then
+        wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
+        exit
+      fi
+    elif [ "$INPUT_BACKEND" = "kdialog" ]; then
+      ANS="`kdialog --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Exit WineSteam" off`"
+      if [ "$ANS" = "1" ]; then
+        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
+        wsNotify "Opening WineSteam..."
+      elif [ "$ANS" = "2" ]; then
+        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" -applaunch 244630
+        wsNotify "Launching NEOTOKYO°..."
+      elif [ "$ANS" = "3" ]; then
+        wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
+        exit
+      fi
+    else
+      sleep 100
+    fi
+  done
 }
 
 wsInputYN() {
@@ -122,8 +144,9 @@ if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
-  unshare "$WINESTEAM_BIN/winesteam_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" &
+  unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" -silent &
   wsControls &
+  export WS_CONTROLS_PID=$!
   wsCleanup
   exit
 fi
@@ -249,6 +272,7 @@ winetricks allfonts
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
-unshare "$WINESTEAM_BIN/winesteam_runner.sh" "$WINESTEAM_PKGS/SteamSetup.exe" &
+unshare wine "$WINESTEAM_PKGS/SteamSetup.exe" &
 wsControls &
+export WS_CONTROLS_PID=$!
 wsCleanup
