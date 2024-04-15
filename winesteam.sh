@@ -65,7 +65,7 @@ export WINE_LARGE_ADDRESS_AWARE=1
 export WINEDLLOVERRIDES="dxgi,d3d11=b"
 export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
 export PATH="$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin:$PATH"
-if [ ! -d "$WINESTEM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
+if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
