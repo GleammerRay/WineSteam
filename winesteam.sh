@@ -251,4 +251,3 @@ wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
 unshare wine "$WINESTEAM_PKGS/SteamSetup.exe" &
 wsControls &
-wsCleanup
