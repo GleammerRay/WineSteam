@@ -8,6 +8,7 @@ trap user_interrupt SIGINT
 trap user_interrupt SIGTSTP
 
 export NOTIFY_BACKEND=""
+export INPUT_BACKEND=""
 
 notify() {
   echo "$@"
@@ -21,9 +22,27 @@ notify() {
   fi
 }
 
+inputYN() {
+  if [ "$INPUT_BACKEND" = "zenity" ]; then
+    ANS=`zenity --info --title "WineSteam" --text "$@" --ok-label "Quit" --extra-button "No" --extra-button "Yes"`
+    if [ "$ANS" = "No" ]; then
+      echo "n"
+    elif [ "$ANS" = "Yes" ]; then
+      echo "y"
+    else
+      echo "Quitting..."
+      exit 0
+    fi
+  else
+    read -p "$@" ANS
+    echo "$ANS"
+  fi
+}
+
 if command -v "zenity" &> /dev/null
 then
   export NOTIFY_BACKEND="zenity"
+  export INPUT_BACKEND="zenity"
 fi
 if command -v "notify-send" &> /dev/null
 then
@@ -81,7 +100,7 @@ echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
 
-  read -p "?:[1/3]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
+  inputYN "?:[1/3]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
 WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_DXVK" != 'n' ]; then
     export WINESTEAM_INSTALL_DXVK='y'
@@ -91,8 +110,7 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
     echo '?:[1/3]: Skipping DXVK installation.'
   fi
   
-  read -p '?:[2/3]: Do you wish to install WineSteam into your applications launcher? [Y/n]:' WINESTEAM_INSTALL_DESKTOP
-
+  inputYN '?:[2/3]: Do you wish to install WineSteam into your applications launcher? [Y/n]:' WINESTEAM_INSTALL_DESKTOP
   WINESTEAM_INSTALL_DESKTOP=$(echo ${WINESTEAM_INSTALL_DESKTOP:-'y'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_DESKTOP" != 'n' ]; then
     export WINESTEAM_INSTALL_DESKTOP='y'
@@ -104,7 +122,7 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
     echo '?:[2/3]: Skipping launcher icon installation.'
   fi
 
-  read -p '?:[3/3]: By default, FastDL may not work properly in some games when ran via Wine. Installing official `wininet.dll` may fix FastDL, but downloading the archive in which it resides can take a long time. It is recommended to skip this step for now and run `bash wininet.sh` in the WineSteam directory later if you need it, after checking how well your game works. Install Wininet now? [y/N]:' WINESTEAM_WININET
+  inputYN '?:[3/3]: By default, FastDL may not work properly in some games when ran via Wine. Installing official `wininet.dll` may fix FastDL, but downloading the archive in which it resides can take a long time. It is recommended to skip this step for now and run `bash wininet.sh` in the WineSteam directory later if you need it, after checking how well your game works. Install Wininet now? [y/N]:' WINESTEAM_WININET
 
   WINESTEAM_WININET=$(echo ${WINESTEAM_WININET:-'n'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_WININET" != 'y' ]; then
