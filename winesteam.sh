@@ -12,11 +12,14 @@ export INPUT_BACKEND=""
 
 wsNotify() {
   echo "$@"
+  if [ "$NOTIFY_BACKEND" = "kdialog" ]; then
+    kdialog --title "WineSteam" --passivepopup "\n$@" 7
+  fi
   if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
     notify-send "WineSteam" "$@"
   fi
   if [ "$NOTIFY_BACKEND" = "zenity" ]; then
-    zenity --info --timeout=1 --title "WineSteam" --text="$@"
+    zenity --info --timeout=2 --title "WineSteam" --text="$@"
   fi
 }
 
@@ -28,6 +31,13 @@ wsInputYN() {
     else
       echo "y"
     fi
+  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
+    `kdialog --title "WineSteam" --yesno "$@"`
+    if [ "$?" = "0" ]; then
+      echo "y"
+    else
+      echo "n"
+    fi
   else
     read -p "$@" ANS
     echo "$ANS"
@@ -38,6 +48,8 @@ wsInputDir() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
     ANS=`zenity --file-selection --directory --title "WineSteam"`
     echo "$ANS"
+  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
+    kdialog --getexistingdirectory
   else
     read -p "Enter directory path:" ANS
     echo `readlink -f "$ANS"`
@@ -48,6 +60,8 @@ wsInfo() {
   echo "$@"
   if [ "$INPUT_BACKEND" = "zenity" ]; then
     zenity --info --title "WineSteam" --text "$@"
+  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
+    kdialog --title "WineSteam" --msgbox "$@"
   fi
 }
 
@@ -59,6 +73,11 @@ fi
 if command -v "notify-send" &> /dev/null
 then
   export NOTIFY_BACKEND="notify-send"
+fi
+if command -v "kdialog" &> /dev/null
+then
+  export NOTIFY_BACKEND="kdialog"
+  export INPUT_BACKEND="kdialog"
 fi
 
 if ! command -v "winetricks" &> /dev/null
