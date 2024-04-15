@@ -22,15 +22,11 @@ wsNotify() {
 
 wsInputYN() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    echo "$@"
-    ANS=`zenity --info --title "WineSteam" --text "$@" --ok-label "Quit" --extra-button "No" --extra-button "Yes"`
+    ANS=`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`
     if [ "$ANS" = "No" ]; then
       echo "n"
-    elif [ "$ANS" = "Yes" ]; then
-      echo "y"
     else
-      echo "Quitting..."
-      exit 0
+      echo "y"
     fi
   else
     read -p "$@" ANS
