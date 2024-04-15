@@ -36,7 +36,7 @@ wsNotify() {
 }
 
 wsControls() {
-  WS_CONTROLS_MSG="Here you can control your running WineSteam instance. Feel free to collapse or close this window."
+  WS_CONTROLS_MSG="Here you can control your running WineSteam instance." #"Feel free to collapse or close this window."
   if [ "$INPUT_BACKEND" = "zenity" ]; then
     ANS="`zenity --info --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --ok-label "Exit WineSteam"`"
     wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
