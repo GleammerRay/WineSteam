@@ -10,6 +10,7 @@ if [ "$CONFIRM_UNINSTALL" != 'y' ]; then
 else
   export CONFIRM_UNINSTALL='y'
   echo '?: Uninstalling WineSteam. 【=╥﹏╥✿=】'
+  rm -rf "$WINESTEAM_DATA/*"
   rm -rf "$WINESTEAM_DATA"
   SHARE_DIR="$HOME/.local/share"
   APP_DIR="$SHARE_DIR/applications"
