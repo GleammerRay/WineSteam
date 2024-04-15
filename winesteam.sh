@@ -7,6 +7,29 @@ user_interrupt() {
 trap user_interrupt SIGINT
 trap user_interrupt SIGTSTP
 
+export NOTIFY_BACKEND=""
+
+notify() {
+  echo "$@"
+  if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
+    notify-send "WineSteam" "$@"
+    exit
+  fi
+  if [ "$NOTIFY_BACKEND" = "zenity" ]; then
+    zenity --info --timeout=1 --title "WineSteam" --text="$@"
+    exit
+  fi
+}
+
+if command -v "zenity" &> /dev/null
+then
+  export NOTIFY_BACKEND="zenity"
+fi
+if command -v "notify-send" &> /dev/null
+then
+  export NOTIFY_BACKEND="notify-send"
+fi
+
 cd `dirname "$0"`
 export WINEARCH=win64
 export WINESTEAM_BIN="$PWD"
@@ -47,7 +70,7 @@ echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
 
-  read -p "?:[1/3]: DXVK greatly improves performance in all wine applications. Some hardware/wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
+  read -p "?:[1/3]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: " WINESTEAM_INSTALL_DXVK
 WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_DXVK" != 'n' ]; then
     export WINESTEAM_INSTALL_DXVK='y'
@@ -78,48 +101,64 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
     echo '?:[3/3]: Skipping Wininet installation.'
   else
     export WINESTEAM_WININET='y'
-    echo '?:[3/3]: Installing Wininet.'
-    echo '=========================================================='
-    winetricks wininet
-    echo '=========================================================='
-    echo '?:[3/3]: Wininet installed.'
+    echo '?:[3/3]: Wininet will be installed.'
   fi
 
 fi
 
-echo '[0/4] Performing first time setup. [!]'
-echo '[1/4] [0/2] Downloading packages. [⟱]'
+notify '[0/5] Performing first time setup. [!]'
+notify '[1/5] [0/2] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 cd "$WINESTEAM_PKGS"
 if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
-  echo '[1/4] [1/2] Downloading Wine GE... [⟱]]'
+  notify '[1/5] [1/2] Downloading Wine GE... [⟱]]'
   echo '=========================================================='
   wget https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
   tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
+  if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
+    notify 'F: Download failed.'
+    exit 1
+  fi
   rm wine-lutris-GE-Proton8-26-x86_64.tar.xz
   echo '=========================================================='
 fi
 if [ ! -f ./SteamSetup.exe ]; then
-  echo '[1/4] [2/2] Downloading Steam setup... [⟱]]'
+  notify '[1/5] [2/2] Downloading Steam setup... [⟱]]'
   echo '=========================================================='
   wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
+  if [ ! -f ./SteamSetup.exe ]; then
+    notify 'F: Download failed.'
+    exit 1
+  fi
   echo '=========================================================='
 fi
-echo '[2/4] Creating a wine prefix... [⌂]'
-echo "Note: a window will open, please press \`Ok\` if you don't know what to change."
+notify '[2/5] Creating a Wine prefix... [⌂]'
+notify "Note: a window will open, please press \`Ok\` if you don't know what to change."
 mkdir -p "$WINEPREFIX";
 winecfg
 winetricks win10
 if [ "$WINESTEAM_INSTALL_DXVK" = "y" ]; then
-  echo '[3/4] Installing DXVK... [⌂]'
+  notify '[3/5] Installing DXVK... [⌂]'
   echo '=========================================================='
-  bash dxvkpatch.sh
+  bash "$WINESTEAM_BIN/dxvkpatch.sh"
   echo '=========================================================='
+else
+  notify '[3/5]: Skipping DXVK installation.'
 fi
-echo '[3/4] Installing allfonts... [Æ]'
+
+if [ "$WINESTEAM_WININET" != 'y' ]; then
+  notify '[4/5]: Skipping Wininet installation.'
+else
+  notify '[4/5]: Installing Wininet.'
+  echo '=========================================================='
+  winetricks wininet
+  echo '=========================================================='
+  echo '[4/5]: Wininet installed.'
+fi
+notify '[4/5] Installing allfonts... [Æ]'
 echo '=========================================================='
 winetricks allfonts
 echo '=========================================================='
-echo 'Almost there! 【=˶◕‿↼˶✿=】'
-echo '[4/4] Running Steam setup... [🮲🮳]'
+notify 'Almost there! 【=˶◕‿↼˶✿=】'
+notify '[5/5] Running Steam setup... [🮲🮳]'
 unshare wine "$WINESTEAM_PKGS/SteamSetup.exe"
