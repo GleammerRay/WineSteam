@@ -25,6 +25,7 @@ Install Wine Steam on Linux without pain and hassle.
 - `winetricks` - needed to create and set up the Steam wineprefix. 🪄
 - `unzip` - used to unzip some Windows packages. 📦
 - `util-linux` - used for network namespaces. 🌐
+- (optional) `zenity` or `kdialog` - GUI frontends. ✨
 
 ## Usage
 
@@ -32,7 +33,7 @@ Simply run `bash winesteam.sh`!
 
 The utility starts Steam if the installation is complete or runs the setup if otherwise.
 
-You will be asked a few questions at the start of the setup via your terminal.
+You will be asked a few questions at the start of the setup via your terminal or via GUI if you have `zenity` or `kdialog` installed.
 
 During setup a Wine configuration menu may appear. It is recommended that you enable `Graphics` -> `Emulate a virtual desktop` for better image quality in games and to always have an equivalent of windowed fullscreen mode regardless of game settings (recommended setting for NEOTOKYO°). If you're unsure of what to change, just click `OK`.
 
