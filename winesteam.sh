@@ -222,11 +222,12 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
 fi
 
 wsNotify '[0/5] Performing first time setup. [!]'
-wsNotify '[1/5] [0/2] Downloading packages. [⟱]'
+wsNotify '[1/5] [0/3] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
+if [ ! -d "$WINESTEAM_PKGS/bin" ]; then mkdir -p "$WINESTEAM_PKGS/bin"; fi
 cd "$WINESTEAM_PKGS"
 if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
-  wsNotify '[1/5] [1/2] Downloading Wine GE... [⟱]]'
+  wsNotify '[1/5] [1/3] Downloading Wine GE... [⟱]]'
   echo '=========================================================='
   wget https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
   tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
@@ -238,13 +239,26 @@ if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
   echo '=========================================================='
 fi
 if [ ! -f ./SteamSetup.exe ]; then
-  wsNotify '[1/5] [2/2] Downloading Steam setup... [⟱]]'
+  wsNotify '[1/5] [2/3] Downloading Steam setup... [⟱]]'
   echo '=========================================================='
   wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
   if [ ! -f ./SteamSetup.exe ]; then
     wsNotify 'F: Download failed.'
     exit 1
   fi
+  echo '=========================================================='
+fi
+if [ ! -f ./bin/slirp4netns ]; then
+  wsNotify '[1/5] [3/3] Downloading slirp4netns... [⟱]]'
+  echo '=========================================================='
+  wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
+  curl -o slirp4netns --fail -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
+  chmod +x slirp4netns
+  if [ ! -f ./slirp4netns ]; then
+    wsNotify 'F: Download failed.'
+    exit 1
+  fi
+  mv slirp4netns ./bin/
   echo '=========================================================='
 fi
 wsNotify '[2/5] Creating a Wine prefix... [⌂]'
