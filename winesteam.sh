@@ -3,26 +3,24 @@
 export WS_CONTROLS_PID=""
 
 user_interrupt() {
-  kill 0
+  kill 0 &
+  kill -9 $$
   exit
 }
 
 trap user_interrupt SIGINT
+trap user_interrupt SIGTERM
 trap user_interrupt SIGTSTP
 
 export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
-  rm "$WINESTEAM_IPC_PATH"
-  if [ ! "$INPUT_BACKEND" = "zenity" ]; then
-    if [ ! "$INPUT_BACKEND" = "kdialog" ]; then
-      exit
-    fi
+  if [ "x$INPUT_BACKEND" = "x" ]; then
+    exit
   fi
-  wait -n $WS_CONTROLS_PID
-  kill 0
-  exit
+  wait $WS_CONTROLS_PID
+  user_interrupt
 }
 
 wsNotify() {
