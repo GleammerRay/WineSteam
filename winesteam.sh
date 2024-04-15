@@ -45,6 +45,7 @@ wsInputDir() {
 }
 
 wsInfo() {
+  echo "$@"
   if [ "$INPUT_BACKEND" = "zenity" ]; then
     zenity --info --title "WineSteam" --text "$@"
   fi
