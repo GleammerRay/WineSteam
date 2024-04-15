@@ -95,6 +95,9 @@ After the setup, the prefix is located at `.winesteam/prefix` in your home direc
    - Use Steam small mode (click on `View` -> `Small Mode` in the Steam client for a more basic, yet more stable UI).
 - Log in using QR code is buggy and doesn't always work.
    - Using manual sign in often works better.
+- Game graphics are slow, buggy and look weird
+   - Fixed by applying the [DXVK patch](#dxvk-patch).
+
 
 ### NEOTOKYO° issues
 - Wine program error `The program hl2.exe has encuntered a serious problem and needs to close`.
