@@ -14,6 +14,7 @@ export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
+  rm "$WINESTEAM_IPC_PATH"
   if [ ! "$INPUT_BACKEND" = "zenity" ]; then
     if [ ! "$INPUT_BACKEND" = "kdialog" ]; then
       exit
@@ -38,15 +39,15 @@ wsNotify() {
 }
 
 wsControls() {
-  WS_CONTROLS_MSG="Here you can control your running WineSteam instance. Close this window to exit WineSteam."
+  WS_CONTROLS_MSG="Here you can control your running WineSteam instance."
   while true; do
     if [ "$INPUT_BACKEND" = "zenity" ]; then
       ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
       if [ "$ANS" = "Open WineSteam" ]; then
-        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
       elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
-        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" -applaunch 244630
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "Exit WineSteam" ]; then
         wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
@@ -55,10 +56,10 @@ wsControls() {
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
       ANS="`kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Exit WineSteam" off`"
       if [ "$ANS" = "1" ]; then
-        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
       elif [ "$ANS" = "2" ]; then
-        wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" -applaunch 244630
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "3" ]; then
         wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
@@ -144,7 +145,10 @@ if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
-  unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" -silent &
+  unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
+  sleep 1
+  slirp4netns --configure --mtu=65520 --disable-host-loopback $(cat /tmp/winesteam_pid) tap0 &
+  sleep 10
   wsControls &
   export WS_CONTROLS_PID=$!
   wsCleanup
@@ -272,7 +276,10 @@ winetricks allfonts
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
-unshare wine "$WINESTEAM_PKGS/SteamSetup.exe" &
+unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
+sleep 1
+slirp4netns --configure --mtu=65520 --disable-host-loopback $(cat /tmp/winesteam_pid) tap0 &
+sleep 10
 wsControls &
 export WS_CONTROLS_PID=$!
 wsCleanup
