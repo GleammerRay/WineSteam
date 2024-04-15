@@ -30,6 +30,17 @@ then
   export NOTIFY_BACKEND="notify-send"
 fi
 
+if ! command -v "winetricks" &> /dev/null
+then
+    notify "Package \`winetricks\` is not installed."
+    exit 1
+fi
+if ! command -v "unshare" &> /dev/null
+then
+    notify "Package \`util-linux\` package is not installed."
+    exit 1
+fi
+
 cd `dirname "$0"`
 export WINEARCH=win64
 export WINESTEAM_BIN="$PWD"
