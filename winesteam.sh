@@ -82,12 +82,12 @@ fi
 
 if ! command -v "winetricks" &> /dev/null
 then
-    wsNotify "Package \`winetricks\` is not installed."
+    wsNotify "Package \"winetricks\" is not installed."
     exit 1
 fi
 if ! command -v "unshare" &> /dev/null
 then
-    wsNotify "Package \`util-linux\` package is not installed."
+    wsNotify "Package \"util-linux\" package is not installed."
     exit 1
 fi
 
@@ -148,9 +148,9 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       rm -rf "$WINESTEAM_DATA"
       ln -s "$WINESTEAM_INSTALL_PATH" "$WINESTEAM_DATA"
     fi
-    wsNotify "?:[0/2]: Installing to \`$WINESTEAM_INSTALL_PATH\`"
+    wsNotify "?:[0/2]: Installing to \"$WINESTEAM_INSTALL_PATH\""
   else
-    wsNotify "?:[0/2]: Installing to \`$WINESTEAM_DATA\`"
+    wsNotify "?:[0/2]: Installing to \"$WINESTEAM_DATA\""
   fi
 
   WINESTEAM_INSTALL_DXVK=`wsInputYN "?:[1/2]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: "`
@@ -203,7 +203,7 @@ if [ ! -f ./SteamSetup.exe ]; then
   echo '=========================================================='
 fi
 wsNotify '[2/5] Creating a Wine prefix... [⌂]'
-wsInfo "A Wine prefix configuration window will open, please press \`Ok\` if you don't know what to change."
+wsInfo "A Wine prefix configuration window will open, please press \"Ok\" if you don't know what to change."
 mkdir -p "$WINEPREFIX";
 winecfg
 winetricks win10
