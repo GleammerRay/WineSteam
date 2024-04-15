@@ -105,7 +105,7 @@ WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[
     echo '?:[1/2]: Skipping DXVK installation.'
   fi
   
-  wsInputYN '?:[2/2]: Do you wish to install WineSteam into your applications launcher? [Y/n]:' WINESTEAM_INSTALL_DESKTOP
+  WINESTEAM_INSTALL_DESKTOP=`wsInputYN '?:[2/2]: Do you wish to install WineSteam into your applications launcher? [Y/n]: '`
   WINESTEAM_INSTALL_DESKTOP=$(echo ${WINESTEAM_INSTALL_DESKTOP:-'y'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_DESKTOP" != 'n' ]; then
     export WINESTEAM_INSTALL_DESKTOP='y'
@@ -145,7 +145,7 @@ if [ ! -f ./SteamSetup.exe ]; then
   echo '=========================================================='
 fi
 wsNotify '[2/5] Creating a Wine prefix... [⌂]'
-wsNotify "Note: a window will open, please press \`Ok\` if you don't know what to change."
+wsInfo "A Wine prefix configuration window will open, please press \`Ok\` if you don't know what to change."
 mkdir -p "$WINEPREFIX";
 winecfg
 winetricks win10
