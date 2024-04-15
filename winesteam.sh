@@ -14,11 +14,9 @@ notify() {
   echo "$@"
   if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
     notify-send "WineSteam" "$@"
-    exit
   fi
   if [ "$NOTIFY_BACKEND" = "zenity" ]; then
     zenity --info --timeout=1 --title "WineSteam" --text="$@"
-    exit
   fi
 }
 
