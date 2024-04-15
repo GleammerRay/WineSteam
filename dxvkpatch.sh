@@ -22,7 +22,7 @@ if [ ! -d ./dxvk-2.3.1 ]; then
   rm dxvk-2.3.1.tar.gz
 fi
 echo '[2/2] Installing DXVK patch... [◌𝨙]'
-cp ./dxvk-2.0/x32/*.dll "$WINEPREFIX/drive_c/windows/system32"
-cp ./dxvk-2.0/x64/*.dll "$WINEPREFIX/drive_c/windows/syswow64"
+cp ./dxvk-2.3.1/x32/*.dll "$WINEPREFIX/drive_c/windows/system32"
+cp ./dxvk-2.3.1/x64/*.dll "$WINEPREFIX/drive_c/windows/syswow64"
 winecfg
 echo 'Done.'
