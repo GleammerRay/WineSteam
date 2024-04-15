@@ -25,14 +25,14 @@ wsNotify() {
 
 wsInputYN() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS=`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`
+    ANS="`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
     if [ "$ANS" = "No" ]; then
       echo "n"
     else
       echo "y"
     fi
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    `kdialog --title "WineSteam" --yesno "$@"`
+    kdialog --title "WineSteam" --yesno "$@"
     if [ "$?" = "0" ]; then
       echo "y"
     else
@@ -46,13 +46,13 @@ wsInputYN() {
 
 wsInputDir() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS=`zenity --file-selection --directory --title "WineSteam"`
+    ANS="`zenity --file-selection --directory --title "WineSteam"`"
     echo "$ANS"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
     kdialog --getexistingdirectory
   else
     read -p "Enter directory path:" ANS
-    echo `readlink -f "$ANS"`
+    echo "`readlink -f "$ANS"`"
   fi
 }
 
@@ -91,16 +91,8 @@ then
     exit 1
 fi
 
-cd `dirname "$0"`
-export WINEARCH=win64
-export WINESTEAM_BIN="$PWD"
-export WINESTEAM_DATA="$HOME/.winesteam"
-export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
-export WINEPREFIX="$WINESTEAM_DATA/prefix"
-export WINE_LARGE_ADDRESS_AWARE=1
-export WINEDLLOVERRIDES="dxgi,d3d11=b"
-export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
-export PATH="$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin:$PATH"
+cd "`dirname "$0"`"
+eval "`bash read_config.sh`"
 if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
@@ -131,12 +123,12 @@ echo "----------> [ WineSteam installer ] <----------"
 if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   echo 'Welcome to the WineSteam installer! The installation process takes between 5 and 10 minutes. Before the installation can begin we need to know how to set up the right prefix for you.'
 
-  WINESTEAM_INSTALL_YN=`wsInputYN "?:[0/2]: Do you wish to modify default WineSteam install path? (~/.winesteam) [y/N]: "`
+  WINESTEAM_INSTALL_YN="`wsInputYN "?:[0/2]: Do you wish to modify default WineSteam install path? (~/.winesteam) [y/N]: "`"
   WINESTEAM_INSTALL_YN=$(echo ${WINESTEAM_INSTALL_YN:-'n'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
-    WINESTEAM_INSTALL_PATH=`wsInputDir`
-    if [ -n "$WINESTEAM_INSTALL_PATH" ]; then
-      if [ `ls -A "$WINESTEAM_INSTALL_PATH"` ]; then
+    WINESTEAM_INSTALL_PATH="`wsInputDir`"
+    if [ "x$WINESTEAM_INSTALL_PATH" != "x" ]; then
+      if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
         wsNotify "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
         exit 1
       fi
@@ -145,15 +137,14 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
         wsNotify "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
         exit 1
       fi
-      rm -rf "$WINESTEAM_DATA"
-      ln -s "$WINESTEAM_INSTALL_PATH" "$WINESTEAM_DATA"
+      echo "WINESTEAM_DATA=\"$WINESTEAM_INSTALL_PATH\"" > "$WINESTEAM_CFG"
     fi
-    wsNotify "?:[0/2]: Installing to \"$WINESTEAM_INSTALL_PATH\""
-  else
-    wsNotify "?:[0/2]: Installing to \"$WINESTEAM_DATA\""
   fi
+  cd "`dirname "$0"`"
+  eval "`bash read_config.sh`"
+  wsNotify "?:[0/2]: Installing to \"$WINESTEAM_INSTALL_PATH\""
 
-  WINESTEAM_INSTALL_DXVK=`wsInputYN "?:[1/2]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: "`
+  WINESTEAM_INSTALL_DXVK="`wsInputYN "?:[1/2]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: "`"
   WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_DXVK" != 'n' ]; then
     export WINESTEAM_INSTALL_DXVK='y'
@@ -163,7 +154,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
     echo '?:[1/2]: Skipping DXVK installation.'
   fi
   
-  WINESTEAM_INSTALL_DESKTOP=`wsInputYN '?:[2/2]: Do you wish to install WineSteam into your applications launcher? [Y/n]: '`
+  WINESTEAM_INSTALL_DESKTOP="`wsInputYN '?:[2/2]: Do you wish to install WineSteam into your applications launcher? [Y/n]: '`"
   WINESTEAM_INSTALL_DESKTOP=$(echo ${WINESTEAM_INSTALL_DESKTOP:-'y'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_DESKTOP" != 'n' ]; then
     export WINESTEAM_INSTALL_DESKTOP='y'

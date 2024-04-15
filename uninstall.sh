@@ -18,14 +18,14 @@ wsNotify() {
 
 wsInputYN() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS=`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`
+    ANS="`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
     if [ "$ANS" = "No" ]; then
       echo "n"
     else
       echo "y"
     fi
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    `kdialog --title "WineSteam" --yesno "$@"`
+    kdialog --title "WineSteam" --yesno "$@"
     if [ "$?" = "0" ]; then
       echo "y"
     else
@@ -61,9 +61,10 @@ then
   export INPUT_BACKEND="kdialog"
 fi
 
-export WINESTEAM_DATA="$HOME/.winesteam"
+cd "`dirname "$0"`"
+eval "`bash read_config.sh`"
 
-CONFIRM_UNINSTALL=`wsInputYN "?: Are you sure that you want to uninstall WineSteam? You can install it again by running \"bash winesteam.sh\". [y/N]: "`
+CONFIRM_UNINSTALL="`wsInputYN "?: Are you sure that you want to uninstall WineSteam? You can install it again by running \\\"bash winesteam.sh\\\". [y/N]: "`"
 CONFIRM_UNINSTALL=$(echo ${CONFIRM_UNINSTALL:-'n'} | tr '[:upper:]' '[:lower:]')
 if [ "$CONFIRM_UNINSTALL" != 'y' ]; then
   export CONFIRM_UNINSTALL='n'
@@ -71,8 +72,8 @@ if [ "$CONFIRM_UNINSTALL" != 'y' ]; then
 else
   export CONFIRM_UNINSTALL='y'
   wsNotify '?: Uninstalling WineSteam. 【=╥﹏╥✿=】'
-  rm -rf `readlink -f "$WINESTEAM_DATA"`
-  rm "$WINESTEAM_DATA"
+  rm -rf "$WINESTEAM_DATA"
+  rm "$WINESTEAM_CFG"
   SHARE_DIR="$HOME/.local/share"
   APP_DIR="$SHARE_DIR/applications"
   ICONS_DIR="$SHARE_DIR/icons/hicolor/64x64/apps"

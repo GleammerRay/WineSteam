@@ -1,6 +1,6 @@
 #! /bin/bash
-cd `dirname "$0"`
-chmod +x winesteam.sh
+cd "`dirname "$0"`"
+eval "`bash read_config.sh`"
 
 SCRIPT_PATH="x$1"
 if [ "$SCRIPT_PATH" = "x" ]; then
