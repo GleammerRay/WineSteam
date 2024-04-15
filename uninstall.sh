@@ -6,26 +6,26 @@ export INPUT_BACKEND=""
 wsNotify() {
   echo "$@"
   if [ "$NOTIFY_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam" --passivepopup "\n$@" 7
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --passivepopup "\n$@" 7
   fi
   if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
-    notify-send "WineSteam" "$@"
+    notify-send --icon "$WINESTEAM_BIN/winesteam.png" "WineSteam" "$@"
   fi
   if [ "$NOTIFY_BACKEND" = "zenity" ]; then
-    zenity --info --timeout=2 --title "WineSteam" --text="$@"
+    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --timeout=2 --title "WineSteam" --text="$@"
   fi
 }
 
 wsInputYN() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS="`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
+    ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
     if [ "$ANS" = "No" ]; then
       echo "n"
     else
       echo "y"
     fi
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam" --yesno "$@"
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --yesno "$@"
     if [ "$?" = "0" ]; then
       echo "y"
     else
@@ -40,9 +40,9 @@ wsInputYN() {
 wsInfo() {
   echo "$@"
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    zenity --info --title "WineSteam" --text "$@"
+    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --title "WineSteam" --text "$@"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam" --msgbox "$@"
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --msgbox "$@"
   fi
 }
 

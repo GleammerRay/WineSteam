@@ -27,13 +27,13 @@ wsCleanup() {
 wsNotify() {
   echo "$@"
   if [ "$NOTIFY_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam" --passivepopup "\n$@" 7
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --passivepopup "\n$@" 7
   fi
   if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
-    notify-send "WineSteam" "$@"
+    notify-send --icon "$WINESTEAM_BIN/winesteam.png" "WineSteam" "$@"
   fi
   if [ "$NOTIFY_BACKEND" = "zenity" ]; then
-    zenity --info --timeout=2 --title "WineSteam" --text="$@"
+    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --timeout=2 --title "WineSteam" --text="$@"
   fi
 }
 
@@ -41,7 +41,7 @@ wsControls() {
   WS_CONTROLS_MSG="Here you can control your running WineSteam instance. Close this window to exit WineSteam."
   while true; do
     if [ "$INPUT_BACKEND" = "zenity" ]; then
-      ANS="`zenity --list --radiolist --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
+      ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
       if [ "$ANS" = "Open WineSteam" ]; then
         wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
         wsNotify "Opening WineSteam..."
@@ -53,7 +53,7 @@ wsControls() {
         exit
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      ANS="`kdialog --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Exit WineSteam" off`"
+      ANS="`kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Exit WineSteam" off`"
       if [ "$ANS" = "1" ]; then
         wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe"
         wsNotify "Opening WineSteam..."
@@ -72,14 +72,14 @@ wsControls() {
 
 wsInputYN() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS="`zenity --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
+    ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
     if [ "$ANS" = "No" ]; then
       echo "n"
     else
       echo "y"
     fi
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam" --yesno "$@"
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --yesno "$@"
     if [ "$?" = "0" ]; then
       echo "y"
     else
@@ -93,10 +93,10 @@ wsInputYN() {
 
 wsInputDir() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS="`zenity --file-selection --directory --title "WineSteam"`"
+    ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --file-selection --directory --title "WineSteam"`"
     echo "$ANS"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --getexistingdirectory
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --getexistingdirectory
   else
     read -p "Enter directory path:" ANS
     echo "`readlink -f "$ANS"`"
@@ -106,9 +106,9 @@ wsInputDir() {
 wsInfo() {
   echo "$@"
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    zenity --info --title "WineSteam" --text "$@"
+    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --title "WineSteam" --text "$@"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --title "WineSteam" --msgbox "$@"
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --msgbox "$@"
   fi
 }
 
