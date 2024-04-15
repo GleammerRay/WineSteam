@@ -1,5 +1,5 @@
 #! /bin/bash
-cd `dirname "$0"`
+cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
 
 if [ ! -d "$WINEPREFIX" ]; then
