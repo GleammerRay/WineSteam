@@ -79,8 +79,6 @@ It is strongly recommended that, if you need DXVK for some games, you **try usin
 
 To apply the DXVK patch, run `bash dxvkpatch.sh`.
 
-Package source: https://github.com/doitsujin/dxvk/releases/tag/v2.0.
-
 ### Visual C++ Runtimes Installer
 
 Visual C++ runtimes are no longer installed by default as they tend to break Wine Steam installations. If you have tried using Wine Steam before this notice appeared and it did not work, do try again.
