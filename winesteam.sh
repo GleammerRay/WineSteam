@@ -122,7 +122,7 @@ if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
-  unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" &
+  unshare "$WINESTEAM_BIN/winesteam_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" &
   wsControls &
   wsCleanup
   exit
@@ -249,5 +249,5 @@ winetricks allfonts
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
-unshare wine "$WINESTEAM_PKGS/SteamSetup.exe" &
+unshare "$WINESTEAM_BIN/winesteam_runner.sh" "$WINESTEAM_PKGS/SteamSetup.exe" &
 wsControls &
