@@ -11,17 +11,6 @@ trap user_interrupt SIGTSTP
 export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
-wsCleanup() {
-  if [ ! "$INPUT_BACKEND" = "zenity" ]; then
-    if [ ! "$INPUT_BACKEND" = "kdialog" ]; then
-      exit
-    fi
-  fi
-  wait $(jobs -p | head -n 1)
-  jobs -p &> /dev/null
-  kill -9 $(jobs -p | head -n 1)
-}
-
 wsNotify() {
   echo "$@"
   if [ "$NOTIFY_BACKEND" = "kdialog" ]; then
@@ -123,8 +112,7 @@ if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
   unshare wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" &
-  wsControls &
-  wsCleanup
+  wsControls
   exit
 fi
 echo " ______________________________________________"
@@ -250,5 +238,4 @@ echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
 unshare wine "$WINESTEAM_PKGS/SteamSetup.exe" &
-wsControls &
-wsCleanup
+wsControls
