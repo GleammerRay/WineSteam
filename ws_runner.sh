@@ -5,7 +5,9 @@ eval "`bash read_config.sh`"
 
 user_interrupt() {
   rm "$WINESTEAM_IPC_PATH"
+  wineserver -w &
   wineserver -k
+  wait $!
   kill $(jobs -p)
   kill -9 $$
   exit
