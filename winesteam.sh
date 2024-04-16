@@ -16,9 +16,6 @@ export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
-  if [ "x$INPUT_BACKEND" = "x" ]; then
-    exit
-  fi
   wait $WS_CONTROLS_PID
   user_interrupt
 }
