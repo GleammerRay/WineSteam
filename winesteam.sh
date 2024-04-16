@@ -4,6 +4,7 @@ export WS_RUNNER_PID=""
 export WS_CONTROLS_PID=""
 
 user_interrupt() {
+  echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
   kill $(jobs -p)
   kill -9 $$
   exit
