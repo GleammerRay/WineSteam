@@ -10,6 +10,7 @@ user_interrupt() {
   wineserver -k
   wait $!
   kill $(jobs -p)
+  kill $PPID
   kill -9 $1
   exit
 }
