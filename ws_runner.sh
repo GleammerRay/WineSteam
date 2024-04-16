@@ -15,9 +15,8 @@ trap user_interrupt SIGINT
 trap user_interrupt SIGTERM
 trap user_interrupt SIGTSTP
 
-export WS_RUN_PID=""
 wsRunCleanup() {
-  wait $WS_RUN_PID
+  wineserver -w
   user_interrupt
 }
 
@@ -26,7 +25,6 @@ echo "nameserver 8.8.8.8\n" >> /tmp/resolv.conf
 echo "nameserver 4.4.4.4\n" >> /tmp/resolv.conf
 mount --bind /tmp/resolv.conf /etc/resolv.conf
 eval "$1" &
-export WS_RUN_PID=$!
 
 wsMain() {
   while true; do
@@ -41,4 +39,5 @@ wsMain() {
 }
 
 wsMain &
+sleep 1
 wsRunCleanup
