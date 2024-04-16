@@ -1,16 +1,14 @@
 #!/bin/bash
-echo $$ > "$WINESTEAM_RUNNER_PID_PATH"
 cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
+rm "$WINESTEAM_IPC_PATH"
 
 user_interrupt() {
   rm "$WINESTEAM_IPC_PATH"
-  rm "$WINESTEAM_RUNNER_PID_PATH"
   wineserver -w &
   wineserver -k
   wait $!
   kill $(jobs -p)
-  kill $PPID
   kill -9 $1
   exit
 }
@@ -38,6 +36,7 @@ wsMain() {
     if [ -f $WINESTEAM_IPC_PATH ]; then
       IPC="$(cat "$WINESTEAM_IPC_PATH")"
       if [ "$IPC" = "user_interrupt" ]; then
+        rm "$WINESTEAM_IPC_PATH"
         exit
       fi
       eval "$IPC" &
