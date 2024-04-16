@@ -18,7 +18,7 @@ export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
-  if [ "x$WS_CONTROLS_PID" = "x"]; then
+  if [ "x$WS_CONTROLS_PID" = "x" ]; then
     wait $WS_RUNNER_PID
   else
     wait -n $WS_RUNNER_PID $WS_CONTROLS_PID
