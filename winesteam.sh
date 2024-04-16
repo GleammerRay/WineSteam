@@ -1,5 +1,6 @@
 #! /bin/bash
 
+export WS_RUNNER_PID=""
 export WS_CONTROLS_PID=""
 
 user_interrupt() {
@@ -16,7 +17,7 @@ export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
-  wait $WS_CONTROLS_PID
+  wait -n $WS_RUNNER_PID $WS_CONTROLS_PID
   user_interrupt
 }
 
@@ -34,7 +35,8 @@ wsNotify() {
 }
 
 wsControls() {
-  WS_CONTROLS_MSG="Here you can control your running WineSteam instance."
+  sleep 20
+  WS_CONTROLS_MSG="WineSteam is now starting up!\nHere you can control your running WineSteam instance."
   while true; do
     if [ "$INPUT_BACKEND" = "zenity" ]; then
       ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
@@ -143,7 +145,7 @@ if [ -d "$WINEPREFIX" ]; then
   unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
   sleep 1
   slirp4netns --configure --mtu=65520 --disable-host-loopback $(cat /tmp/winesteam_pid) tap0 &
-  sleep 10
+  export WS_RUNNER_PID=$!
   wsControls &
   export WS_CONTROLS_PID=$!
   wsCleanup
@@ -288,7 +290,7 @@ wsNotify '[5/5] Running Steam setup... [🮲🮳]'
 unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
 sleep 1
 slirp4netns --configure --mtu=65520 --disable-host-loopback $(cat /tmp/winesteam_pid) tap0 &
-sleep 10
+export WS_RUNNER_PID=$!
 wsControls &
 export WS_CONTROLS_PID=$!
 wsCleanup
