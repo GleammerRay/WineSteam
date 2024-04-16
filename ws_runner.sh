@@ -10,17 +10,17 @@ user_interrupt() {
   wineserver -k
   wait $!
   kill $(jobs -p)
-  kill -9 $$
+  kill -9 $1
   exit
 }
 
-trap user_interrupt SIGINT
-trap user_interrupt SIGTERM
-trap user_interrupt SIGTSTP
+trap "user_interrupt $$" SIGINT
+trap "user_interrupt $$" SIGTERM
+trap "user_interrupt $$" SIGTSTP
 
 wsRunCleanup() {
   wineserver -w
-  user_interrupt
+  user_interrupt $$
 }
 
 sleep 6
@@ -33,7 +33,10 @@ wsMain() {
   while true; do
     if [ -f $WINESTEAM_IPC_PATH ]; then
       IPC="$(cat "$WINESTEAM_IPC_PATH")"
-      echo "$IPC"
+      if [ "$IPC" = "user_interrupt" ]; then
+        user_interrupt $$
+        exit
+      fi
       eval "$IPC" &
       rm "$WINESTEAM_IPC_PATH"
     fi

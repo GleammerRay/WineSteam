@@ -6,13 +6,13 @@ export WS_CONTROLS_PID=""
 user_interrupt() {
   echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
   kill $(jobs -p)
-  kill -9 $$
+  kill -9 $1
   exit
 }
 
-trap user_interrupt SIGINT
-trap user_interrupt SIGTERM
-trap user_interrupt SIGTSTP
+trap "user_interrupt $$" SIGINT
+trap "user_interrupt $$" SIGTERM
+trap "user_interrupt $$" SIGTSTP
 
 export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
@@ -23,7 +23,7 @@ wsCleanup() {
   else
     wait -n $WS_RUNNER_PID $WS_CONTROLS_PID
   fi
-  user_interrupt
+  user_interrupt $$
 }
 
 wsNotify() {
