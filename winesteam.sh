@@ -18,7 +18,11 @@ export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
-  wait -n $WS_RUNNER_PID $WS_CONTROLS_PID
+  if [ "x$WS_CONTROLS_PID" = "x"]; then
+    wait $WS_RUNNER_PID
+  else
+    wait -n $WS_RUNNER_PID $WS_CONTROLS_PID
+  fi
   user_interrupt
 }
 
@@ -293,6 +297,4 @@ unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine
 sleep 1
 slirp4netns --configure --mtu=65520 --disable-host-loopback $(cat "$WINESTEAM_RUNNER_PID_PATH") tap0 &
 export WS_RUNNER_PID=$!
-wsControls &
-export WS_CONTROLS_PID=$!
 wsCleanup
