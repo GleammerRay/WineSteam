@@ -145,12 +145,24 @@ fi
 
 cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
+
+if [ "x$1" != "x" ]; then
+  if [ "$1" = "uninstall" ]; then
+    ./uninstall.sh
+    exit
+  else
+    wsNotify "WineSteam: Unknown command: $1"
+    exit
+  fi
+fi
+
 if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
   unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
   export WS_RUNNER_PID=$!
+  sleep 1
   slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
   wsControls &
   export WS_CONTROLS_PID=$!
@@ -294,5 +306,6 @@ wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
 unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
 export WS_RUNNER_PID=$!
+sleep 1
 slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
 wsCleanup
