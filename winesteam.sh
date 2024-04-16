@@ -4,7 +4,7 @@ export WS_RUNNER_PID=""
 export WS_CONTROLS_PID=""
 
 user_interrupt() {
-  pkill -P $$ &
+  kill $(jobs -p)
   kill -9 $$
   exit
 }
