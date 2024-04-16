@@ -6,7 +6,7 @@ eval "`bash read_config.sh`"
 user_interrupt() {
   rm "$WINESTEAM_IPC_PATH"
   wineserver -k
-  kill 0 &
+  pkill -P $$ &
   kill -9 $$
   exit
 }
