@@ -26,7 +26,7 @@ wsRunCleanup() {
 }
 
 sleep 6
-echo "nameserver 8.8.8.8\nnameserver 4.4.4.4\n" > "$WINESTEAM_DATA/resolv.conf"
+printf "nameserver 8.8.8.8\nnameserver 4.4.4.4\n" > "$WINESTEAM_DATA/resolv.conf"
 mount --bind "$WINESTEAM_DATA/resolv.conf" /etc/resolv.conf
 eval "$1" &
 
