@@ -251,7 +251,6 @@ fi
 if [ ! -f ./bin/slirp4netns ]; then
   wsNotify '[1/5] [3/3] Downloading slirp4netns... [⟱]]'
   echo '=========================================================='
-  wget https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
   curl -o slirp4netns --fail -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
   chmod +x slirp4netns
   if [ ! -f ./slirp4netns ]; then
