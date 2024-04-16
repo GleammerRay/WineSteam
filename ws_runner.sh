@@ -1,10 +1,11 @@
 #!/bin/bash
-echo $$ > /tmp/winesteam_pid
+echo $$ > "$WINESTEAM_RUNNER_PID_PATH"
 cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
 
 user_interrupt() {
   rm "$WINESTEAM_IPC_PATH"
+  rm "$WINESTEAM_RUNNER_PID_PATH"
   wineserver -w &
   wineserver -k
   wait $!
