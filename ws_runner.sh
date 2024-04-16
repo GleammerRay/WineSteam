@@ -26,9 +26,12 @@ wsRunCleanup() {
 }
 
 sleep 6
-echo "nameserver 8.8.8.8\n" >> /tmp/resolv.conf
-echo "nameserver 4.4.4.4\n" >> /tmp/resolv.conf
-mount --bind /tmp/resolv.conf /etc/resolv.conf
+if [ ! -d "$WINESTEAM_TMP" ]; then
+  mkdir -p "$WINESTEAM_TMP"
+fi
+echo "nameserver 8.8.8.8\n" >> "$WINESTEAM_TMP/resolv.conf"
+echo "nameserver 4.4.4.4\n" >> "$WINESTEAM_TMP/resolv.conf"
+mount --bind "$WINESTEAM_TMP/resolv.conf" /etc/resolv.conf
 eval "$1" &
 
 wsMain() {
