@@ -47,6 +47,7 @@ wsControls() {
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "Exit WineSteam" ]; then
+        echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
         wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
         exit
       fi
@@ -59,6 +60,7 @@ wsControls() {
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "3" ]; then
+        echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
         wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
         exit
       fi
