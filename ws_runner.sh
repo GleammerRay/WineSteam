@@ -18,8 +18,11 @@ trap "user_interrupt $$" SIGINT
 trap "user_interrupt $$" SIGTERM
 trap "user_interrupt $$" SIGTSTP
 
+export WS_MAIN_PID=""
+
 wsRunCleanup() {
-  wineserver -w
+  wineserver -w &
+  wait -n $WS_MAIN_PID $!
   user_interrupt $$
 }
 
@@ -34,7 +37,6 @@ wsMain() {
     if [ -f $WINESTEAM_IPC_PATH ]; then
       IPC="$(cat "$WINESTEAM_IPC_PATH")"
       if [ "$IPC" = "user_interrupt" ]; then
-        user_interrupt $$
         exit
       fi
       eval "$IPC" &
@@ -44,6 +46,7 @@ wsMain() {
   done
 }
 
-wsMain &
+wsMain $$ &
+export WS_MAIN_PID=$!
 sleep 1
 wsRunCleanup
