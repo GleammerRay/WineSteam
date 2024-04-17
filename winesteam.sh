@@ -258,9 +258,9 @@ else
   echo '=========================================================='
   wsNotify '[4/5]: Wininet installed.'
 fi
-wsNotify '[4/5] Installing allfonts... (this might take a while) [Æ]'
+wsNotify '[4/5] Installing fonts... [Æ]'
 echo '=========================================================='
-winetricks allfonts
+winetricks courier tahoma verdana trebuchet lucida
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
