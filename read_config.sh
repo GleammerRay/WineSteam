@@ -12,6 +12,9 @@ export WINESTEAM_CFG="$WINESTEAM_DATA/winesteam.cfg"
 
 if [ -d "$WINESTEAM_DATA" ]; then
   export WINESTEAM_DATA=$(cat "$WINESTEAM_DATA/winesteam.cfg" | grep 'WINESTEAM_DATA=')
+  if [ "x$WINESTEAM_DATA" != "x" ]; then
+    eval "export $WINESTEAM_DATA"
+  fi
 fi
 if [ "x$WINESTEAM_DATA" = "x" ]; then
   export WINESTEAM_DATA="$WINESTEAM_HOME/.winesteam"
