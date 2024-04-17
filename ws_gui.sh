@@ -10,7 +10,7 @@ wsNotify() {
     notify-send --icon "$WINESTEAM_BIN/winesteam.png" "WineSteam" "$@"
   fi
   if [ "$NOTIFY_BACKEND" = "zenity" ]; then
-    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --timeout=2 --title "WineSteam" --text="$@"
+    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --notification --title "WineSteam" --text="$@"
   fi
 }
 
