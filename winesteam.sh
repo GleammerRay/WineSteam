@@ -141,7 +141,10 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   WINESTEAM_INSTALL_YN=$(echo ${WINESTEAM_INSTALL_YN:-'n'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
     WINESTEAM_INSTALL_PATH="`wsInputDir`"
-    if [ "x$WINESTEAM_INSTALL_PATH" != "x" ]; then
+    if [ "x$WINESTEAM_INSTALL_PATH" = "x" ]; then
+      wsNotify "Installation cancelled."
+      exit
+    else
       if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
         wsNotify "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
         exit 1
