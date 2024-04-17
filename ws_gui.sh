@@ -59,11 +59,13 @@ wsInfo() {
 if command -v "notify-send" &> /dev/null; then
   export NOTIFY_BACKEND="notify-send"
 fi
-if command -v "zenity" &> /dev/null; then
-  export NOTIFY_BACKEND="zenity"
-  export INPUT_BACKEND="zenity"
-fi
 if command -v "kdialog" &> /dev/null; then
   export NOTIFY_BACKEND="kdialog"
   export INPUT_BACKEND="kdialog"
+fi
+if command -v "zenity" &> /dev/null; then
+  if [ ! "x$DESKTOP_SESSION" = "xplasma" ]; then
+    export NOTIFY_BACKEND="zenity"
+    export INPUT_BACKEND="zenity"
+  fi
 fi
