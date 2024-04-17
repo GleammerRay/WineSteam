@@ -1,4 +1,6 @@
 #! /bin/bash
+cd "`dirname "$0"`"
+source "./ws_gui.sh"
 
 export WS_RUNNER_PID=""
 export WS_CONTROLS_PID=""
@@ -15,27 +17,11 @@ trap "user_interrupt $$" SIGINT
 trap "user_interrupt $$" SIGTERM
 trap "user_interrupt $$" SIGTSTP
 
-export NOTIFY_BACKEND=""
-export INPUT_BACKEND=""
-
 wsCleanup() {
   tail --pid=$WS_RUNNER_PID -f /dev/null
   kill $(pgrep -P $WS_CONTROLS_PID)
   kill $(jobs -p)
   kill $$
-}
-
-wsNotify() {
-  echo "$@"
-  if [ "$NOTIFY_BACKEND" = "kdialog" ]; then
-    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --passivepopup "\n$@" 7
-  fi
-  if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
-    notify-send --icon "$WINESTEAM_BIN/winesteam.png" "WineSteam" "$@"
-  fi
-  if [ "$NOTIFY_BACKEND" = "zenity" ]; then
-    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --timeout=2 --title "WineSteam" --text="$@"
-  fi
 }
 
 wsControls() {
@@ -78,63 +64,6 @@ wsControls() {
   done
 }
 
-wsInputYN() {
-  if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --title "WineSteam" --text "$@" --ok-label "Yes" --extra-button "No"`"
-    if [ "$ANS" = "No" ]; then
-      echo "n"
-    else
-      echo "y"
-    fi
-  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --yesno "$@"
-    if [ "$?" = "0" ]; then
-      echo "y"
-    else
-      echo "n"
-    fi
-  else
-    read -p "$@" ANS
-    echo "$ANS"
-  fi
-}
-
-wsInputDir() {
-  if [ "$INPUT_BACKEND" = "zenity" ]; then
-    ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --file-selection --directory --title "WineSteam"`"
-    echo "$ANS"
-  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --getexistingdirectory
-  else
-    read -p "Enter directory path:" ANS
-    echo "`readlink -f "$ANS"`"
-  fi
-}
-
-wsInfo() {
-  echo "$@"
-  if [ "$INPUT_BACKEND" = "zenity" ]; then
-    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --title "WineSteam" --text "$@"
-  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --msgbox "$@"
-  fi
-}
-
-if command -v "zenity" &> /dev/null
-then
-  export NOTIFY_BACKEND="zenity"
-  export INPUT_BACKEND="zenity"
-fi
-if command -v "notify-send" &> /dev/null
-then
-  export NOTIFY_BACKEND="notify-send"
-fi
-if command -v "kdialog" &> /dev/null
-then
-  export NOTIFY_BACKEND="kdialog"
-  export INPUT_BACKEND="kdialog"
-fi
-
 if ! command -v "winetricks" &> /dev/null
 then
     wsNotify "Package \"winetricks\" is not installed."
@@ -146,7 +75,6 @@ then
     exit 1
 fi
 
-cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
 
 if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
