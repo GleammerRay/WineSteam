@@ -12,6 +12,17 @@ wsNotify() {
   if [ "$NOTIFY_BACKEND" = "zenity" ]; then
     zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --notification --title "WineSteam" --text="$@"
   fi
+  if [ "$NOTIFY_BACKEND" = "zenity-simple" ]; then
+    zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --timeout=1 --title "WineSteam" --text="$@"
+  fi
+  if [ "$NOTIFY_BACKEND" = "portal" ]; then
+    gdbus call --session \
+               --dest org.freedesktop.portal.Desktop \
+               --object-path /org/freedesktop/portal/desktop \
+               --method org.freedesktop.portal.Notification.AddNotification \
+               "test" \
+               "{'title':<'WineSteam'>,'body':<'$@'>,'priority':<'low'>}"
+  fi
 }
 
 wsInputYN() {
@@ -66,6 +77,10 @@ fi
 if command -v "zenity" &> /dev/null; then
   if [ ! "x$DESKTOP_SESSION" = "xplasma" ]; then
     export NOTIFY_BACKEND="zenity"
+    export INPUT_BACKEND="zenity"
+  fi
+  if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
+    export NOTIFY_BACKEND="zenity-simple"
     export INPUT_BACKEND="zenity"
   fi
 fi
