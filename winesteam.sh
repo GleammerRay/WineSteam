@@ -5,6 +5,7 @@ export WS_CONTROLS_PID=""
 
 user_interrupt() {
   echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
+  kill $(pgrep -P $WS_CONTROLS_PID)
   kill $(jobs -p)
   kill -9 $1
   exit
