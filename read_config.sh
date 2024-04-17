@@ -1,7 +1,13 @@
 #! /bin/bash
 cd "`dirname "$0"`"
 
-export WINESTEAM_DATA="$HOME/.winesteam"
+export WINESTEAM_HOME=""
+if [ "x$XDG_DATA_HOME" = "x" ]; then
+  export WINESTEAM_HOME=$HOME
+else
+  export WINESTEAM_HOME=$XDG_DATA_HOME
+fi
+export WINESTEAM_DATA="$WINESTEAM_HOME/.winesteam"
 export WINESTEAM_CFG="$WINESTEAM_DATA/winesteam.cfg"
 
 if [ -d "$WINESTEAM_DATA" ]; then
@@ -11,7 +17,7 @@ if [ -d "$WINESTEAM_DATA" ]; then
   fi
 fi
 if [ "x$WINESTEAM_DATA" = "x" ]; then
-  export WINESTEAM_DATA="$HOME/.winesteam"
+  export WINESTEAM_DATA="$WINESTEAM_HOME/.winesteam"
 fi
 
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
