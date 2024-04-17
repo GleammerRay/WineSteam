@@ -25,7 +25,6 @@ wsCleanup() {
 }
 
 wsControls() {
-  sleep 20
   WS_CONTROLS_MSG="WineSteam is now starting up! Feel free to close this window.\n\nHere you can control your running WineSteam instance."
   while true; do
     if [ "$INPUT_BACKEND" = "zenity" ]; then
@@ -98,6 +97,7 @@ if [ -d "$WINEPREFIX" ]; then
   export WS_RUNNER_PID=$!
   sleep 1
   slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+  sleep 20
   wsControls &
   export WS_CONTROLS_PID=$!
   wsCleanup
@@ -253,4 +253,7 @@ unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine
 export WS_RUNNER_PID=$!
 sleep 1
 slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+sleep 20
+wsControls &
+export WS_CONTROLS_PID=$!
 wsCleanup
