@@ -103,10 +103,16 @@ if [ -d "$WINEPREFIX" ]; then
       rm "$WINESTEAM_RUNNER_PID_PATH"
     fi
   fi
-  unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
+  if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
+    bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
+  else
+    unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
+  fi
   export WS_RUNNER_PID=$!
   sleep 1
-  slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+  if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+    slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+  fi
   sleep 20
   wsControls &
   export WS_CONTROLS_PID=$!
@@ -171,16 +177,18 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
     wsNotify '?:[1/2]: Skipping DXVK installation.'
   fi
   
-  WINESTEAM_INSTALL_DESKTOP="`wsInputYN '?:[2/2]: Do you wish to install WineSteam into your applications launcher? [Y/n]: '`"
-  WINESTEAM_INSTALL_DESKTOP=$(echo ${WINESTEAM_INSTALL_DESKTOP:-'y'} | tr '[:upper:]' '[:lower:]')
-  if [ "$WINESTEAM_INSTALL_DESKTOP" != 'n' ]; then
-    export WINESTEAM_INSTALL_DESKTOP='y'
-    wsNotify '?:[2/2]: Installing launcher icon.'
-    bash "$PWD/install_desktop.sh"
-    wsNotify '?:[2/2]: Launcher icon installed. You may need to reboot for it to show up.'
-  else
-    export WINESTEAM_INSTALL_DESKTOP='n'
-    wsNotify '?:[2/2]: Skipping launcher icon installation.'
+  if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+    WINESTEAM_INSTALL_DESKTOP="`wsInputYN '?:[2/2]: Do you wish to install WineSteam into your applications launcher? [Y/n]: '`"
+    WINESTEAM_INSTALL_DESKTOP=$(echo ${WINESTEAM_INSTALL_DESKTOP:-'y'} | tr '[:upper:]' '[:lower:]')
+    if [ "$WINESTEAM_INSTALL_DESKTOP" != 'n' ]; then
+      export WINESTEAM_INSTALL_DESKTOP='y'
+      wsNotify '?:[2/2]: Installing launcher icon.'
+      bash "$PWD/install_desktop.sh"
+      wsNotify '?:[2/2]: Launcher icon installed. You may need to reboot for it to show up.'
+    else
+      export WINESTEAM_INSTALL_DESKTOP='n'
+      wsNotify '?:[2/2]: Skipping launcher icon installation.'
+    fi
   fi
 fi
 
@@ -189,17 +197,19 @@ wsNotify '[1/5] [0/3] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 if [ ! -d "$WINESTEAM_PKGS/bin" ]; then mkdir -p "$WINESTEAM_PKGS/bin"; fi
 cd "$WINESTEAM_PKGS"
-if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
-  wsNotify '[1/5] [1/3] Downloading Wine GE... [⟱]]'
-  echo '=========================================================='
-  wget https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
-  tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
+if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
-    wsNotify 'F: Download failed.'
-    exit 1
+    wsNotify '[1/5] [1/3] Downloading Wine GE... [⟱]]'
+    echo '=========================================================='
+    wget https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
+    tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
+    if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
+      wsNotify 'F: Download failed.'
+      exit 1
+    fi
+    rm wine-lutris-GE-Proton8-26-x86_64.tar.xz
+    echo '=========================================================='
   fi
-  rm wine-lutris-GE-Proton8-26-x86_64.tar.xz
-  echo '=========================================================='
 fi
 if [ ! -f ./SteamSetup.exe ]; then
   wsNotify '[1/5] [2/3] Downloading Steam setup... [⟱]]'
@@ -211,17 +221,19 @@ if [ ! -f ./SteamSetup.exe ]; then
   fi
   echo '=========================================================='
 fi
-if [ ! -f ./bin/slirp4netns ]; then
-  wsNotify '[1/5] [3/3] Downloading slirp4netns... [⟱]]'
-  echo '=========================================================='
-  curl -o slirp4netns --fail -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
-  chmod +x slirp4netns
-  if [ ! -f ./slirp4netns ]; then
-    wsNotify 'F: Download failed.'
-    exit 1
+if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+  if [ ! -f ./bin/slirp4netns ]; then
+    wsNotify '[1/5] [3/3] Downloading slirp4netns... [⟱]]'
+    echo '=========================================================='
+    curl -o slirp4netns --fail -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
+    chmod +x slirp4netns
+    if [ ! -f ./slirp4netns ]; then
+      wsNotify 'F: Download failed.'
+      exit 1
+    fi
+    mv slirp4netns ./bin/
+    echo '=========================================================='
   fi
-  mv slirp4netns ./bin/
-  echo '=========================================================='
 fi
 wsNotify '[2/5] Creating a Wine prefix... [⌂]'
 wsInfo "A Wine prefix configuration window will open, please press \"Ok\" if you don't know what to change."
@@ -252,10 +264,16 @@ winetricks allfonts
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
-unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
+if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
+  bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
+else
+  unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
+fi
 export WS_RUNNER_PID=$!
 sleep 1
-slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+  slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+fi
 sleep 20
 wsControls &
 export WS_CONTROLS_PID=$!
