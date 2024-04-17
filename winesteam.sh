@@ -147,16 +147,6 @@ fi
 cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
 
-if [ "x$1" != "x" ]; then
-  if [ "$1" = "uninstall" ]; then
-    ./uninstall.sh
-    exit
-  else
-    wsNotify "WineSteam: Unknown command: $1"
-    exit
-  fi
-fi
-
 if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
@@ -170,6 +160,17 @@ if [ -d "$WINEPREFIX" ]; then
   wsCleanup
   exit
 fi
+
+if [ "x$1" != "x" ]; then
+  if [ "$1" = "uninstall" ]; then
+    ./uninstall.sh
+    exit
+  else
+    wsNotify "WineSteam: Unknown command: $1"
+    exit
+  fi
+fi
+
 echo " ______________________________________________"
 echo "|     /     *           /      \        *      |"
 echo "|     \     /       \   *      /    *   \      |"
