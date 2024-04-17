@@ -1,6 +1,7 @@
 #!/bin/bash
 cd "`dirname "$0"`"
 eval "`bash read_config.sh`"
+echo $$ > "$WINESTEAM_RUNNER_PID_PATH"
 rm "$WINESTEAM_IPC_PATH"
 
 user_interrupt() {

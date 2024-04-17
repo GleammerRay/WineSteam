@@ -19,12 +19,10 @@ export NOTIFY_BACKEND=""
 export INPUT_BACKEND=""
 
 wsCleanup() {
-  if [ "x$WS_CONTROLS_PID" = "x" ]; then
-    wait $WS_RUNNER_PID
-  else
-    wait -n $WS_RUNNER_PID $WS_CONTROLS_PID
-  fi
-  user_interrupt $$
+  tail --pid=$WS_RUNNER_PID -f /dev/null
+  kill $(pgrep -P $WS_CONTROLS_PID)
+  kill $(jobs -p)
+  kill $$
 }
 
 wsNotify() {
@@ -42,7 +40,7 @@ wsNotify() {
 
 wsControls() {
   sleep 20
-  WS_CONTROLS_MSG="WineSteam is now starting up!\nHere you can control your running WineSteam instance."
+  WS_CONTROLS_MSG="WineSteam is now starting up! Feel free to close this window.\n\nHere you can control your running WineSteam instance."
   while true; do
     if [ "$INPUT_BACKEND" = "zenity" ]; then
       ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
@@ -56,6 +54,8 @@ wsControls() {
         echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
         wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
         exit
+      else
+        exit
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
       ANS="`kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Exit WineSteam" off`"
@@ -68,6 +68,8 @@ wsControls() {
       elif [ "$ANS" = "3" ]; then
         echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
         wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
+        exit
+      else
         exit
       fi
     else
@@ -151,6 +153,19 @@ if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
 if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
+  if [ -f "$WINESTEAM_RUNNER_PID_PATH" ]; then
+    export WS_RUNNER_PID=$(cat "$WINESTEAM_RUNNER_PID_PATH")
+    if [ "x$WS_RUNNER_PID" = "x" ]; then
+      rm "$WINESTEAM_RUNNER_PID_PATH"
+    elif [ -d "/proc/$WS_RUNNER_PID" ]; then
+      wsControls &
+      export WS_CONTROLS_PID=$!
+      wsCleanup
+      exit
+    else
+      rm "$WINESTEAM_RUNNER_PID_PATH"
+    fi
+  fi
   unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
   export WS_RUNNER_PID=$!
   sleep 1
