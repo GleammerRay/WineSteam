@@ -5,17 +5,13 @@ wsNotify() {
   echo "$@"
   if [ "$NOTIFY_BACKEND" = "kdialog" ]; then
     kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --passivepopup "\n$@" 7
-  fi
-  if [ "$NOTIFY_BACKEND" = "notify-send" ]; then
+  elif [ "$NOTIFY_BACKEND" = "notify-send" ]; then
     notify-send --icon "$WINESTEAM_BIN/winesteam.png" "WineSteam" "$@"
-  fi
-  if [ "$NOTIFY_BACKEND" = "zenity" ]; then
+  elif [ "$NOTIFY_BACKEND" = "zenity" ]; then
     zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --notification --title "WineSteam" --text="$@"
-  fi
-  if [ "$NOTIFY_BACKEND" = "zenity-simple" ]; then
+  elif [ "$NOTIFY_BACKEND" = "zenity-simple" ]; then
     zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --info --timeout=1 --title "WineSteam" --text="$@"
-  fi
-  if [ "$NOTIFY_BACKEND" = "portal" ]; then
+  elif [ "$NOTIFY_BACKEND" = "portal" ]; then
     gdbus call --session \
                --dest org.freedesktop.portal.Desktop \
                --object-path /org/freedesktop/portal/desktop \
