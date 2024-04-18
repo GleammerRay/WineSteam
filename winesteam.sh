@@ -261,7 +261,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/v0.1.0/DO-NOT-INSTALL-WineSteam.flatpak.gz
       gzip -d WineSteam.flatpak.gz
       if [ ! -f ./WineSteam.flatpak ]; then
-          wsNotify 'F: Download failed.'
+          wsInfo 'F: Download failed.'
           exit 1
       fi
       echo '=========================================================='
@@ -271,7 +271,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
         curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
         chmod +x slirp4netns
         if [ ! -f ./slirp4netns ]; then
-          wsNotify 'F: Download failed.'
+          wsInfo 'F: Download failed.'
           exit 1
         fi
         mv slirp4netns ./bin/
@@ -297,12 +297,12 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       exit
     else
       if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
-        wsNotify "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
+        wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
         exit 1
       fi
       mkdir -p "$WINESTEAM_INSTALL_PATH"
       if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
-        wsNotify "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
+        wsInfo "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
         exit 1
       fi
       echo "WINESTEAM_DATA=\"$WINESTEAM_INSTALL_PATH\"" >> "$WINESTEAM_CFG"
@@ -349,7 +349,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     curl -o lutris-GE-Proton8-26-x86_64.tar.xz -L https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
     tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
     if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
-      wsNotify 'F: Download failed.'
+      wsInfo 'F: Download failed.'
       exit 1
     fi
     rm wine-lutris-GE-Proton8-26-x86_64.tar.xz
@@ -361,7 +361,7 @@ if [ ! -f ./SteamSetup.exe ]; then
   echo '=========================================================='
   curl -o SteamSetup.exe -L https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
   if [ ! -f ./SteamSetup.exe ]; then
-    wsNotify 'F: Download failed.'
+    wsInfo 'F: Download failed.'
     exit 1
   fi
   echo '=========================================================='
@@ -373,7 +373,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
     chmod +x slirp4netns
     if [ ! -f ./slirp4netns ]; then
-      wsNotify 'F: Download failed.'
+      wsInfo 'F: Download failed.'
       exit 1
     fi
     mv slirp4netns ./bin/
