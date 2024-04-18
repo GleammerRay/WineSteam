@@ -1,8 +1,4 @@
 #! /bin/bash
-
-export NOTIFY_BACKEND=""
-export INPUT_BACKEND=""
-
 cd "`dirname "$0"`"
 source "./ws_gui.sh"
 eval "`bash read_config.sh`"
