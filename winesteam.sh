@@ -138,14 +138,8 @@ eval "`bash read_config.sh`"
 
 if [ "x$1" != "x" ]; then
   if [ "$1" = "uninstall" ]; then
-    if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
-      ./uninstall.sh
-      exit
-    fi
-    if [ "x$WINESTEAM_INSTALL_MODE" != "xflatpak" ]; then
-      ./uninstall.sh
-      exit
-    fi
+    ./uninstall.sh
+    exit
   else
     wsNotify "WineSteam: Unknown command: $1"
     exit

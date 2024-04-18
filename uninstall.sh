@@ -7,7 +7,11 @@ cd "`dirname "$0"`"
 source "./ws_gui.sh"
 eval "`bash read_config.sh`"
 
-CONFIRM_UNINSTALL="`wsInputYN "?: Are you sure that you want to uninstall WineSteam? You can install it again by running \\\"bash winesteam.sh\\\". [y/N]: "`"
+if [ "$1" = "-y" ]; then
+  export CONFIRM_UNINSTALL='y'
+else
+  export CONFIRM_UNINSTALL="`wsInputYN "?: Are you sure that you want to uninstall WineSteam? You can install it again by running \\\"bash winesteam.sh\\\". [y/N]: "`"
+fi
 CONFIRM_UNINSTALL=$(echo ${CONFIRM_UNINSTALL:-'n'} | tr '[:upper:]' '[:lower:]')
 if [ "$CONFIRM_UNINSTALL" != 'y' ]; then
   export CONFIRM_UNINSTALL='n'
@@ -15,6 +19,7 @@ if [ "$CONFIRM_UNINSTALL" != 'y' ]; then
 else
   export CONFIRM_UNINSTALL='y'
   wsNotify '?: Uninstalling WineSteam. 【=╥﹏╥✿=】'
+  flatpak run io.github.gleammerray.WineSteam uninstall -y
   flatpak uninstall --user -y io.github.gleammerray.WineSteam
   rm -rf "$WINESTEAM_DATA"
   rm "$WINESTEAM_CFG"
