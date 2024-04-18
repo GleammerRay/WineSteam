@@ -24,8 +24,9 @@ Install Wine Steam on Linux without pain and hassle.
 
 ## Prerequisites
 
-- `winetricks` - needed to create and set up the Steam wineprefix. 🪄
-- `util-linux` - used for network namespaces. 🌐
+- `git` - required for installing and updating WineSteam. 🔃
+- `util-linux` - used to avoid network interference with the native Steam client. 🌐
+- `winetricks` (optional for flatpak installation) - needed to create and set up the Steam wineprefix. 🪄
 - (optional) `zenity` or `kdialog` - GUI frontends. ✨
 
 ## Installation
