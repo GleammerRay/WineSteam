@@ -280,6 +280,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       fi
       wsNotify '[2/2] Installing Winesteam flatpak... '
       flatpak install --user -y ./WineSteam.flatpak
+      rm WineSteam.flatpak
       echo "WINESTEAM_INSTALL_MODE=\"flatpak\"" >> "$WINESTEAM_CFG"
       unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" &
       export WS_RUNNER_PID=$!
