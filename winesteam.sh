@@ -77,14 +77,20 @@ wsSetup() {
 wsControls() {
   WS_CONTROLS_MSG="WineSteam is now starting up! Feel free to close this window.\n\nHere you can control your running WineSteam instance."
   while true; do
-    if [ "$INPUT_BACKEND" = "zenity" ]; then
-      ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 250 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Exit WineSteam"`"
+    if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
+      sleep 100
+    elif [ "$INPUT_BACKEND" = "zenity" ]; then
+      ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 300 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
       if [ "$ANS" = "Open WineSteam" ]; then
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
       elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
+      elif [ "$ANS" = "Update WineSteam" ]; then
+          wsNotify "Updating WineSteam..."
+          "$WINESTEAM_BIN"/update.sh
+          wsNotify "WineSteam updated, restart it for changes to take effect."
       elif [ "$ANS" = "Exit WineSteam" ]; then
         if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
           flatpak kill io.github.gleammerray.WineSteam
@@ -98,7 +104,7 @@ wsControls() {
         exit
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      ANS="`kdialog --geometry=500x100 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Exit WineSteam" off`"
+      ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Update WineSteam" off 4 "Exit WineSteam" off`"
       if [ "$ANS" = "1" ]; then
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
@@ -106,6 +112,10 @@ wsControls() {
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "3" ]; then
+          wsNotify "Updating WineSteam..."
+          "$WINESTEAM_BIN"/update.sh
+          wsNotify "WineSteam updated, restart it for changes to take effect."
+      elif [ "$ANS" = "4" ]; then
         if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
           flatpak kill io.github.gleammerray.WineSteam
           wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
@@ -153,33 +163,38 @@ if [ "x$1" != "x" ]; then
   fi
 fi
 
+if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
+if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
+if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
-    if [ -f "$WINESTEAM_FLATPAK_PID_PATH" ]; then
-      export WS_RUNNER_PID=$(cat "$WINESTEAM_FLATPAK_PID_PATH")
-      if [ "x$WS_RUNNER_PID" = "x" ]; then
-        rm "$WINESTEAM_FLATPAK_PID_PATH"
-      elif [ -d "/proc/$WS_RUNNER_PID" ]; then
-        flatpak run io.github.gleammerray.WineSteam
-        wsCleanup
-        exit
-      else
-        rm "$WINESTEAM_FLATPAK_PID_PATH"
-      fi
+    WS_RUNNER_PID=`flatpak ps --columns=pid,application | grep io.github.gleammerray.WineSteam  | awk  '{print $1}'`
+    export WINESTEAM_DATA="`flatpak run io.github.gleammerray.WineSteam data`"
+    export WINEPREFIX="$WINESTEAM_DATA/prefix"
+    WINEPREFIX_LS="`ls -A "$WINEPREFIX"`"
+    export WINESTEAM_RUNNER_PID_PATH="$WINESTEAM_DATA/ws_runner_pid"
+    export WINESTEAM_IPC_PATH="$WINESTEAM_DATA/winesteam_ipc.txt"
+    if [ "x$WS_RUNNER_PID" != "x" ]; then
+      wsControls &
+      export WS_CONTROLS_PID=$!
+      wsCleanup
+      exit
     fi
     echo "Running WineSteam flatpak."
     unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" $1 &
     export WS_RUNNER_PID=$!
     sleep 1
     slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+    sleep 20
+    WS_RUNNER_PID=`flatpak ps --columns=pid,application | grep io.github.gleammerray.WineSteam  | awk  '{print $1}'`
+    if [ "x$WINEPREFIX_LS" != "x" ]; then
+      wsControls &
+      export WS_CONTROLS_PID=$!
+    fi
     wsCleanup
     exit
   fi
 fi
-
-if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
-if [ -d "$PWD/prefix" ]; then mv "$PWD/prefix" "$WINESTEAM_DATA"; fi
-if [ -d "$PWD/packages" ]; then mv "$PWD/packages" "$WINESTEAM_DATA"; fi
 if [ -d "$WINEPREFIX" ]; then
   if [ -f "$WINESTEAM_RUNNER_PID_PATH" ]; then
     export WS_RUNNER_PID=$(cat "$WINESTEAM_RUNNER_PID_PATH")
@@ -266,7 +281,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       rm "$PWD/WineSteam.flatpak"
       wsNotify '[1/2] [1/2] Downloading WineSteam flatpak... [⟱]]'
       echo '=========================================================='
-      curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/v0.1.1/DO-NOT-INSTALL-WineSteam.flatpak.gz
+      curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/$WINESTEAM_VERSION/DO-NOT-INSTALL-WineSteam.flatpak.gz
       gzip -d WineSteam.flatpak.gz
       if [ ! -f ./WineSteam.flatpak ]; then
           wsInfo 'F: Download failed.'
