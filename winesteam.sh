@@ -279,6 +279,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
         echo '=========================================================='
       fi
       wsNotify '[2/2] Installing Winesteam flatpak... '
+      flatpak uninstall --user -y io.github.gleammerray.WineSteam
       flatpak install --user -y ./WineSteam.flatpak
       rm WineSteam.flatpak
       echo "WINESTEAM_INSTALL_MODE=\"flatpak\"" >> "$WINESTEAM_CFG"
