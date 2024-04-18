@@ -146,27 +146,29 @@ if [ "x$1" != "x" ]; then
   fi
 fi
 
-if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
-  if [ -f "$WINESTEAM_FLATPAK_PID_PATH" ]; then
-    export WS_RUNNER_PID=$(cat "$WINESTEAM_FLATPAK_PID_PATH")
-    if [ "x$WS_RUNNER_PID" = "x" ]; then
-      rm "$WINESTEAM_FLATPAK_PID_PATH"
-    elif [ -d "/proc/$WS_RUNNER_PID" ]; then
-      wsControls &
-      export WS_CONTROLS_PID=$!
-      wsCleanup
-      exit
-    else
-      rm "$WINESTEAM_FLATPAK_PID_PATH"
+if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+  if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
+    if [ -f "$WINESTEAM_FLATPAK_PID_PATH" ]; then
+      export WS_RUNNER_PID=$(cat "$WINESTEAM_FLATPAK_PID_PATH")
+      if [ "x$WS_RUNNER_PID" = "x" ]; then
+        rm "$WINESTEAM_FLATPAK_PID_PATH"
+      elif [ -d "/proc/$WS_RUNNER_PID" ]; then
+        wsControls &
+        export WS_CONTROLS_PID=$!
+        wsCleanup
+        exit
+      else
+        rm "$WINESTEAM_FLATPAK_PID_PATH"
+      fi
     fi
+    echo "Running WineSteam flatpak."
+    unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" $1 &
+    export WS_RUNNER_PID=$!
+    sleep 1
+    slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+    wsCleanup
+    exit
   fi
-  echo "Running WineSteam flatpak."
-  unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" $1 &
-  export WS_RUNNER_PID=$!
-  sleep 1
-  slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
-  wsCleanup
-  exit
 fi
 
 if [ ! -d "$WINESTEAM_DATA" ]; then mkdir -p "$WINESTEAM_DATA"; fi
@@ -282,6 +284,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       echo "WINESTEAM_INSTALL_MODE=\"flatpak\"" >> "$WINESTEAM_CFG"
       unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" &
       export WS_RUNNER_PID=$!
+      sleep 1
       ./bin/slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
       wsCleanup
       exit
