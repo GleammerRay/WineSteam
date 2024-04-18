@@ -153,8 +153,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
       if [ "x$WS_RUNNER_PID" = "x" ]; then
         rm "$WINESTEAM_FLATPAK_PID_PATH"
       elif [ -d "/proc/$WS_RUNNER_PID" ]; then
-        wsControls &
-        export WS_CONTROLS_PID=$!
+        flatpak run io.github.gleammerray.WineSteam
         wsCleanup
         exit
       else
