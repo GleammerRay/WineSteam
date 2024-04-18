@@ -1,0 +1,101 @@
+app-id: io.github.gleammerray.WineSteam
+sdk: org.freedesktop.Sdk
+runtime: org.freedesktop.Platform
+base: org.winehq.Wine
+base-version: stable-23.08
+runtime-version: &runtime-version '23.08'
+command: winesteam
+separate-locales: false
+
+finish-args:
+- '--share=ipc'
+- '--share=network'
+- '--socket=fallback-x11'
+- '--socket=wayland'
+- '--socket=pulseaudio'
+- '--socket=session-bus'
+- '--socket=system-bus'
+- '--allow=devel'
+- '--allow=multiarch'
+- '--talk-name=org.freedesktop.Notifications'
+- '--talk-name=org.kde.StatusNotifierWatcher'
+- '--device=all'
+- '--env=LD_LIBRARY_PATH=/app/lib:/app/lib:/app/lib32:/app/lib64:/app/lib/i386-linux-gnu:/app/lib/wine:/app/lib64/wine:/usr/lib/extensions/vulkan/gamescope/lib'
+- '--filesystem=xdg-run/gamescope-0:ro'
+# For Debian
+- '--filesystem=~/.config/MangoHud:ro'
+- '--env=PATH=/app/bin:/usr/bin:/app/utils/bin:/usr/lib/extensions/vulkan/MangoHud/bin/:/app/jre/bin/:/usr/lib/extensions/vulkan/gamescope/bin'
+- '--env=GST_PLUGIN_SYSTEM_PATH=/app/lib32/gstreamer-1.0:/app/lib/gstreamer-1.0:/usr/lib/i386-linux-gnu/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0'
+# System tray icon
+- '--talk-name=org.kde.StatusNotifierWatcher'
+- '--talk-name=org.freedesktop.Flatpak'
+# Disable access to xdg-data/flatpak as it's causing an finish-args-unnecessary-xdg-data-access error.
+# Flatpak talk API might be enough but this might break features like Steam games detection.
+# - --filesystem=xdg-data/flatpak:ro
+# Needed for appimages
+- '--env=APPIMAGE_EXTRACT_AND_RUN=1'
+# See: https://github.com/flathub/net.lutris.Lutris/pull/368#issuecomment-1751381312
+- '--env=WEBKIT_DISABLE_DMABUF_RENDERER=1'
+
+inherit-extensions:
+  - org.freedesktop.Platform.GL32
+  - org.freedesktop.Platform.VAAPI.Intel.i386
+  - org.freedesktop.Platform.ffmpeg-full
+  - org.freedesktop.Platform.ffmpeg_full.i386
+  - org.winehq.Wine.gecko
+  - org.winehq.Wine.mono
+  - org.winehq.Wine.DLLs
+
+add-extensions:
+  org.freedesktop.Platform.VAAPI.Intel:
+      directory: lib/dri/intel-vaapi-driver
+      autodelete: false
+      no-autodownload: true
+      download-if: active-gl-driver
+      enable-if: active-gl-driver
+      version: *runtime-version
+
+  org.freedesktop.Platform.Compat.i386:
+    directory: lib/i386-linux-gnu
+    version: *runtime-version
+
+  org.freedesktop.Platform.Compat.i386.Debug:
+    directory: lib/debug/lib/i386-linux-gnu
+    version: *runtime-version
+    no-autodownload: true
+
+  com.valvesoftware.Steam.CompatibilityTool:
+    subdirectories: true
+    directory: share/steam/compatibilitytools.d
+    version: stable
+    versions: stable;beta;test
+    no-autodownload: true
+    autodelete: false
+
+  com.valvesoftware.Steam.Utility:
+    subdirectories: true
+    directory: utils
+    version: stable
+    versions: stable;beta;test
+    add-ld-path: lib
+    merge-dirs: bin
+    no-autodownload: true
+    autodelete: false
+
+modules:
+- name: winesteam
+  buildsystem: simple
+  sources:
+    - type: dir
+      path: ..
+    - type: file
+      url: https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks?raw=true
+      sha256: 8f28985b06e9e04b5268e2aef3429b2a0f6abd4fd12c4a30472dfe66355128fa
+    - type: archive
+      url: https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
+      sha256: 9cef292850a470b1a2637b22959051ab36784dccdb4966c19607790a1e3a96f1
+      dest: wine-ge
+  build-commands:
+    - rm -rf ./flatpak
+    - rm -rf ./.git*
+    - find . -type f -exec install -D "{}" "/app/bin/{}" \;

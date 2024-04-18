@@ -15,6 +15,7 @@ if [ "$CONFIRM_UNINSTALL" != 'y' ]; then
 else
   export CONFIRM_UNINSTALL='y'
   wsNotify '?: Uninstalling WineSteam. 【=╥﹏╥✿=】'
+  flatpak uninstall --user -y io.github.gleammerray.WineSteam
   rm -rf "$WINESTEAM_DATA"
   rm "$WINESTEAM_CFG"
   SHARE_DIR="$HOME/.local/share"
