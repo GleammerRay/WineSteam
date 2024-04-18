@@ -140,6 +140,9 @@ if [ "x$1" != "x" ]; then
   if [ "$1" = "uninstall" ]; then
     ./uninstall.sh
     exit
+  elif [ "$1" = "update" ]; then
+    ./update.sh
+    exit
   else
     wsNotify "WineSteam: Unknown command: $1"
     exit
