@@ -7,17 +7,19 @@ Install Wine Steam on Linux without pain and hassle.
 
 ## Contents
 1. [Prerequisites](#prerequisites)
-2. [Usage](#usage)
-3. [Uninstalling](#uninstalling)
-4. [Tools](#tools)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Updating](#updating)
+5. [Uninstalling](#uninstalling)
+6. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
    - [Winetricks](#winetricks)
    - [Prefix Configuration](#prefix-configuration)
    - [4GB Patcher](#4gb-patcher)
    - [DXVK Patch](#dxvk-patch)
    - [Visual C++ Runtimes Installer](#visual-c-runtimes-installer)
-5. [Install Location](#install-location)
-6. [Known issues](#known-issues)
+7. [Install Location](#install-location)
+8. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
 
 ## Prerequisites
@@ -25,6 +27,13 @@ Install Wine Steam on Linux without pain and hassle.
 - `winetricks` - needed to create and set up the Steam wineprefix. 🪄
 - `util-linux` - used for network namespaces. 🌐
 - (optional) `zenity` or `kdialog` - GUI frontends. ✨
+
+## Installation
+
+Either manually clone the repository or use an all-in-one installer by running the following:
+```bash
+bash <(curl -L https://github.com/GleammerRay/WineSteam/blob/main/winesteam_curl_installer.sh?raw=true)
+```
 
 ## Usage
 
@@ -41,6 +50,10 @@ If you're unable to log into Steam via QR code, try restarting and using manual 
 It is recommended to use `View` -> `Small Mode` in Steam to minimize crashes and bugs.
 
 Read [Adding as an App](#adding-as-an-app) for adding Wine Steam to your applications launcher.
+
+## Updating
+
+To update WineSteam, just run `bash update.sh`. This will pull the latest commit and download runtime packages.
 
 ## Uninstalling
 
