@@ -259,7 +259,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       rm "$PWD/WineSteam.flatpak"
       wsNotify '[1/2] [1/2] Downloading WineSteam flatpak... [⟱]]'
       echo '=========================================================='
-      curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/v0.1.0/DO-NOT-INSTALL-WineSteam.flatpak.gz
+      curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/v0.1.1/DO-NOT-INSTALL-WineSteam.flatpak.gz
       gzip -d WineSteam.flatpak.gz
       if [ ! -f ./WineSteam.flatpak ]; then
           wsInfo 'F: Download failed.'
