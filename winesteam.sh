@@ -137,6 +137,10 @@ fi
 eval "`bash read_config.sh`"
 
 if [ "x$1" != "x" ]; then
+  if [ "$1" = "data" ]; then
+    echo "$WINESTEAM_DATA"
+    exit
+  fi
   if [ "$1" = "uninstall" ]; then
     ./uninstall.sh
     exit
