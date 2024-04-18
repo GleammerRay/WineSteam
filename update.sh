@@ -18,6 +18,7 @@ if [ "x$1" = "xflatpak" ]; then
   flatpak uninstall --user -y io.github.gleammerray.WineSteam
   flatpak install --user -y ./WineSteam.flatpak
   rm WineSteam.flatpak
+  exit
 fi
 git fetch
 git pull
