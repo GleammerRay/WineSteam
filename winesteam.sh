@@ -164,7 +164,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     echo "Running WineSteam flatpak."
     unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" $1 &
     export WS_RUNNER_PID=$!
-    sleep 1
+    sleep 2
     slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
     wsCleanup
     exit
@@ -194,7 +194,7 @@ if [ -d "$WINEPREFIX" ]; then
     unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
   fi
   export WS_RUNNER_PID=$!
-  sleep 1
+  sleep 2
   if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
   fi
@@ -284,7 +284,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       echo "WINESTEAM_INSTALL_MODE=\"flatpak\"" >> "$WINESTEAM_CFG"
       unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" &
       export WS_RUNNER_PID=$!
-      sleep 1
+      sleep 2
       ./bin/slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
       wsCleanup
       exit
@@ -418,7 +418,7 @@ else
   unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
 fi
 export WS_RUNNER_PID=$!
-sleep 1
+sleep 2
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
 fi
