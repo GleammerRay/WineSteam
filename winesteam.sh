@@ -318,8 +318,11 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       exit
     else
       if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
-        wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
-        exit 1
+        if [ "`ls -A "$WINESTEAM_INSTALL_PATH/WineSteam"`" ]; then
+          wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
+          exit 1
+        fi
+        WINESTEAM_INSTALL_PATH="$WINESTEAM_INSTALL_PATH/WineSteam"
       fi
       mkdir -p "$WINESTEAM_INSTALL_PATH"
       if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
