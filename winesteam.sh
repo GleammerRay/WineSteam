@@ -255,6 +255,11 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
     elif [ "$WINESTEAM_INSTALL_MODE" = "1" ]; then
       wsNotify "Installing WineSteam normally."
     elif [ "$WINESTEAM_INSTALL_MODE" = "2" ]; then
+      if ! command -v "flatpak" &> /dev/null
+      then
+        wsNotify "Package \"flatpak\" package is not installed."
+        exit 1
+      fi
       wsNotify "Installing WineSteam as a flatpak."
 
       WINESTEAM_INSTALL_DESKTOP="`wsInputYN '?: Do you wish to install WineSteam into your applications launcher? [Y/n]: '`"
@@ -296,6 +301,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
         echo '=========================================================='
       fi
       wsNotify '[2/2] Installing Winesteam flatpak... '
+      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
       flatpak uninstall --user -y io.github.gleammerray.WineSteam
       flatpak install --user -y ./WineSteam.flatpak
       rm WineSteam.flatpak
