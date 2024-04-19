@@ -289,7 +289,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
           exit 1
       fi
       echo '=========================================================='
-      if [ ! -f ./bin/slirp4netns ]; then
+      if ! command -v "slirp4netns" &> /dev/null ; then
         wsNotify '[1/2] [2/2] Downloading slirp4netns... [⟱]]'
         echo '=========================================================='
         curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
@@ -385,7 +385,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   fi
 fi
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
-  if [ ! command -v "winetricks" &> /dev/null ]; then
+  if ! command -v "winetricks" &> /dev/null ; then
     wsNotify '[1/5] [2/4] Downloading Winetricks... [⟱]]'
     echo '=========================================================='
     curl -o winetricks -L https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks?raw=true
@@ -408,7 +408,7 @@ if [ ! -f ./SteamSetup.exe ]; then
   echo '=========================================================='
 fi
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
-  if [ ! command -v "slirp4netns" &> /dev/null ]; then
+  if ! command -v "slirp4netns" &> /dev/null ; then
     wsNotify '[1/5] [4/4] Downloading slirp4netns... [⟱]]'
     echo '=========================================================='
     curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
