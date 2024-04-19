@@ -370,7 +370,7 @@ if [ ! -d "$WINESTEAM_PKGS/bin" ]; then mkdir -p "$WINESTEAM_PKGS/bin"; fi
 cd "$WINESTEAM_PKGS"
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
-    wsNotify '[1/5] [1/3] Downloading Wine GE... [⟱]]'
+    wsNotify '[1/5] [1/4] Downloading Wine GE... [⟱]]'
     echo '=========================================================='
     curl -o lutris-GE-Proton8-26-x86_64.tar.xz -L https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
     tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
@@ -382,8 +382,21 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     echo '=========================================================='
   fi
 fi
+if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+  if [ ! -f ./bin/winetricks ]; then
+    wsNotify '[1/5] [2/4] Downloading Winetricks... [⟱]]'
+    echo '=========================================================='
+    curl -o winetricks -L https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks?raw=true
+    if [ ! -d ./winetricks ]; then
+      wsInfo 'F: Download failed.'
+      exit 1
+    fi
+    mv ./winetricks ./bin/
+    echo '=========================================================='
+  fi
+fi
 if [ ! -f ./SteamSetup.exe ]; then
-  wsNotify '[1/5] [2/3] Downloading Steam setup... [⟱]]'
+  wsNotify '[1/5] [3/4] Downloading Steam setup... [⟱]]'
   echo '=========================================================='
   curl -o SteamSetup.exe -L https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
   if [ ! -f ./SteamSetup.exe ]; then
@@ -394,7 +407,7 @@ if [ ! -f ./SteamSetup.exe ]; then
 fi
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if [ ! -f ./bin/slirp4netns ]; then
-    wsNotify '[1/5] [3/3] Downloading slirp4netns... [⟱]]'
+    wsNotify '[1/5] [4/4] Downloading slirp4netns... [⟱]]'
     echo '=========================================================='
     curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
     chmod +x slirp4netns
