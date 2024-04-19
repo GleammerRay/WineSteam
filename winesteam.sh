@@ -389,7 +389,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     wsNotify '[1/5] [2/4] Downloading Winetricks... [⟱]]'
     echo '=========================================================='
     curl -o winetricks -L https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks?raw=true
-    if [ ! -d ./winetricks ]; then
+    if [ ! -f ./winetricks ]; then
       wsInfo 'F: Download failed.'
       exit 1
     fi
