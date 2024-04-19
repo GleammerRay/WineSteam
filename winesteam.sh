@@ -254,6 +254,11 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       exit
     elif [ "$WINESTEAM_INSTALL_MODE" = "1" ]; then
       wsNotify "Installing WineSteam normally."
+      if ! command -v "winetricks" &> /dev/null
+      then
+        wsNotify "Package \"winetricks\" is not installed."
+        exit 1
+      fi
     elif [ "$WINESTEAM_INSTALL_MODE" = "2" ]; then
       if ! command -v "flatpak" &> /dev/null
       then
@@ -394,19 +399,6 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
       exit 1
     fi
     rm wine-lutris-GE-Proton8-26-x86_64.tar.xz
-    echo '=========================================================='
-  fi
-fi
-if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
-  if ! command -v "winetricks" &> /dev/null ; then
-    wsNotify '[1/5] [2/4] Downloading Winetricks... [⟱]]'
-    echo '=========================================================='
-    curl -o winetricks -L https://github.com/Winetricks/winetricks/blob/20240105/src/winetricks?raw=true
-    if [ ! -f ./winetricks ]; then
-      wsInfo 'F: Download failed.'
-      exit 1
-    fi
-    mv ./winetricks ./bin/
     echo '=========================================================='
   fi
 fi
