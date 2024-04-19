@@ -34,11 +34,11 @@ wsSetup() {
   WS_SETUP_MSG="?: How do you want to install WineSteam?: "
   while true; do
     if [ "$INPUT_BACKEND" = "zenity" ]; then
-      ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 200 --width 420 --title "WineSteam controls" --text "$WS_SETUP_MSG" --column "" --column "Options" TRUE "Install normally"  FALSE "Install as a flatpak (recommended for Steam Deck)" FALSE "Cancel installation"`"
+      ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 200 --width 420 --title "WineSteam controls" --text "$WS_SETUP_MSG" --column "" --column "Options" TRUE "Install as a flatpak (recommended)" FALSE "Install normally" FALSE "Cancel installation"`"
       if [ "$ANS" = "Install normally" ]; then
         echo 1
         exit
-      elif [ "$ANS" = "Install as a flatpak (recommended for Steam Deck)" ]; then
+      elif [ "$ANS" = "Install as a flatpak (recommended)" ]; then
         echo 2
         exit
       else
@@ -46,12 +46,12 @@ wsSetup() {
         exit
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      ANS="`kdialog --geometry 400x150 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_SETUP_MSG" 1 "Install normally" on 2 "Install as a flatpak (recommended for Steam Deck)" off 3 "Cancel installation" off`"
+      ANS="`kdialog --geometry 400x150 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_SETUP_MSG" 1 "Install as a flatpak (recommended)" on 2 "Install normally" off 3 "Cancel installation" off`"
       if [ "$ANS" = "1" ]; then
-        echo 1
+        echo 2
         exit
       elif [ "$ANS" = "2" ]; then
-        echo 2
+        echo 1
         exit
       else
         echo 0
