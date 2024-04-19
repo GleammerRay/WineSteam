@@ -365,7 +365,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
 fi
 
 wsNotify '[0/5] Performing first time setup. [!]'
-wsNotify '[1/5] [0/3] Downloading packages. [⟱]'
+wsNotify '[1/5] [0/4] Downloading packages. [⟱]'
 if [ ! -d "$WINESTEAM_PKGS" ]; then mkdir -p "$WINESTEAM_PKGS"; fi
 if [ ! -d "$WINESTEAM_PKGS/bin" ]; then mkdir -p "$WINESTEAM_PKGS/bin"; fi
 cd "$WINESTEAM_PKGS"
