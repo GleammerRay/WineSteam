@@ -25,3 +25,4 @@ git pull
 if [ "x`flatpak list | grep "io.github.gleammerray.WineSteam"`" != "x" ]; then
   ./update.sh flatpak
 fi
+wsInfo 'All done.'
