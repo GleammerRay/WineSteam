@@ -133,11 +133,6 @@ wsControls() {
   done
 }
 
-if ! command -v "winetricks" &> /dev/null
-then
-    wsNotify "Package \"winetricks\" is not installed."
-    exit 1
-fi
 if ! command -v "unshare" &> /dev/null
 then
     wsNotify "Package \"util-linux\" package is not installed."
