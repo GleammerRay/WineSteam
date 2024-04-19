@@ -250,7 +250,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
     export WINESTEAM_INSTALL_MODE="`wsSetup`"
     if [ "$WINESTEAM_INSTALL_MODE" = "0" ]; then
-      wsNotify "Installation cancelled"
+      wsInfo "Installation cancelled."
       exit
     elif [ "$WINESTEAM_INSTALL_MODE" = "1" ]; then
       wsNotify "Installing WineSteam normally."
@@ -320,7 +320,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
     WINESTEAM_INSTALL_PATH="`wsInputDir`"
     if [ "x$WINESTEAM_INSTALL_PATH" = "x" ]; then
-      wsNotify "Installation cancelled."
+      wsInfo "Installation cancelled."
       exit
     else
       if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
