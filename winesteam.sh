@@ -304,7 +304,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       wsNotify '[2/2] Installing Winesteam flatpak... '
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
       flatpak uninstall --user -y io.github.gleammerray.WineSteam
-      flatpak install org.freedesktop.Platform/x86_64/23.08
+      flatpak install -y org.freedesktop.Platform/x86_64/23.08
       flatpak install --user -y ./WineSteam.flatpak
       rm WineSteam.flatpak
       echo "WINESTEAM_INSTALL_MODE=\"flatpak\"" >> "$WINESTEAM_CFG"
