@@ -135,7 +135,7 @@ wsControls() {
 
 if ! command -v "unshare" &> /dev/null
 then
-    wsNotify "Package \"util-linux\" package is not installed."
+    wsInfo "Package \"util-linux\" package is not installed."
     exit 1
 fi
 
@@ -257,7 +257,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
     elif [ "$WINESTEAM_INSTALL_MODE" = "2" ]; then
       if ! command -v "flatpak" &> /dev/null
       then
-        wsNotify "Package \"flatpak\" package is not installed."
+        wsInfo "Package \"flatpak\" package is not installed."
         exit 1
       fi
       wsNotify "Installing WineSteam as a flatpak."
