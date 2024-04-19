@@ -26,8 +26,7 @@ if [ "x$1" = "xflatpak" ]; then
       org.winehq.Wine.gecko/x86_64/stable-23.08 \
       org.winehq.Wine.mono/x86_64/stable-23.08 \
       org.winehq.Wine.DLLs.dxvk/x86_64/stable-23.08 \
-      org.freedesktop.Platform.Compat.i386/x86_64/23.08 \
-      org.freedesktop.Platform.Compat.i386.Debug/x86_64/23.08
+      org.freedesktop.Platform.Compat.i386/x86_64/23.08
   flatpak install --user -y ./WineSteam.flatpak
   rm WineSteam.flatpak
   exit
