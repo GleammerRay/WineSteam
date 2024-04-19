@@ -15,7 +15,21 @@ if [ "x$1" = "xflatpak" ]; then
   fi
   echo '=========================================================='
   wsNotify '[2/2] Installing Winesteam flatpak... '
+  flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   flatpak uninstall --user -y io.github.gleammerray.WineSteam
+  flatpak install --user -y org.freedesktop.Platform/x86_64/23.08 \
+      org.freedesktop.Platform.GL32/x86_64/23.08 \
+      org.freedesktop.Platform.VAAPI.Intel/x86_64/23.08 \
+      org.freedesktop.Platform.VAAPI.Intel.i386/x86_64/23.08 \
+      org.freedesktop.Platform.ffmpeg-full/x86_64/23.08 \
+      org.freedesktop.Platform.ffmpeg_full.i386/x86_64/23.08 \
+      org.winehq.Wine.gecko/x86_64/stable-23.08 \
+      org.winehq.Wine.mono/x86_64/stable-23.08 \
+      org.winehq.Wine.DLLs/x86_64/stable-23.08 \
+      org.freedesktop.Platform.Compat.i386/x86_64/23.08 \
+      org.freedesktop.Platform.Compat.i386.Debug/x86_64/23.08 \
+      com.valvesoftware.Steam.CompatibilityTool/x86_64/stable \
+      com.valvesoftware.Steam.Utility/x86_64/stable
   flatpak install --user -y ./WineSteam.flatpak
   rm WineSteam.flatpak
   exit
