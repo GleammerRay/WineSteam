@@ -318,17 +318,14 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
   WINESTEAM_INSTALL_YN="`wsInputYN "?:[0/2]: Do you wish to modify default WineSteam install path? (~/.winesteam) [y/N]: "`"
   WINESTEAM_INSTALL_YN=$(echo ${WINESTEAM_INSTALL_YN:-'n'} | tr '[:upper:]' '[:lower:]')
   if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
-    export WINESTEAM_INSTALL_PATH="`wsInputDir`"
+    export WINESTEAM_INSTALL_PATH="`wsInputDir`/WineSteam"
     if [ "x$WINESTEAM_INSTALL_PATH" = "x" ]; then
       wsInfo "Installation cancelled."
       exit
     else
       if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
-        if [ "`ls -A "$WINESTEAM_INSTALL_PATH/WineSteam"`" ]; then
-          wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
-          exit 1
-        fi
-        export WINESTEAM_INSTALL_PATH="$WINESTEAM_INSTALL_PATH/WineSteam"
+        wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
+        exit 1
       fi
       mkdir -p "$WINESTEAM_INSTALL_PATH"
       if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
