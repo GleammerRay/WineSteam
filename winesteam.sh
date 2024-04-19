@@ -279,6 +279,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       fi
       cd "$WINESTEAM_PKGS"
       rm "$PWD/WineSteam.flatpak"
+      wsNotify '[1/2] [0/2] Downloading packages. [⟱]'
       wsNotify '[1/2] [1/2] Downloading WineSteam flatpak... [⟱]]'
       echo '=========================================================='
       curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/$WINESTEAM_VERSION/DO-NOT-INSTALL-WineSteam.flatpak.gz
