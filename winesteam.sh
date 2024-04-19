@@ -323,11 +323,11 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       wsInfo "Installation cancelled."
       exit
     else
+      mkdir -p "$WINESTEAM_INSTALL_PATH"
       if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
         wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
         exit 1
       fi
-      mkdir -p "$WINESTEAM_INSTALL_PATH"
       if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
         wsInfo "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
         exit 1
