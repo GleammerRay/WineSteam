@@ -374,7 +374,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
     wsNotify '[1/5] [1/4] Downloading Wine GE... [⟱]]'
     echo '=========================================================='
-    curl -o lutris-GE-Proton8-26-x86_64.tar.xz -L https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
+    curl -o wine-lutris-GE-Proton8-26-x86_64.tar.xz -L https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
     tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
     if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
       wsInfo 'F: Download failed.'
