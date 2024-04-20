@@ -90,7 +90,7 @@ wsControls() {
       elif [ "$ANS" = "Update WineSteam" ]; then
           wsNotify "Updating WineSteam..."
           "$WINESTEAM_BIN"/update.sh
-          wsNotify "WineSteam updated, restart it for changes to take effect."
+          wsInfo "WineSteam updated, restart it for changes to take effect."
       elif [ "$ANS" = "Exit WineSteam" ]; then
         if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
           flatpak kill io.github.gleammerray.WineSteam
