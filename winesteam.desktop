@@ -2,6 +2,6 @@
 Type=Application
 Terminal=false
 Exec=winesteam
-Name=Wine Steam
+Name=WineSteam
 Icon=winesteam
 Terminal=false
