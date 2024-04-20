@@ -452,10 +452,13 @@ winetricks courier tahoma verdana trebuchet lucida
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
+wine "$WINESTEAM_PKGS/SteamSetup.exe" /S
+wsNotify 'All done! 【=◕∇◕✿=】'
+wsNotify 'Starting WineSteam...'
 if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
-  bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
+  bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent" &
 else
-  unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINESTEAM_PKGS/SteamSetup.exe\"" &
+  unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent" &
 fi
 export WS_RUNNER_PID=$!
 sleep 1
