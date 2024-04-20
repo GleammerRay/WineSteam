@@ -462,7 +462,6 @@ sleep 1
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
 fi
-sleep 20
 wsControls &
 export WS_CONTROLS_PID=$!
 wsCleanup
