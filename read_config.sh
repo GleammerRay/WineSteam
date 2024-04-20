@@ -25,7 +25,7 @@ if [ "x$WINESTEAM_DATA" = "x" ]; then
 fi
 
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
-echo "export WINESTEAM_VERSION=\"v0.3.0\""
+echo "export WINESTEAM_VERSION=\"v0.3.1\""
 echo "export WINEARCH=win64"
 echo "export WINESTEAM_CFG=\"$WINESTEAM_CFG\""
 echo "export WINESTEAM_BIN=\"$PWD\""
