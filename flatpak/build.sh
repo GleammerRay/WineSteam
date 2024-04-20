@@ -8,6 +8,5 @@ flatpak install --user -y org.freedesktop.Platform/x86_64/23.08 \
     org.winehq.Wine.gecko/x86_64/stable-23.08 \
     org.winehq.Wine.mono/x86_64/stable-23.08 \
     org.winehq.Wine.DLLs.dxvk/x86_64/stable-23.08 \
-    org.freedesktop.Platform.Compat.i386/x86_64/23.08 \
-    org.freedesktop.Platform.Compat.i386.Debug/x86_64/23.08
+    org.freedesktop.Platform.Compat.i386/x86_64/23.08
 flatpak-builder --force-clean --user --install build-dir io.github.gleammerray.WineSteam.yml
