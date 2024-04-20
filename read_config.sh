@@ -43,3 +43,4 @@ echo "export WINESTEAM_IPC_PATH=\"$WINESTEAM_DATA/winesteam_ipc.txt\""
 if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
   echo "export GST_PLUGIN_SYSTEM_PATH=\"$WINESTEAM_BIN/wine-ge/lib/gstreamer-1.0:$WINESTEAM_BIN/wine-ge/lib64/gstreamer-1.0\""
 fi
+echo "export WINESTEAM_STEAM_OPTIONS=\"-cef-disable-gpu\""

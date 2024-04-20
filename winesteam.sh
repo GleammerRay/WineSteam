@@ -82,10 +82,10 @@ wsControls() {
     elif [ "$INPUT_BACKEND" = "zenity" ]; then
       ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 300 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
       if [ "$ANS" = "Open WineSteam" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" > "$WINESTEAM_IPC_PATH"
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
       elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "Update WineSteam" ]; then
           wsNotify "Updating WineSteam..."
@@ -106,10 +106,10 @@ wsControls() {
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
       ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Update WineSteam" off 4 "Exit WineSteam" off`"
       if [ "$ANS" = "1" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\"" > "$WINESTEAM_IPC_PATH"
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
       elif [ "$ANS" = "2" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -applaunch 244630" > "$WINESTEAM_IPC_PATH"
+        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "3" ]; then
           wsNotify "Updating WineSteam..."
@@ -205,9 +205,9 @@ if [ -d "$WINEPREFIX" ]; then
     fi
   fi
   if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
-    bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
+    bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent" &
   else
-    unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" -silent" &
+    unshare --user --map-root-user --net --mount "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent" &
   fi
   export WS_RUNNER_PID=$!
   sleep 1
