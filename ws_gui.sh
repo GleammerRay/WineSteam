@@ -49,7 +49,7 @@ wsInputDir() {
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
     kdialog --icon "$WINESTEAM_BIN/winesteam.png" --getexistingdirectory
   else
-    read -p "Enter directory path:" ANS
+    read -p "Enter directory path: " ANS
     echo "`readlink -f "$ANS"`"
   fi
 }
