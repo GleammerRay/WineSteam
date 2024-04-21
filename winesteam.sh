@@ -331,29 +331,31 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
     fi
   fi
 
-  WINESTEAM_INSTALL_YN="`wsInputYN "?:[0/2]: Do you wish to modify default WineSteam install path? (~/.winesteam) [y/N]: "`"
-  WINESTEAM_INSTALL_YN=$(echo ${WINESTEAM_INSTALL_YN:-'n'} | tr '[:upper:]' '[:lower:]')
-  if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
-    export WINESTEAM_INSTALL_PATH="`wsInputDir`/WineSteam"
-    if [ "x$WINESTEAM_INSTALL_PATH" = "x" ]; then
-      wsInfo "Installation cancelled."
-      exit
-    else
-      mkdir -p "$WINESTEAM_INSTALL_PATH"
-      if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
-        wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
-        exit 1
+  if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+    WINESTEAM_INSTALL_YN="`wsInputYN "?:[0/2]: Do you wish to modify default WineSteam install path? (~/.winesteam) [y/N]: "`"
+    WINESTEAM_INSTALL_YN=$(echo ${WINESTEAM_INSTALL_YN:-'n'} | tr '[:upper:]' '[:lower:]')
+    if [ "$WINESTEAM_INSTALL_YN" != 'n' ]; then
+      export WINESTEAM_INSTALL_PATH="`wsInputDir`/WineSteam"
+      if [ "x$WINESTEAM_INSTALL_PATH" = "x" ]; then
+        wsInfo "Installation cancelled."
+        exit
+      else
+        mkdir -p "$WINESTEAM_INSTALL_PATH"
+        if [ "`ls -A "$WINESTEAM_INSTALL_PATH"`" ]; then
+          wsInfo "F: Installation path is not empty: $WINESTEAM_INSTALL_PATH"
+          exit 1
+        fi
+        if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
+          wsInfo "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
+          exit 1
+        fi
+        echo "WINESTEAM_DATA=\"$WINESTEAM_INSTALL_PATH\"" >> "$WINESTEAM_CFG"
       fi
-      if [ ! -d "$WINESTEAM_INSTALL_PATH" ]; then
-        wsInfo "F: Bad installation path: $WINESTEAM_INSTALL_PATH"
-        exit 1
-      fi
-      echo "WINESTEAM_DATA=\"$WINESTEAM_INSTALL_PATH\"" >> "$WINESTEAM_CFG"
     fi
+    cd "`dirname "$0"`"
+    eval "`bash read_config.sh`"
   fi
-  cd "`dirname "$0"`"
-  eval "`bash read_config.sh`"
-  wsNotify "?:[0/2]: Installing to \"$WINESTEAM_INSTALL_PATH\""
+  wsNotify "?:[0/2]: Installing to \"$WINESTEAM_DATA\""
 
   WINESTEAM_INSTALL_DXVK="`wsInputYN "?:[1/2]: DXVK greatly improves performance in all Wine applications. Some hardware/Wine versions/applications don't work well with DXVK. Install DXVK? [Y/n]: "`"
   WINESTEAM_INSTALL_DXVK=$(echo ${WINESTEAM_INSTALL_DXVK:-'y'} | tr '[:upper:]' '[:lower:]')
@@ -424,9 +426,8 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   fi
 fi
 wsNotify '[2/5] Creating a Wine prefix... [⌂]'
-wsInfo "A Wine prefix configuration window will open, please press \"Ok\" if you don't know what to change."
 mkdir -p "$WINEPREFIX";
-winecfg
+wine wineboot
 winetricks win10
 if [ "$WINESTEAM_INSTALL_DXVK" = "y" ]; then
   wsNotify '[3/5] Installing DXVK... [⌂]'

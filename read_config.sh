@@ -25,7 +25,8 @@ if [ "x$WINESTEAM_DATA" = "x" ]; then
 fi
 
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
-echo "export WINESTEAM_VERSION=\"v0.3.2\""
+export WINESTEAM_BIN="$PWD"
+echo "export WINESTEAM_VERSION=\"v0.4.0\""
 echo "export WINEARCH=win64"
 echo "export WINESTEAM_CFG=\"$WINESTEAM_CFG\""
 echo "export WINESTEAM_BIN=\"$PWD\""
@@ -35,12 +36,12 @@ echo "export WINESTEAM_TMP=\"$WINESTEAM_DATA/tmp\""
 echo "export WINESTEAM_PKGS=\"$WINESTEAM_DATA/packages\""
 echo "export WINEPREFIX=\"$WINESTEAM_DATA/prefix\""
 echo "export WINE_LARGE_ADDRESS_AWARE=1"
+echo "export WINEDLLOVERRIDES=\"d3d11=b,dxgi=b\""
+echo "export WINEDEBUG=-all"
+echo "export DXVK_LOG_LEVEL=none"
 echo "export FREETYPE_PROPERTIES=\"truetype:interpreter-version=35\""
 echo "export PATH=\"$WINESTEAM_BIN/wine-ge/bin:$WINESTEAM_BIN:$WINESTEAM_PKGS/bin:$WINESTEAM_PKGS/lutris-GE-Proton8-26-x86_64/bin:$PATH\""
 echo "export WINESTEAM_RUNNER_PID_PATH=\"$WINESTEAM_DATA/ws_runner_pid\""
 echo "export WINESTEAM_FLATPAK_PID_PATH=\"$WINESTEAM_DATA/ws_flatpak_pid\""
 echo "export WINESTEAM_IPC_PATH=\"$WINESTEAM_DATA/winesteam_ipc.txt\""
-if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
-  echo "export GST_PLUGIN_SYSTEM_PATH=\"$WINESTEAM_BIN/wine-ge/lib/gstreamer-1.0:$WINESTEAM_BIN/wine-ge/lib64/gstreamer-1.0\""
-fi
 echo "export WINESTEAM_STEAM_OPTIONS=\"-cef-disable-gpu\""
