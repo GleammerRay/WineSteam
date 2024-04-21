@@ -11,8 +11,8 @@ if [ -f "$HOME/.winesteam/install_path.txt" ]; then
 fi
 #wsInfo "Please select an installation directory."
 #WS_INSTALL_DIR=`wsInputDir`
-WS_INSTALL_DIR="$HOME/.winesteam"
-mkdir $WS_INSTALL_DIR
+WS_INSTALL_DIR="$HOME/.winesteam/bin"
+mkdir -p $WS_INSTALL_DIR
 if [ ! -d "$WS_INSTALL_DIR" ]; then
   wsInfo "F: Directory does not exist: $WS_INSTALL_DIR"
   exit 1
