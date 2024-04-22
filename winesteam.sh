@@ -104,18 +104,18 @@ wsControls() {
         exit
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" 1 "Open WineSteam" on 2 "Launch NEOTOKYO°" off 3 "Update WineSteam" off 4 "Exit WineSteam" off`"
-      if [ "$ANS" = "1" ]; then
+      ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Update WineSteam" "Update WineSteam" off "Exit WineSteam" "Exit WineSteam" off`"
+      if [ "$ANS" = "Open WineSteam" ]; then
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS" > "$WINESTEAM_IPC_PATH"
         wsNotify "Opening WineSteam..."
-      elif [ "$ANS" = "2" ]; then
+      elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
-      elif [ "$ANS" = "3" ]; then
+      elif [ "$ANS" = "Update WineSteam" ]; then
           wsNotify "Updating WineSteam..."
           "$WINESTEAM_BIN"/update.sh
-          wsNotify "WineSteam updated, restart it for changes to take effect."
-      elif [ "$ANS" = "4" ]; then
+          wsInfo "WineSteam updated, restart it for changes to take effect."
+      elif [ "$ANS" = "Exit WineSteam" ]; then
         if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
           flatpak kill io.github.gleammerray.WineSteam
           wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
@@ -127,8 +127,6 @@ wsControls() {
       else
         exit
       fi
-    else
-      sleep 100
     fi
   done
 }
