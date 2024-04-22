@@ -95,7 +95,6 @@ wsGUIProgress() {
     _wsGUIProgress &
     eval "$WS_COMMAND"
     qdbus $dbusRef close
-    exit
   fi
 }
 
