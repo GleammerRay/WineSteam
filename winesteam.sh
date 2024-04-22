@@ -32,6 +32,22 @@ wsCleanup() {
   kill $$
 }
 
+wsInstallP7zipFull() {
+  if command -v "7zz" &> /dev/null ; then
+    exit
+  fi
+  wsNotify "Installing p7zip-full..."
+  cd "$WINESTEAM_PKGS"
+  curl -o p7zip.zip -L https://github.com/phoepsilonix/p7zip-full/releases/download/v23.01.4/p7zip-linux-x86_64-musl.zip
+  unzip p7zip.zip
+  rm p7zip.zip
+  if ! command -v "7zz" &> /dev/null ; then
+    wsInfo 'wsInstallP7zipFull: Download failed.'
+    exit 1
+  fi
+  wsNotify "p7zip-full installed."
+}
+
 wsSetup() {
   WS_SETUP_MSG="?: How do you want to install WineSteam?: "
   while true; do
