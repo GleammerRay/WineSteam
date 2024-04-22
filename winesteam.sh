@@ -147,7 +147,7 @@ wsControls() {
         return 0
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      export ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Update WineSteam" "Update WineSteam" off "Install/update GMod9" "Install/update GMod9" off "Exit WineSteam" "Exit WineSteam" off`"
+      export ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Install/update GMod9" "Install/update GMod9" off "Update WineSteam" "Update WineSteam" off "Exit WineSteam" "Exit WineSteam" off`"
       _wsControls
       if [ "x$?" = "x1" ]; then
         return 0
