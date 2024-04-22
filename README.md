@@ -32,7 +32,7 @@ Install Wine Steam on Linux without pain and hassle.
 
 ## Installation
 
-(Flatpak installation) Execute the line below to get the required dependenicies on Ubuntu or another Debian-based distribution:
+Execute the line below to get the required dependenicies on Ubuntu or another Debian-based distribution:
 ```bash
 sudo apt install git util-linux flatpak
 ```
