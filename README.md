@@ -6,21 +6,27 @@ Install Wine Steam on Linux without pain and hassle.
 > <br>&emsp;&emsp;- Dalem_master
 
 ## Contents
-1. [Prerequisites](#prerequisites)
-2. [Installation](#installation)
-3. [Usage](#usage)
-4. [Updating](#updating)
-5. [Uninstalling](#uninstalling)
-6. [Tools](#tools)
+1. [Features](#features)
+2. [Prerequisites](#prerequisites)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Updating](#updating)
+6. [Uninstalling](#uninstalling)
+7. [Tools](#tools)
    - [Adding as an App](#adding-as-an-app)
    - [Winetricks](#winetricks)
    - [Prefix Configuration](#prefix-configuration)
    - [4GB Patcher](#4gb-patcher)
    - [DXVK Patch](#dxvk-patch)
    - [Visual C++ Runtimes Installer](#visual-c-runtimes-installer)
-7. [Install Location](#install-location)
-8. [Known issues](#known-issues)
+8. [Install Location](#install-location)
+9. [Known issues](#known-issues)
    - [NEOTOKYO° issues](#neotokyo-issues)
+
+## Features
+
+- Easy installation ⚡ - Wine GE and DXVK are automatically installed.
+- No interference 🕴️ - WineSteam can run alongside native Steam without making it go offline.
 
 ## Prerequisites
 
