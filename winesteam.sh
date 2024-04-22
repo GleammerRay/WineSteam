@@ -88,9 +88,9 @@ wsControls() {
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "Update WineSteam" ]; then
-          wsNotify "Updating WineSteam..."
-          "$WINESTEAM_BIN"/update.sh
-          wsInfo "WineSteam updated, restart it for changes to take effect."
+        wsNotify "Updating WineSteam..."
+        "$WINESTEAM_BIN"/update.sh
+        wsInfo "WineSteam updated, restart it for changes to take effect."
       elif [ "$ANS" = "Exit WineSteam" ]; then
         if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
           flatpak kill io.github.gleammerray.WineSteam
@@ -112,9 +112,9 @@ wsControls() {
         echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
         wsNotify "Launching NEOTOKYO°..."
       elif [ "$ANS" = "Update WineSteam" ]; then
-          wsNotify "Updating WineSteam..."
-          "$WINESTEAM_BIN"/update.sh
-          wsInfo "WineSteam updated, restart it for changes to take effect."
+        wsNotify "Updating WineSteam..."
+        "$WINESTEAM_BIN"/update.sh
+        wsInfo "WineSteam updated, restart it for changes to take effect."
       elif [ "$ANS" = "Exit WineSteam" ]; then
         if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
           flatpak kill io.github.gleammerray.WineSteam
