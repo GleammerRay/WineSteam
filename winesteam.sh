@@ -12,6 +12,7 @@ user_interrupt() {
   fi
   kill $(pgrep -P $WS_CONTROLS_PID)
   kill $(jobs -p)
+  wsNotify "WineSteam stopped."
   kill -9 $1
   exit
 }
@@ -27,6 +28,7 @@ wsCleanup() {
   fi
   kill $(pgrep -P $WS_CONTROLS_PID)
   kill $(jobs -p)
+  wsNotify "WineSteam stopped."
   kill $$
 }
 
@@ -173,7 +175,7 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
       wsCleanup
       exit
     fi
-    echo "Running WineSteam flatpak."
+    wsNotify "Running WineSteam flatpak."
     unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" $1 &
     export WS_RUNNER_PID=$!
     sleep 1
