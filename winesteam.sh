@@ -108,6 +108,7 @@ _wsControls() {
     wsInstallP7zipFull
     export WS_PROGRESS_TEXT="Downloading GMod9..."
     wsGUIProgress curl -o gmod9.7z -L https://gmod9.com/files/gmod9.7z -A "Mozilla/5.0 (compatible;  MSIE 7.01; Windows NT 5.0)"
+    wsNotify "Extracting GMod9..."
     7zz x gmod9.7z -y
     rm gmod9.7z
     if [ -d "$PWD/gmod9" ]; then
