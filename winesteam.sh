@@ -36,7 +36,7 @@ wsCleanup() {
 
 wsInstallP7zipFull() {
   if command -v "7zz" &> /dev/null ; then
-    exit
+    return 0
   fi
   wsNotify "Installing p7zip-full..."
   cd "$WINESTEAM_PKGS"
@@ -45,7 +45,7 @@ wsInstallP7zipFull() {
   rm p7zip.zip
   if ! command -v "7zz" &> /dev/null ; then
     wsInfo 'wsInstallP7zipFull: Download failed.'
-    exit 1
+    return 1
   fi
   wsNotify "p7zip-full installed."
 }
@@ -123,13 +123,13 @@ _wsControls() {
     if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
       flatpak kill io.github.gleammerray.WineSteam
       wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-      echo exit
+      return 1
     fi
     echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
     wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-    echo exit
+    return 1
   else
-    echo exit
+    return 1
   fi
 }
 
@@ -140,15 +140,15 @@ wsControls() {
       sleep 100
     elif [ "$INPUT_BACKEND" = "zenity" ]; then
       export ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 300 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Install/update GMod9" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
-      ANS=`_wsControls`
-      if [ "x$ANS" != "x" ]; then
-        eval $ANS
+      _wsControls
+      if [ "x$?" = "x1" ]; then
+        return 0
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
       export ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Update WineSteam" "Update WineSteam" off "Install/update GMod9" "Install/update GMod9" off "Exit WineSteam" "Exit WineSteam" off`"
-      ANS=`_wsControls`
-      if [ "x$ANS" != "x" ]; then
-        eval $ANS
+      _wsControls
+      if [ "x$?" = "x1" ]; then
+        return 0
       fi
     fi
   done
