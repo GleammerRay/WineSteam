@@ -74,7 +74,7 @@ _wsGUIProgress() {
       fi
     else
       export PROGRESS_ANIMATION=$(($PROGRESS_ANIMATION-1))
-      if [ $PROGRESS_ANIMATION = 0 ]; then
+      if [ $PROGRESS_ANIMATION = 1 ]; then
         export PROGRESS_ANIMATION_DIRECTION=0
       fi
     fi
@@ -84,13 +84,16 @@ _wsGUIProgress() {
 }
 
 wsGUIProgress() {
+  for var in "$@"; do
+    export WS_COMMAND="$WS_COMMAND\"$var\" "
+  done
   if [ "$INPUT_BACKEND" = "zenity" ]; then
-    stdbuf -oL $@ | zenity --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
+    stdbuf -oL eval "$WS_COMMAND" | zenity --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
     export dbusRef="$(kdialog --progressbar "$WS_PROGRESS_TEXT" 10)"
     qdbus $dbusRef showCancelButton false
     _wsGUIProgress &
-    $@
+    eval "$WS_COMMAND"
     qdbus $dbusRef close
     exit
   fi
