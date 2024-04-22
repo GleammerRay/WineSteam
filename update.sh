@@ -3,6 +3,9 @@ cd "`dirname "$0"`"
 source "./ws_gui.sh"
 eval "`bash read_config.sh`"
 if [ "x$1" = "xflatpak" ]; then
+  if [ $OLD_WINESTEAM_VERSION = $WINESTEAM_VERSION ]; then
+    exit
+  fi
   cd "$WINESTEAM_PKGS"
   rm "$PWD/WineSteam.flatpak"
   wsNotify '[1/2] [1/1] Downloading WineSteam flatpak... [⟱]]'
@@ -33,6 +36,7 @@ if [ "x$1" = "xflatpak" ]; then
 fi
 git fetch
 git pull
+export OLD_WINESTEAM_VERSION=$WINESTEAM_VERSION
 if [ "x`flatpak list | grep "io.github.gleammerray.WineSteam"`" != "x" ]; then
   ./update.sh flatpak
 fi
