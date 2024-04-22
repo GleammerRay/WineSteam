@@ -111,8 +111,9 @@ _wsControls() {
     wsNotify "Extracting GMod9..."
     7zz x gmod9.7z -y
     rm gmod9.7z
+    echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 215" > "$WINESTEAM_IPC_PATH"
     if [ -d "$PWD/gmod9" ]; then
-      wsInfo "GMod9 installed! Please restart WineSteam to find it in your Steam library."
+      wsInfo "GMod9 installed! Please restart WineSteam to find it in your Steam library and make sure that Source SDK 2006 is installed before running it."
     else
       wsInfo "Failed to download GMod9."
     fi
