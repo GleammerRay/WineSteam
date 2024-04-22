@@ -63,6 +63,19 @@ wsInfo() {
   fi
 }
 
+wsGUIProgress() {
+  if [ "$INPUT_BACKEND" = "zenity" ]; then
+    stdbuf -oL $@ | zenity --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
+  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
+    export dbusRef="$(kdialog --progressbar "$WS_PROGRESS_TEXT" 10)"
+    qdbus $dbusRef showCancelButton false
+    sleep 1
+    $@
+    qdbus $dbusRef close
+    exit
+  fi
+}
+
 if command -v "notify-send" &> /dev/null; then
   export NOTIFY_BACKEND="notify-send"
 fi
