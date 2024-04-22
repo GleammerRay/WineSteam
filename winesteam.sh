@@ -94,58 +94,61 @@ wsSetup() {
   done
 }
 
+_wsControls() {
+  if [ "$ANS" = "Open WineSteam" ]; then
+    echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS" > "$WINESTEAM_IPC_PATH"
+    wsNotify "Opening WineSteam..."
+  elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
+    echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
+    wsNotify "Launching NEOTOKYO°..."
+  elif [ "$ANS" = "Install/update GMod9" ]; then
+    mkdir -p "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steamapps/sourcemods"
+    cd "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steamapps/sourcemods"
+    rm -rf gmod9
+    wsInstallP7zipFull
+    export WS_PROGRESS_TEXT="Downloading GMod9..."
+    wsGUIProgress curl -o gmod9.7z -L https://gmod9.com/files/gmod9.7z -A "Mozilla/5.0 (compatible;  MSIE 7.01; Windows NT 5.0)"
+    7zz x gmod9.7z -y
+    #rm gmod9.7z
+    if [ -d "$PWD/gmod9" ]; then
+      wsInfo "GMod9 installed! Please restart WineSteam to find it in your Steam library."
+    else
+      wsInfo "Failed to download GMod9."
+    fi
+  elif [ "$ANS" = "Update WineSteam" ]; then
+    wsNotify "Updating WineSteam..."
+    "$WINESTEAM_BIN"/update.sh
+    wsInfo "WineSteam updated, restart it for changes to take effect."
+  elif [ "$ANS" = "Exit WineSteam" ]; then
+    if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
+      flatpak kill io.github.gleammerray.WineSteam
+      wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
+      echo exit
+    fi
+    echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
+    wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
+    echo exit
+  else
+    echo exit
+  fi
+}
+
 wsControls() {
   WS_CONTROLS_MSG="WineSteam is now starting up! Feel free to close this window.\n\nHere you can control your running WineSteam instance."
   while true; do
     if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
       sleep 100
     elif [ "$INPUT_BACKEND" = "zenity" ]; then
-      ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 300 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
-      if [ "$ANS" = "Open WineSteam" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS" > "$WINESTEAM_IPC_PATH"
-        wsNotify "Opening WineSteam..."
-      elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
-        wsNotify "Launching NEOTOKYO°..."
-      elif [ "$ANS" = "Update WineSteam" ]; then
-        wsNotify "Updating WineSteam..."
-        "$WINESTEAM_BIN"/update.sh
-        wsInfo "WineSteam updated, restart it for changes to take effect."
-      elif [ "$ANS" = "Exit WineSteam" ]; then
-        if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
-          flatpak kill io.github.gleammerray.WineSteam
-          wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-          exit
-        fi
-        echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
-        wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-        exit
-      else
-        exit
+      export ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 300 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Install/update GMod9" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
+      ANS=`_wsControls`
+      if [ "x$ANS" != "x" ]; then
+        eval $ANS
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Update WineSteam" "Update WineSteam" off "Exit WineSteam" "Exit WineSteam" off`"
-      if [ "$ANS" = "Open WineSteam" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS" > "$WINESTEAM_IPC_PATH"
-        wsNotify "Opening WineSteam..."
-      elif [ "$ANS" = "Launch NEOTOKYO°" ]; then
-        echo "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
-        wsNotify "Launching NEOTOKYO°..."
-      elif [ "$ANS" = "Update WineSteam" ]; then
-        wsNotify "Updating WineSteam..."
-        "$WINESTEAM_BIN"/update.sh
-        wsInfo "WineSteam updated, restart it for changes to take effect."
-      elif [ "$ANS" = "Exit WineSteam" ]; then
-        if [ "x$WINESTEAM_INSTALL_MODE" = "xflatpak" ]; then
-          flatpak kill io.github.gleammerray.WineSteam
-          wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-          exit
-        fi
-        echo "user_interrupt" > "$WINESTEAM_IPC_PATH"
-        wsNotify "Stopping WineSteam... 【=˶◡˳ ◡˶✿=】ᶻ 𝗓 𐰁"
-        exit
-      else
-        exit
+      export ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Update WineSteam" "Update WineSteam" off "Install/update GMod9" "Install/update GMod9" off "Exit WineSteam" "Exit WineSteam" off`"
+      ANS=`_wsControls`
+      if [ "x$ANS" != "x" ]; then
+        eval $ANS
       fi
     fi
   done
