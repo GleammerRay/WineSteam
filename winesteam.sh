@@ -12,7 +12,9 @@ user_interrupt() {
   fi
   kill $(pgrep -P $WS_CONTROLS_PID)
   kill $(jobs -p)
-  wsNotify "WineSteam stopped."
+  if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
+    wsNotify "WineSteam stopped."
+  fi
   kill -9 $1
   exit
 }
