@@ -63,13 +63,33 @@ wsInfo() {
   fi
 }
 
+_wsGUIProgress() {
+  export PROGRESS_ANIMATION=0
+  export PROGRESS_ANIMATION_DIRECTION=0
+  while [ "x`qdbus $dbusRef wasCancelled`" = "xfalse" ]; do
+    if [ $PROGRESS_ANIMATION_DIRECTION = 0 ]; then
+      export PROGRESS_ANIMATION=$(($PROGRESS_ANIMATION+1))
+      if [ $PROGRESS_ANIMATION = 9 ]; then
+        export PROGRESS_ANIMATION_DIRECTION=1
+      fi
+    else
+      export PROGRESS_ANIMATION=$(($PROGRESS_ANIMATION-1))
+      if [ $PROGRESS_ANIMATION = 0 ]; then
+        export PROGRESS_ANIMATION_DIRECTION=0
+      fi
+    fi
+    sleep 0.06
+    qdbus $dbusRef Set "" value $PROGRESS_ANIMATION
+  done
+}
+
 wsGUIProgress() {
   if [ "$INPUT_BACKEND" = "zenity" ]; then
     stdbuf -oL $@ | zenity --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
     export dbusRef="$(kdialog --progressbar "$WS_PROGRESS_TEXT" 10)"
     qdbus $dbusRef showCancelButton false
-    sleep 1
+    _wsGUIProgress &
     $@
     qdbus $dbusRef close
     exit
