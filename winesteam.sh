@@ -310,7 +310,8 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       wsNotify '[1/2] [0/2] Downloading packages. [⟱]'
       wsNotify '[1/2] [1/2] Downloading WineSteam flatpak... [⟱]]'
       echo '=========================================================='
-      curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/$WINESTEAM_VERSION/DO-NOT-INSTALL-WineSteam.flatpak.gz
+      export WS_PROGRESS_TEXT="Downloading WineSteam flatpak..."
+      wsGUIProgress curl -o WineSteam.flatpak.gz -L https://github.com/GleammerRay/WineSteam/releases/download/$WINESTEAM_VERSION/DO-NOT-INSTALL-WineSteam.flatpak.gz
       gzip -d WineSteam.flatpak.gz
       if [ ! -f ./WineSteam.flatpak ]; then
           wsInfo 'F: Download failed.'
@@ -320,7 +321,8 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       if ! command -v "slirp4netns" &> /dev/null ; then
         wsNotify '[1/2] [2/2] Downloading slirp4netns... [⟱]]'
         echo '=========================================================='
-        curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
+        export WS_PROGRESS_TEXT="Downloading slirp4netns..."
+        wsGUIProgress curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
         chmod +x slirp4netns
         if [ ! -f ./slirp4netns ]; then
           wsInfo 'F: Download failed.'
@@ -331,8 +333,10 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       fi
       wsNotify '[2/2] Installing Winesteam flatpak... '
       flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-      flatpak uninstall --user -y io.github.gleammerray.WineSteam
-      flatpak install --user -y org.freedesktop.Platform/x86_64/23.08 \
+      export WS_PROGRESS_TEXT="Uninstalling old WineSteam flatpak..."
+      wsGUIProgress flatpak uninstall --user -y io.github.gleammerray.WineSteam
+      export WS_PROGRESS_TEXT="Installing dependencies..."
+      wsGUIProgress flatpak install --user -y org.freedesktop.Platform/x86_64/23.08 \
           org.freedesktop.Platform.GL32.default/x86_64/23.08 \
           org.freedesktop.Platform.VAAPI.Intel/x86_64/23.08 \
           org.freedesktop.Platform.VAAPI.Intel.i386/x86_64/23.08 \
@@ -342,7 +346,8 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
           org.winehq.Wine.mono/x86_64/stable-23.08 \
           org.winehq.Wine.DLLs.dxvk/x86_64/stable-23.08 \
           org.freedesktop.Platform.Compat.i386/x86_64/23.08
-      flatpak install --user -y ./WineSteam.flatpak
+      export WS_PROGRESS_TEXT="Installing WineSteam flatpak..."
+      wsGUIProgress flatpak install --user -y ./WineSteam.flatpak
       rm WineSteam.flatpak
       echo "WINESTEAM_INSTALL_MODE=\"flatpak\"" >> "$WINESTEAM_CFG"
       unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" &
