@@ -354,6 +354,16 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
       export WS_RUNNER_PID=$!
       sleep 1
       ./bin/slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+      export SLIRP_PID=$!
+      wait $WS_RUNNER_PID
+      kill $SLIRP_PID
+      unshare --user --map-current-user --net --mount "$WINESTEAM_BIN/ws_flatpak_runner.sh" &
+      export WS_RUNNER_PID=$!
+      sleep 1
+      ./bin/slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
+      sleep 20
+      wsControls &
+      export WS_CONTROLS_PID=$!
       wsCleanup
       exit
     fi
@@ -483,6 +493,10 @@ wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
 wine "$WINESTEAM_PKGS/SteamSetup.exe" /S
 wsNotify 'All done! 【=◕∇◕✿=】'
+if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
+  wsCleanup
+  exit 0
+fi
 wsNotify 'Starting WineSteam...'
 if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
   bash "$WINESTEAM_BIN/ws_runner.sh" "wine \"$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe\" $WINESTEAM_STEAM_OPTIONS -silent" &
@@ -494,6 +508,7 @@ sleep 1
 if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   slirp4netns --configure --mtu=65520 --disable-host-loopback $WS_RUNNER_PID tap0 &
 fi
+sleep 20
 wsControls &
 export WS_CONTROLS_PID=$!
 wsCleanup
