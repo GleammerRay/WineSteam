@@ -26,6 +26,11 @@ fi
 
 export WINESTEAM_PKGS="$WINESTEAM_DATA/packages"
 export WINESTEAM_BIN="$PWD"
+if command -v "flatpak" &> /dev/null ; then
+  if [ "x`flatpak list | grep "io.github.gleammerray.WineSteam"`" != "x" ]; then
+    export WINESTEAM_INSTALL_MODE=""
+  fi
+fi
 echo "export WINESTEAM_VERSION=\"v0.4.0\""
 echo "export WINEARCH=win64"
 echo "export WINESTEAM_CFG=\"$WINESTEAM_CFG\""
