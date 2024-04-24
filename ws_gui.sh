@@ -54,6 +54,18 @@ wsInputDir() {
   fi
 }
 
+wsInputFile() {
+  if [ "$INPUT_BACKEND" = "zenity" ]; then
+    ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --file-selection --title "WineSteam"`"
+    echo "$ANS"
+  elif [ "$INPUT_BACKEND" = "kdialog" ]; then
+    kdialog --icon "$WINESTEAM_BIN/winesteam.png" --getopenfilename
+  else
+    read -p "Enter directory path: " ANS
+    echo "`readlink -f "$ANS"`"
+  fi
+}
+
 wsInfo() {
   echo "$@"
   if [ "$INPUT_BACKEND" = "zenity" ]; then
@@ -87,7 +99,7 @@ wsGUIProgress() {
   for var in "$@"; do
     export WS_COMMAND="$WS_COMMAND\"$var\" "
   done
-  if [ "$INPUT_BACKEND" = "kdialog" ]; then
+  if [ "$INPUT_BACKEND" = "zenity" ]; then
     eval "$WS_COMMAND" | zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
   elif [ "$NOTIFY_BACKEND" = "zenity-simple" ]; then
     eval "$WS_COMMAND" | zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
