@@ -41,7 +41,9 @@ fi
 git fetch
 git pull
 export OLD_WINESTEAM_VERSION=$WINESTEAM_VERSION
-if [ "x`flatpak list | grep "io.github.gleammerray.WineSteam"`" != "x" ]; then
-  ./update.sh flatpak
+if command -v "flatpak" &> /dev/null ; then
+  if [ "x`flatpak list | grep "io.github.gleammerray.WineSteam"`" != "x" ]; then
+    ./update.sh flatpak
+  fi
 fi
 wsInfo 'All done.'
