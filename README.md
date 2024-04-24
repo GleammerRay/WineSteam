@@ -1,6 +1,7 @@
 # Wine Steam
 
-Install Wine Steam on Linux without pain and hassle.
+Install Wine Steam on Linux without pain and hassle.  
+Now works on Steam Deck!
 
 > Works great with NEOTOKYO.
 > <br>&emsp;&emsp;- Dalem_master
@@ -27,6 +28,7 @@ Install Wine Steam on Linux without pain and hassle.
 
 - Easy installation ⚡ - Wine GE and DXVK are automatically installed.
 - No interference 🕴️ - WineSteam can run alongside native Steam without making it go offline.
+- Steam Deck support 🎮 - Flatpak installation mode allows WineSteam to be installed on Steam Deck.
 - Isolation 📦 - Harmful programs can't touch your files from within WineSteam (if installed using flatpak installation mode).
 
 ## Prerequisites
