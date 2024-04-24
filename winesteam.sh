@@ -302,7 +302,7 @@ if [ "x$WINESTEAM_INSTALL_DXVK" = "x" ]; then
         wsNotify '?: Skipping launcher icon installation.'
       fi
 
-      if [ ! -d "$WINESTEAM_PKGS" ]; then
+      if [ ! -d "$WINESTEAM_PKGS/bin" ]; then
         mkdir -p "$WINESTEAM_PKGS/bin"
       fi
       cd "$WINESTEAM_PKGS"
