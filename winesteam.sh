@@ -493,11 +493,13 @@ else
 fi
 wsNotify '[4/5] Installing fonts... [Æ]'
 echo '=========================================================='
-winetricks courier tahoma verdana trebuchet lucida
+export WS_PROGRESS_TEXT="Installing fonts..."
+wsGUIProgress winetricks courier tahoma verdana trebuchet lucida
 echo '=========================================================='
 wsNotify 'Almost there! 【=˶◕‿↼˶✿=】'
 wsNotify '[5/5] Running Steam setup... [🮲🮳]'
-wine "$WINESTEAM_PKGS/SteamSetup.exe" /S
+export WS_PROGRESS_TEXT="Running Steam setup..."
+wsGUIProgress wine "$WINESTEAM_PKGS/SteamSetup.exe" /S
 wsNotify 'All done! 【=◕∇◕✿=】'
 if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
   wsCleanup
