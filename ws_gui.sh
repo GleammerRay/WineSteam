@@ -87,15 +87,21 @@ wsGUIProgress() {
   for var in "$@"; do
     export WS_COMMAND="$WS_COMMAND\"$var\" "
   done
-  if [ "$INPUT_BACKEND" = "zenity" ]; then
-    stdbuf -oL eval "$WS_COMMAND" | zenity --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
+  if [ "$INPUT_BACKEND" = "kdialog" ]; then
+    eval "$WS_COMMAND" | zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
+  elif [ "$NOTIFY_BACKEND" = "zenity-simple" ]; then
+    eval "$WS_COMMAND" | zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --no-cancel --progress --pulsate --auto-close --auto-kill --text "$WS_PROGRESS_TEXT"
   elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-    export dbusRef="$(kdialog --progressbar "$WS_PROGRESS_TEXT" 10)"
+    export dbusRef="$(kdialog --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam" --progressbar "$WS_PROGRESS_TEXT" 10)"
     qdbus $dbusRef showCancelButton false
     _wsGUIProgress &
     eval "$WS_COMMAND"
     qdbus $dbusRef close
+  elif [ "$NOTIFY_BACKEND" = "notify-send" ]; then
+    wsNotify "$WS_PROGRESS_TEXT"
+    eval "$WS_COMMAND"
   fi
+  export WS_COMMAND=""
 }
 
 if command -v "notify-send" &> /dev/null; then
