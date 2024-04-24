@@ -31,7 +31,7 @@ if command -v "flatpak" &> /dev/null ; then
     export WINESTEAM_INSTALL_MODE=""
   fi
 fi
-echo "export WINESTEAM_VERSION=\"v0.4.0\""
+echo "export WINESTEAM_VERSION=\"v0.5.0\""
 echo "export WINEARCH=win64"
 echo "export WINESTEAM_CFG=\"$WINESTEAM_CFG\""
 echo "export WINESTEAM_BIN=\"$PWD\""
