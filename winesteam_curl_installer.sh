@@ -1,5 +1,10 @@
 #! /bin/bash
 source <(curl -L https://github.com/GleammerRay/WineSteam/blob/main/ws_gui.sh?raw=true)
+if ! command -v "git" &> /dev/null
+then
+    wsInfo "F: Package \"git\" is not installed."
+    exit 1
+fi
 mkdir -p "$HOME/.winesteam"
 if [ -f "$HOME/.winesteam/install_path.txt" ]; then
   export INSTALL_PATH=$(cat "$HOME/.winesteam/install_path.txt")
