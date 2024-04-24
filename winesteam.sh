@@ -141,13 +141,13 @@ wsControls() {
     if [ "x$FLATPAK_ID" = "xio.github.gleammerray.WineSteam" ]; then
       sleep 100
     elif [ "$INPUT_BACKEND" = "zenity" ]; then
-      export ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 300 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Install/update GMod9" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
+      export ANS="`zenity --window-icon "$WINESTEAM_BIN/winesteam.png" --list --radiolist --height 350 --width 500 --title "WineSteam controls" --text "$WS_CONTROLS_MSG" --column "" --column "Options" TRUE "Open WineSteam" FALSE "Launch NEOTOKYO°" FALSE "Install/update GMod9" FALSE "Execute a file" FALSE "Update WineSteam" FALSE "Exit WineSteam"`"
       _wsControls
       if [ "x$?" = "x1" ]; then
         return 0
       fi
     elif [ "$INPUT_BACKEND" = "kdialog" ]; then
-      export ANS="`kdialog --geometry=500x250 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Install/update GMod9" "Install/update GMod9" off "Update WineSteam" "Update WineSteam" off "Exit WineSteam" "Exit WineSteam" off`"
+      export ANS="`kdialog --geometry=500x300 --icon "$WINESTEAM_BIN/winesteam.png" --title "WineSteam controls" --cancel-label "Exit" --radiolist "$WS_CONTROLS_MSG" "Open WineSteam" "Open WineSteam" on "Launch NEOTOKYO°" "Launch NEOTOKYO°" off "Install/update GMod9" "Install/update GMod9" off "Execute a file" "Execute a file" off "Update WineSteam" "Update WineSteam" off "Exit WineSteam" "Exit WineSteam" off`"
       _wsControls
       if [ "x$?" = "x1" ]; then
         return 0
