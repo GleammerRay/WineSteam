@@ -429,7 +429,8 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
     wsNotify '[1/5] [1/4] Downloading Wine GE... [⟱]]'
     echo '=========================================================='
-    curl -o wine-lutris-GE-Proton8-26-x86_64.tar.xz -L https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
+    export WS_PROGRESS_TEXT="Downloading Wine GE..."
+    wsGUIProgress curl -o wine-lutris-GE-Proton8-26-x86_64.tar.xz -L https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz
     tar -xvJf wine-lutris-GE-Proton8-26-x86_64.tar.xz
     if [ ! -d ./lutris-GE-Proton8-26-x86_64 ]; then
       wsInfo 'F: Download failed.'
@@ -442,7 +443,8 @@ fi
 if [ ! -f ./SteamSetup.exe ]; then
   wsNotify '[1/5] [3/4] Downloading Steam setup... [⟱]]'
   echo '=========================================================='
-  curl -o SteamSetup.exe -L https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
+  export WS_PROGRESS_TEXT="Downloading Steam setup..."
+  wsGUIProgress curl -o SteamSetup.exe -L https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
   if [ ! -f ./SteamSetup.exe ]; then
     wsInfo 'F: Download failed.'
     exit 1
@@ -453,7 +455,8 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
   if ! command -v "slirp4netns" &> /dev/null ; then
     wsNotify '[1/5] [4/4] Downloading slirp4netns... [⟱]]'
     echo '=========================================================='
-    curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
+    export WS_PROGRESS_TEXT="Downloading slirp4netns..."
+    wsGUIProgress curl -o slirp4netns -L https://github.com/rootless-containers/slirp4netns/releases/download/v1.2.3/slirp4netns-$(uname -m)
     chmod +x slirp4netns
     if [ ! -f ./slirp4netns ]; then
       wsInfo 'F: Download failed.'
@@ -465,12 +468,14 @@ if [ "x$FLATPAK_ID" != "xio.github.gleammerray.WineSteam" ]; then
 fi
 wsNotify '[2/5] Creating a Wine prefix... [⌂]'
 mkdir -p "$WINEPREFIX";
-wine wineboot
-winetricks win10
+export WS_PROGRESS_TEXT="Creating a Wine prefix..."
+wsGUIProgress wine wineboot
+wsGUIProgress winetricks win10
 if [ "$WINESTEAM_INSTALL_DXVK" = "y" ]; then
   wsNotify '[3/5] Installing DXVK... [⌂]'
   echo '=========================================================='
-  bash "$WINESTEAM_BIN/dxvkpatch.sh"
+  export WS_PROGRESS_TEXT="Installing DXVK..."
+  wsGUIProgress bash "$WINESTEAM_BIN/dxvkpatch.sh"
   echo '=========================================================='
 else
   wsNotify '[3/5]: Skipping DXVK installation.'
@@ -481,7 +486,8 @@ if [ "$WINESTEAM_WININET" != 'y' ]; then
 else
   wsNotify '[4/5]: Installing Wininet.'
   echo '=========================================================='
-  winetricks wininet
+  export WS_PROGRESS_TEXT="Installing Wininet..."
+  wsGUIProgress winetricks wininet
   echo '=========================================================='
   wsNotify '[4/5]: Wininet installed.'
 fi
