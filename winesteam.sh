@@ -117,6 +117,19 @@ _wsControls() {
     else
       wsInfo "Failed to download GMod9."
     fi
+  elif [ "$ANS" = "Execute a file" ]; then
+    export WS_INPUT_FILE=`wsInputFile`
+    if [ "x$WS_INPUT_FILE" = "x" ]; then
+      return 0
+    fi
+    if [ -d "$WINEPREFIX/drive_c/WineSteam/temp" ]; then
+      rm -rf "$WINEPREFIX/drive_c/WineSteam/temp"
+    fi
+    mkdir -p "$WINEPREFIX/drive_c/WineSteam/temp"
+    export WS_RUN_FILE="$WINEPREFIX/drive_c/WineSteam/temp/`basename "$WS_INPUT_FILE"`"
+    ln "$WS_INPUT_FILE" "$WS_RUN_FILE"
+    echo "wine \"$WS_RUN_FILE\" $WINESTEAM_STEAM_OPTIONS -silent -applaunch 244630" > "$WINESTEAM_IPC_PATH"
+    wsNotify "Running `basename "$WS_INPUT_FILE"`..."
   elif [ "$ANS" = "Update WineSteam" ]; then
     wsNotify "Updating WineSteam..."
     "$WINESTEAM_BIN"/update.sh
