@@ -78,13 +78,13 @@ wsSetup() {
         exit
       fi
     else
-      printf "$WS_SETUP_MSG\n1. Install normally\n2. Install as a flatpak (recommended for Steam Deck)\n"
+      printf "$WS_SETUP_MSG\n1. Install as a flatpak (recommended for Steam Deck)\n2. Install normally\n"
       read ANS
       if [ "x$ANS" = "x1" ]; then
-        echo 1
+        echo 2
         exit
       elif [ "x$ANS" = "x2" ]; then
-        echo 2
+        echo 1
         exit
       else
         echo 0
